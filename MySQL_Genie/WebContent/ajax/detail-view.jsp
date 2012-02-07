@@ -21,55 +21,51 @@
 	
 	String catalog = cn.getSchemaName();
 
-	String qry = "SELECT TEXT FROM USER_VIEWS WHERE VIEW_NAME='" + view +"'";
-	if (owner != null) 
-		qry = "SELECT TEXT FROM ALL_VIEWS WHERE OWNER='" + owner + "' AND VIEW_NAME='" + view +"'"; 
+	String qry = "SELECT VIEW_DEFINITION FROM information_schema.views WHERE TABLE_NAME='" + view +"' AND TABLE_SCHEMA='" + catalog + "'";
 	String text = cn.queryOne(qry);
 %>
 <h2>VIEW: <%= view %> &nbsp;&nbsp;<a href="Javascript:runQuery('<%=catalog%>','<%=view%>')"><img border=0 src="image/icon_query.png" title="query"></a></h2>
 
-<b>Definition</b> 
-<pre class='brush: sql'>
-<%= text %>
-</pre>
+<table id="TABLE_<%=view%>" width=640 border=0>
+<tr>
+	<th></th>
+	<th bgcolor=#ccccff>Column Name</th>
+	<th bgcolor=#ccccff>Type</th>
+	<th bgcolor=#ccccff>Null</th>
+	<th bgcolor=#ccccff>Default</th>
+	<th bgcolor=#ccccff>Remarks</th>
+</tr>
+
+<%	
+	List<TableCol> list = cn.getTableDetail(owner, view);
+	for (int i=0;i<list.size();i++) {
+		TableCol rec = list.get(i);
+		
+		// check if primary key
+		String col_disp = rec.getName();
+		if (rec.isPrimaryKey()) col_disp = "<span class='primary-key'>" + col_disp + "</span>";
+%>
+<tr>
+	<td>&nbsp;</td>
+	<td><%= col_disp %></td>
+	<td><%= rec.getTypeName() %></td>
+	<td><%= rec.getNullable()==0?"N":"" %></td>
+	<td><%= rec.getDefaults() %></td>
+	<td><%= rec.getRemarks() %></td>
+</tr>
+
+<%
+	}
+%>
+</table>
+
 <hr>
 
-<b>Related Table</b><br/>
-
-<%
-	qry = "SELECT REFERENCED_NAME, REFERENCED_OWNER FROM USER_DEPENDENCIES WHERE NAME='" + view +"' AND REFERENCED_TYPE='TABLE' ORDER BY REFERENCED_NAME";
-	if (owner != null)
-		qry = "SELECT REFERENCED_NAME, REFERENCED_OWNER FROM ALL_DEPENDENCIES WHERE OWNER='" + owner + "' AND NAME='" + view +"' AND REFERENCED_TYPE='TABLE' ORDER BY REFERENCED_NAME";
-
-	List<String[]> list = cn.queryMultiCol(qry, 2);
-	
-	for (int i=0;i<list.size();i++) {
-		String tname = list.get(i)[1];
-		String rOwner = list.get(i)[2];
-%>
-	&nbsp;&nbsp;
-	<a href="javascript:loadTable('<%=tname%>');"><%=tname%></a><br/>
-<%
-	}
-%>
+<b>Definition</b> 
+<pre>
+<%= text %>
+</pre>
 
 
-<br/>
-<b>Related Program</b><br/>
-<%
 
-	qry = "SELECT REFERENCED_NAME, REFERENCED_OWNER FROM USER_DEPENDENCIES WHERE NAME='" + view +"' AND REFERENCED_TYPE='PACKAGE' ORDER BY REFERENCED_NAME";
-	if (owner != null)
-		qry = "SELECT REFERENCED_NAME, REFERENCED_OWNER FROM ALL_DEPENDENCIES WHERE OWNER = '" + owner + "' AND NAME='" + view +"' AND REFERENCED_TYPE='PACKAGE' ORDER BY REFERENCED_NAME";
-
-	List<String[]> list2 = cn.queryMultiCol(qry, 2);
-	for (int i=0;i<list2.size();i++) {
-		String tname = list2.get(i)[1];
-		String rOwner = list2.get(i)[2];
-%>
-	&nbsp;&nbsp;
-	<a href="javascript:loadPackage('<%=tname%>');"><%=tname%></a><br/>
-<%
-	}
-%>
 

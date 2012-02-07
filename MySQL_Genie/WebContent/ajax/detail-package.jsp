@@ -26,67 +26,44 @@
 	String sourceUrl = "source.jsp?name=" + name;
 	if (owner != null) sourceUrl += "&owner=" + owner;
 	
-	String typeName = cn.getObjectType(owner, name);
+	String qry = "SELECT routine_type, data_type, routine_definition, routine_comment FROM information_schema.routines WHERE ROUTINE_NAME='" + name +"' AND ROUTINE_SCHEMA='" + catalog + "'";
+	List<String[]> list  = cn.queryMultiCol(qry, 4);
+	
+	String typeName = list.get(0)[1];
+	String dataType = list.get(0)[2];
+	String def = list.get(0)[3];
+	String comment = list.get(0)[4];
+
+	qry = "SELECT parameter_name, parameter_mode, data_type FROM information_schema.parameters WHERE SPECIFIC_NAME='" + name +"' AND SPECIFIC_SCHEMA='" + catalog + "' AND ordinal_position > 0 ORDER BY ordinal_position";
+	List<String[]> list2  = cn.queryMultiCol(qry, 3);
+
 %>
 
-<h2><%= typeName %>: <%= name %> &nbsp;&nbsp;<a href="<%=sourceUrl%>" target="_blank"><img border=0 src="image/icon_query.png" title="Source code"></a></h2>
+<h2><%= typeName %> <%= name %> <%= dataType.equals("")?"":"RETURN " + dataType %></h2>
 
-
-<%
-
-	String qry = "SELECT distinct PROCEDURE_NAME FROM all_procedures where owner='" + owner + "' and object_name='" + name + "' and PROCEDURE_NAME is not null order by 1";
-	List<String> list = cn.queryMulti(qry);
-
-%>
-
-
-<% 
-	if (list.size()>0) { 
-%>
-<b>Procedures</b>
-<table border=0 width=100%>
-<td width=10>&nbsp;</td>
-<td valign=top>
-<%
-	int listSize = (list.size() / 3) + 1;
-	int cnt = 0;
-	for (int i=0; i<list.size(); i++) {
-		cnt++;
-%>
-
-<% if ((cnt-1)>=listSize) { %>
-		</td><td valign=top>
-<%
-		cnt = 1;
-	} 
-%>
-	<%= list.get(i).toLowerCase() %><br/>		
-<% }
-}
-%>
-</td>
-</table>
-
-
-<br/>
-
-<b>Dependencies</b>
-
+Parameters
 <table>
+<% 
+	for (int i=0;i<list2.size();i++) {
+		String pname = list2.get(i)[1];
+		String pmode = list2.get(i)[2];
+		String ptype = list2.get(i)[3];
+%>
 <tr>
-	<td>&nbsp;</td>
-	<td bgcolor=#ccccff>Program</td>
-	<td bgcolor=#ccccff>Table</td>
-	<td bgcolor=#ccccff>View</td>
-	<td bgcolor=#ccccff>Synonym</td>
+	<td width=20>&nbsp;</td>
+	<td><%= pname %></td>
+	<td><%= pmode %></td>
+	<td><%= ptype %></td>
 </tr>
-<tr>
-	<td>&nbsp;</td>
-	<td valign=top><%= cn.getDependencyPackage(owner, name) %></td>
-	<td valign=top><%= cn.getDependencyTable(owner, name) %></td>
-	<td valign=top><%= cn.getDependencyView(owner, name) %></td>
-	<td valign=top><%= cn.getDependencySynonym(owner, name) %></td>
-</tr>
+<%
+	}
+%>
+
 </table>
-<br/>
+
+
+<pre>
+<%= def %>
+</pre>
+
 

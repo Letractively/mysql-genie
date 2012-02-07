@@ -17,7 +17,7 @@
 <b>Table:</b><br/>
 <%
 
-	String qry = "SELECT TABLE_NAME FROM USER_TABLES WHERE TABLE_NAME LIKE '%" + Util.escapeQuote(keyword) +"%' ORDER BY TABLE_NAME";
+	String qry = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME LIKE '%" + Util.escapeQuote(keyword) +"%' AND table_schema='" + catalog + "' and table_type='BASE TABLE' ORDER BY TABLE_NAME";
 	List<String> list = cn.queryMulti(qry);
 
 	for (String text : list) {
@@ -32,7 +32,7 @@
 <br/>
 <b>View:</b><br/>
 <%
-	qry = "SELECT VIEW_NAME FROM USER_VIEWS WHERE VIEW_NAME LIKE '%" + Util.escapeQuote(keyword) +"%' ORDER BY VIEW_NAME";
+	qry = "SELECT TABLE_NAME FROM information_schema.TABLES WHERE TABLE_NAME LIKE '%" + Util.escapeQuote(keyword) +"%' AND table_schema='" + catalog + "' and table_type='VIEW' ORDER BY TABLE_NAME";
 	list = cn.queryMulti(qry);
 	
 	for (String text : list) {
@@ -47,7 +47,7 @@
 <br/>
 <b>Program:</b><br/>
 <%
-	qry = "SELECT OBJECT_NAME FROM USER_OBJECTS WHERE object_type IN ('PACKAGE','PROCEDURE','FUNCTION','TYPE') AND OBJECT_NAME LIKE '%" + Util.escapeQuote(keyword) + "%' ORDER BY OBJECT_NAME";
+	qry = "SELECT ROUTINE_NAME FROM information_schema.ROUTINES WHERE ROUTINE_NAME LIKE '%" + Util.escapeQuote(keyword) +"%' AND routine_schema='" + catalog + "' ORDER BY ROUTINE_NAME";
 	list = cn.queryMulti(qry);
 
 	for (String text : list) {
@@ -59,6 +59,7 @@
 	}
 %>
 
+<%--
 <br/>
 <b>Synonym:</b><br/>
 <%
@@ -72,37 +73,21 @@
 <%
 	}
 %>
+ --%>
 
 <br/>
 <b>Column:</b><br/>
 <%
-	qry = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE, DATA_LENGTH, DATA_PRECISION, DATA_SCALE FROM USER_TAB_COLUMNS WHERE COLUMN_NAME='" + Util.escapeQuote(keyword) +"' ORDER BY TABLE_NAME";
-	List<String[]> lst = cn.queryMultiCol(qry, 6);
+	qry = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM information_schema.columns WHERE COLUMN_NAME='" + Util.escapeQuote(keyword) +"' AND table_schema='" + catalog + "' ORDER BY TABLE_NAME";
+	List<String[]> lst = cn.queryMultiCol(qry, 3);
 	
 	for (String[] rec : lst) {
 		String tname = rec[1];
 		String cname = rec[2];
-
 		String data_type = rec[3];
-
-		int data_length = (rec[4]!=null?Integer.parseInt(rec[4]):0);
-		int data_prec   = (rec[5]!=null?Integer.parseInt(rec[5]):0);
-		int data_scale  = (rec[6]!=null?Integer.parseInt(rec[6]):0);
-
-		String dType = data_type.toLowerCase();
-
-		if (dType.equals("varchar") || dType.equals("varchar2") || dType.equals("char"))
-			dType += "(" + data_length + ")";
-
-		if (dType.equals("number")) {
-			if (data_prec > 0 && data_scale > 0)
-				dType += "(" + data_prec + "," + data_scale +")";
-			else if (data_prec > 0)
-				dType += "(" + data_prec + ")";
-		}
 %>
 	&nbsp;&nbsp;
-	<a href="javascript:loadTable('<%=tname%>');"><%=tname%></a>.<%= cname.toLowerCase() %> <%= dType %><br/>
+	<a href="javascript:loadTable('<%=tname%>');"><%=tname%></a>.<%= cname %> <%= data_type %><br/>
 <%
 	}
 %>
@@ -111,7 +96,7 @@
 <br/>
 <b>Table Comments:</b><br/>
 <%
-	qry = "SELECT TABLE_NAME, COMMENTS FROM USER_TAB_COMMENTS WHERE UPPER(COMMENTS) LIKE '%" + Util.escapeQuote(keyword) +"%' ORDER BY TABLE_NAME";
+	qry = "SELECT TABLE_NAME, table_comment FROM information_schema.tables WHERE table_comment LIKE '%" + Util.escapeQuote(keyword) +"%' and table_schema='"+catalog+"' ORDER BY TABLE_NAME";
 	lst = cn.queryMultiCol(qry, 2);
 
 	for (String[] rec : lst) {
@@ -128,7 +113,8 @@
 <br/>
 <b>Column Comments:</b><br/>
 <%
-	qry = "SELECT TABLE_NAME, COLUMN_NAME, COMMENTS FROM USER_COL_COMMENTS WHERE UPPER(COMMENTS) LIKE '%" + Util.escapeHtml(keyword) +"%' ORDER BY TABLE_NAME";
+	qry = "SELECT TABLE_NAME, column_name, column_comment FROM information_schema.columns WHERE column_comment LIKE '%" + Util.escapeQuote(keyword) +"%' and table_schema='"+catalog+"' ORDER BY TABLE_NAME";
+//out.println(qry);
 	lst = cn.queryMultiCol(qry, 3);
 
 	for (String[] rec : lst) {
@@ -141,4 +127,5 @@
 <%
 	}
 %>
+
 

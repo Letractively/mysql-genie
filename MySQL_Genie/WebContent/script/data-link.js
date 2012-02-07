@@ -297,6 +297,7 @@
 		$("#searchValue").val(key);
 
 		reloadData(id);
+		$("#searchValue").val('');
 	}
 
 	function clearSearch(id) {

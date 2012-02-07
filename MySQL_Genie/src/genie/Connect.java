@@ -435,6 +435,7 @@ public class Connect implements HttpSessionBindingListener {
 	
 	public String getSynTableComment(String owner, String tname) {
 		String res="";
+/*		
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery("SELECT COMMENTS FROM ALL_TAB_COMMENTS WHERE OWNER='" + owner +
@@ -450,6 +451,7 @@ public class Connect implements HttpSessionBindingListener {
              System.err.println ("15 Cannot connect to database server");
              message = e.getMessage();
  		}
+*/
 		
 		if(res==null) res = "";
 		return res;
@@ -458,6 +460,7 @@ public class Connect implements HttpSessionBindingListener {
 	
 	public String getSynColumnComment(String owner, String tname, String cname) {
 		String res="";
+/*		
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery("SELECT COMMENTS FROM ALL_COL_COMMENTS WHERE OWNER='" + owner +
@@ -473,7 +476,7 @@ public class Connect implements HttpSessionBindingListener {
              System.err.println ("16 Cannot connect to database server");
              message = e.getMessage();
  		}
-		
+*/		
 		if(res==null) res = "";
 		return res;
 		
@@ -1051,6 +1054,7 @@ System.out.println(qry);
 	
 	public String getDependencyPackage(String owner, String name) {
 		String res = "";
+/*		
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery("select distinct REFERENCED_OWNER, REFERENCED_NAME, REFERENCED_TYPE from all_dependencies WHERE OWNER='" + owner + "' AND NAME='" + name + "' AND REFERENCED_TYPE IN ('PACKAGE','FUNCTION','PROCEDURE','TYPE') AND REFERENCED_OWNER != 'PUBLIC' ORDER BY REFERENCED_NAME");	
@@ -1070,15 +1074,16 @@ System.out.println(qry);
        		rs.close();
        		stmt.close();
 		} catch (SQLException e) {
-             System.err.println ("9 Cannot connect to database server");
+             System.err.println ("getDependencyPackage() Cannot connect to database server");
              message = e.getMessage();
  		}
-		
+*/		
 		return res;
 	}
 
 	public String getDependencyTable(String owner, String name) {
 		String res = "";
+/*
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery("select distinct REFERENCED_OWNER, REFERENCED_NAME, REFERENCED_TYPE from all_dependencies WHERE OWNER='" + owner + "' and NAME='" + name + "' AND REFERENCED_TYPE IN ('TABLE') AND REFERENCED_OWNER != 'PUBLIC' ORDER BY REFERENCED_NAME");	
@@ -1102,13 +1107,13 @@ System.out.println(qry);
              System.err.println ("10 Cannot connect to database server");
              message = e.getMessage();
  		}
-		
-		
+*/		
 		return res;
 	}
 
 	public String getDependencyView(String owner, String name) {
 		String res = "";
+/*		
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery("select distinct REFERENCED_OWNER, REFERENCED_NAME, REFERENCED_TYPE from all_dependencies WHERE OWNER='" + owner + "' AND NAME='" + name + "' AND REFERENCED_TYPE IN ('VIEW') AND REFERENCED_OWNER != 'PUBLIC' ORDER BY REFERENCED_NAME");	
@@ -1132,13 +1137,13 @@ System.out.println(qry);
              System.err.println ("getDependencyView - Cannot connect to database server");
              message = e.getMessage();
  		}
-		
-		
+*/		
 		return res;
 	}
 
 	public String getDependencySynonym(String owner, String name) {
 		String res = "";
+/*		
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery("select distinct REFERENCED_OWNER, REFERENCED_NAME, REFERENCED_TYPE from all_dependencies WHERE OWNER='" + owner + "' and NAME='" + name + "' AND REFERENCED_TYPE IN ('SYNONYM') AND REFERENCED_OWNER != 'PUBLIC' ORDER BY REFERENCED_NAME");	
@@ -1162,12 +1167,12 @@ System.out.println(qry);
              System.err.println ("getDependencySynonym - Cannot connect to database server");
              message = e.getMessage();
  		}
-		
+*/		
 		return res;
 	}
 
 	public String queryOne(String qry) {
-		System.out.println("queryOne="+qry);
+		//System.out.println("queryOne="+qry);
 
 		String res = StringCache.getInstance().get(qry);
 		if (res != null) return res;
@@ -1192,7 +1197,7 @@ System.out.println(qry);
 	
 	public List<String> queryMulti(String qry) {
 		
-		System.out.println("queryMulti="+qry);
+		//System.out.println("queryMulti="+qry);
 		List<String> list = ListCache.getInstance().getListObject(qry);
 		if (list != null) return list;
 		
