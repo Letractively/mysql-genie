@@ -62,6 +62,7 @@
 					$(this).children().removeClass('datahighlight');
 				});
 				$("#" + divName).slideDown();
+				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 			}
 		});	
     	

@@ -120,6 +120,7 @@
 %>
 <a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle  title="<%=fsql%>"/></a>
+(<%= table %>.<%= fc %>)
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
@@ -172,11 +173,6 @@
 		int recCount = cn.getPKLinkCount(refTab, fkColName , key);
 		if (recCount==0) continue;
 		String refsql = cn.getRelatedLinkSql(refTab, fkColName, key);
-System.out.println("refsql="+refsql);
-System.out.println("fkColName="+fkColName);
-System.out.println("table="+table);
-System.out.println("refTab="+refTab);
-
 
 		id = Util.getId();
 		autoLoadChild.add(id);
@@ -211,6 +207,7 @@ System.out.println("refTab="+refTab);
 
 <script type="text/javascript">
 $(document).ready(function() {
+	$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 <%
 	for (String id1: autoLoadFK) {
 %>
