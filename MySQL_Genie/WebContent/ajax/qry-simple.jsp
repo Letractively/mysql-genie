@@ -92,6 +92,11 @@
 		
 		fkLinkTab.add(rTable);
 		fkLinkCol.add(linkCol);
+		
+		int colCount = Util.countMatches(linkCol, ",") + 1;
+		if (colCount == 1) {
+			if (rTable != null) linkTable.put(linkCol, rTable);
+		}		
 	}
 	
 	// Primary Key for PK Link
@@ -262,7 +267,7 @@ Found: <%= filteredCount %>
 				String linkImage = "image/view.png";
 				if (lTable != null  && dLink) {
 					isLinked = true;
-					linkUrl = "data-link.jsp?table=" + lTable + "&key=" + Util.encodeUrl(keyValue);
+					linkUrl = "ajax/fk-lookup.jsp?table=" + lTable + "&key=" + Util.encodeUrl(keyValue);
 				} else if (val != null && val.startsWith("BLOB ")) {
 					isLinked = true;
 					String tpkName = cn.getPrimaryKeyName(tbl);
@@ -280,7 +285,7 @@ Found: <%= filteredCount %>
 */
 %>
 <td class="<%= rowClass%>" <%= (numberCol[colIdx])?"align=right":""%>><%=valDisp%>
-<%= (val!=null && isLinked?"<a href='" + linkUrl  + "'><img border=0 src='" + linkImage + "'></a>":"")%>
+<%= (val!=null && isLinked?"<a class='inspect' href='" + linkUrl  + "'><img border=0 src='" + linkImage + "'></a>":"")%>
 </td>
 <%
 		}
@@ -324,7 +329,7 @@ for (int i=0; i<fkLinkTab.size(); i++) {
 
 <a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle title="<%=fsql%>"/></a>
- 
+ (<%= tname %>.<%= fc %>)
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="hide-<%=id%>"></div>
 <div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
