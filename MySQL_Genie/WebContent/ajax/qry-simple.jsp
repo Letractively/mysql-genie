@@ -331,6 +331,7 @@ for (int i=0; i<fkLinkTab.size(); i++) {
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle title="<%=fsql%>"/></a>
  (<%= tname %>.<%= fc %>)
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
+<div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
 <div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
 <% } %>
