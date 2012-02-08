@@ -68,7 +68,10 @@
 
 <br/>
 
-<h3><%= sql %><a href="javascript:openQuery('<%=id%>')"><img src="image/icon_query.png"></a></h3>
+<h3>
+<a href="javascript:openQuery('<%=id%>')"><img src="image/icon_query.png"></a>
+<%= sql %>
+</h3>
 
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
