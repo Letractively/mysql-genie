@@ -156,10 +156,8 @@
 <BR/>
 <div id="buttonsDiv" style="display: none;">
 <TABLE>
-<%--
-<TD><a class="qryBtn" id="modeCopy" href="Javascript:setDoMode('copy')">Copy&amp;Paste</a></TD>
- --%>
 <TD><a class="qryBtn" id="modeSort" href="Javascript:setDoMode('sort')">Sort</a>
+<TD><a class="qryBtn" id="modeCopy" href="Javascript:setDoMode('copy')">Copy&amp;Paste</a></TD>
 <TD><a class="qryBtn" id="modeHide" href="Javascript:setDoMode('hide')">Hide Column</a>
 	<span id="showAllCol" style="display: none;"><a href="Javascript:showAllColumn()">Show All Column</a>&nbsp;</span>
 </TD>
