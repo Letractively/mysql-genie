@@ -281,3 +281,75 @@ function runQuery(catalog,tab) {
 			alert('Cache Cleared!');
 		});
 	}
+	
+	
+		
+    function startSearch() {
+    	var key = $("#searchKey").val();
+    	if (key.trim() == "") {
+    		alert("Please enter search keyword");
+    		return;
+    	}
+    	
+    	$("#startButton").attr("disabled", true);
+    	$("#cancelButton").attr("disabled", false);
+    	
+    	$("#searchProgress").html("");
+    	checkProgress();
+    	$("#progressDiv").show();
+    	
+    	$("#searchResult").html("Running...");
+		$("#searchResult").append("<div id='wait'><img src='image/loading.gif'/></div>");
+		$.ajax({
+			type: 'POST',
+			url: "ajax/search-behind.jsp",
+			data: $("#form0").serialize(),
+			success: function(data){
+				$("#searchResult").html(data);
+				$("#wait").remove();
+				checkProgress();
+				readySearch();
+			}
+		});	
+    	
+    }
+
+    function readySearch() {
+    	$("#startButton").attr("disabled", false);
+    	$("#cancelButton").attr("disabled", true);
+    	clearTimeout(to2);
+    }
+    
+    function cancelSearch() {
+		$.ajax({
+			type: 'POST',
+			url: "ajax/cancel-search.jsp",
+			data: $("#form0").serialize(),
+			success: function(data){
+				checkProgress();
+				readySearch();
+//				alert('Search Cancelled');
+			}
+		});	
+    }    
+    
+    function checkProgress() {
+    	var current = $("#searchProgress").html();
+		$.ajax({
+			type: 'POST',
+			url: "ajax/search-progress.jsp",
+			success: function(data){
+				if (current != data) {
+	    			$("#searchProgress").html(data);
+				}
+	   			to2 = setTimeout("checkProgress()",1000);
+			}
+		});	    	
+    }	
+
+    function openQuery(divId) {
+    	var sql = $("#"+divId).html();
+    	$("#sql").val(sql);
+    	$("#form_qry").submit();
+    	//alert(sql);
+    }	

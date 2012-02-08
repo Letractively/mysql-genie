@@ -59,22 +59,22 @@
 </head> 
 
 <body>
+<%
+	String id = Util.getId();
+%>
 
 <img src="image/data-link.png" align="middle"/>
 <%= cn.getUrlString() %>
 
 <br/>
 
-<h3><%= sql %></h3>
+<h3><%= sql %><a href="javascript:openQuery('<%=id%>')"><img src="image/icon_query.png"></a></h3>
 
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
 <br/><br/>
 
-<%
-	String id = Util.getId();
-%>
 <b><%= table %></b>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" title="<%=sql%>"/></a>
 <div style="display: none;" id="sql-<%=id%>"><%= sql%></div>
