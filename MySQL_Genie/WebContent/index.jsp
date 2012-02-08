@@ -31,7 +31,7 @@
 <script type="text/javascript">
 var CATALOG="";
 var to;
-
+var to2;
 $(window).resize(function() {
 	checkResize();
 });
@@ -135,7 +135,7 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 
 </td>
 <td align=right>
-<b>Global Search</b> <input id="globalSearch" style="width: 200px;"/>
+<b>Search</b> <input id="globalSearch" style="width: 200px;"/>
 <a href="Javascript:clearField2()"><img border=0 src="image/clear.gif"></a>
 </td>
 </table>
@@ -149,8 +149,8 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 <%--
 <a class="mainBtn" href="Javascript:setMode('synonym')" id="selectSynonym">Synonym</a> | 
  --%>
-<a class="mainBtn" href="Javascript:setMode('package')" title="Package, Type, Function & Procedure" id="selectPackage">Program</a> 
-
+<a class="mainBtn" href="Javascript:setMode('package')" title="Package, Type, Function & Procedure" id="selectPackage">Program</a>| 
+<a class="mainBtn" href="Javascript:setMode('tool')" id="selectTool">Tool</a>
 
 <!-- | <a href="Javascript:setMode('tool')" id="selectTool">Tool</a> -->
 <%-- <% if (cn.hasDbaRole()) { %> --%>

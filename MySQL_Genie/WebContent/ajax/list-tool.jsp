@@ -11,10 +11,14 @@
 	String filter = request.getParameter("filter");
 
 	List<String> list = new ArrayList<String>();
-	list.add("Dictionary");
+	list.add("Search Content");
+//	list.add("Search Program");
+
+	list.add("System View");
+/* 	list.add("Dictionary");
 	list.add("Sequence");
 	list.add("DB link");
-	list.add("User role priv");
+	list.add("User role priv"); */
 %>
 <% 
 	if (filter !=null) filter = filter.toUpperCase();

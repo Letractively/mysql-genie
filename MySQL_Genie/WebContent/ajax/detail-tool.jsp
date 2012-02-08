@@ -14,8 +14,8 @@
 	String catalog = cn.getSchemaName();
 
 	String qry=null;
-	if (tool.equalsIgnoreCase("dictionary"))
-		qry = "SELECT * FROM DICTIONARY ORDER BY 1";
+	if (tool.equalsIgnoreCase("system view"))
+		qry = "select table_schema, table_name from information_schema.tables where table_type='SYSTEM VIEW'";
 	else if (tool.equalsIgnoreCase("sequence"))
 		qry = "SELECT * FROM USER_SEQUENCES ORDER BY 1";
 	else if (tool.equalsIgnoreCase("db link"))
@@ -23,9 +23,20 @@
 	else if (tool.equalsIgnoreCase("User role priv")) {
 		qry = "SELECT * FROM USER_ROLE_PRIVS";
 	}
+	
+	// 
 %>
 <h2>TOOL: <%= tool %> &nbsp;&nbsp;</h2>
 
+<% if (qry != null)  {%>
 <jsp:include page="detail-tool-query.jsp">
 	<jsp:param value="<%= qry %>" name="qry"/>
+	
 </jsp:include>
+
+<% } %>
+
+<% if (tool.equalsIgnoreCase("search content")) { %>
+<jsp:include page="content-search.jsp"/>
+<% } %>
+
