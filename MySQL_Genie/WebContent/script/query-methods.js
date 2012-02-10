@@ -455,3 +455,42 @@ function toggleText(arg1, arg2) {
 	$('#'+arg1).toggle();
 	$('#'+arg2).toggle();
 }
+
+
+function showERD(tname) {
+	var txt = $("#showERD").html();
+	//console.log(txt);
+	
+	if (txt.indexOf("Show")>=0)
+		$("#showERD").html("Hide ERD");
+	else 
+		$("#showERD").html("Show ERD");
+	
+	var v = $("#tableList1").html();
+	if (v.length > 10) {
+		if (txt.indexOf("Show")>=0)
+			$("#tableList1").slideDown();
+		else
+			$("#tableList1").slideUp();
+		return;
+	}
+	
+	$("#tableList1").hide();
+	$.ajax({
+		url: "ajax/show-erd.jsp?tname=" + tname + "&t=" + (new Date().getTime()),
+		success: function(data){
+			$("#tableList1").html(data);
+			$("#tableList1").slideDown();
+		}
+	});
+}
+
+function loadERD(tname) {
+	$.ajax({
+		url: "ajax/show-erd.jsp?tname=" + tname + "&t=" + (new Date().getTime()),
+		success: function(data){
+			$("#ERD").html(data);
+		}
+	});
+}
+

@@ -92,9 +92,12 @@
 
 <a href="Javascript:toggleHelp()"><img  style="float: left" id="helpDivImage" border="0" src="image/minus.gif"></a>
 <div id="div-help" style="float: left">
-	<div id="tableList1">
-	<a href="Javascript:showRelatedTables('<%=tbl%>')">Show Related Tables</a>
-	</div>
+
+	<a id="showERD" href="Javascript:showERD('<%=tbl%>')">Show ERD</a>
+	<div id="tableList1" style="margin-left: 5px;">
+<%-- 	<a href="Javascript:showRelatedTables('<%=tbl%>')">Show Related Tables</a>
+ --%>
+ 	</div>
 
 	<div id="table-detail"></div>
 
