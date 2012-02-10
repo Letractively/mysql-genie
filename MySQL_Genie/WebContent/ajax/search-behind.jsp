@@ -31,7 +31,7 @@ caseType=<%=caseType%> <br/>
 	ContentSearch cs = ContentSearch.getInstance(); 
 	List<String> tables = cs.search(cn, searchKey, inclTable, exclTable, matchType, caseType);
 %>
-Found in <%= tables.size() %> table(s).<br/>
+Found in <%= tables.size() %> table(s).<br/><br/>
 
 <% 
 	int i = 0;
@@ -53,7 +53,7 @@ Found in <%= tables.size() %> table(s).<br/>
 				qry += temp[1] + " = '" + Util.escapeQuote(searchKey) + "'";
 		}
 %>
-<%= tname %>
+&nbsp;&nbsp;<%= tname %>
 <div style="display:none;" id="qry-<%=i%>"><%= qry %></div>
 <a href="Javascript:openQuery('<%= "qry-" + i %>')"><img src="image/view.png"></a>
 

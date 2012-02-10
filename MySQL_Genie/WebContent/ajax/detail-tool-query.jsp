@@ -17,6 +17,61 @@
 	
 	Connect cn = (Connect) session.getAttribute("CN");
 	
+	boolean needInput = false;
+	List<String> params = new ArrayList<String>();
+	
+	String tmp ="";
+	if (sql.contains("[") && sql.contains("]")) {
+		needInput = true;
+
+		int prev = 0;
+		while (true) {
+			int start = sql.indexOf("[", prev);
+			if (start <0) break;
+			int end = sql.indexOf("]", start);
+			if (end <0) break;
+			tmp = sql.substring(start+1, end);
+		
+			params.add(tmp);
+			prev = end+1;
+		}
+	}
+	
+	if (needInput) {
+		int i=0;
+		for (String p : params) {
+			i++;
+			sql = sql.replace("[" + p + "]", "[" + i + "]");
+		}
+	}
+%>
+
+<% if (params.size() >0)  { %>
+<form id="formParam" onSubmit="return false;">
+<input id="param-sql" name="qry" type="hidden" value="<%= sql %>">
+<table>
+<%
+	int id=0;
+	for (String p:params)  {
+		id++;
+%>
+	<tr>
+	<td><%= p %></td>
+	<td><input id="param-<%= id %>" size=30  value=""></td>
+	</tr>
+<% } %>
+</table>
+<input type="button" value="Submit" onClick="runToolQuery(<%=params.size()%>)">
+</form>
+
+<% } %>
+
+<div id="paramQuery" style="display: none;"><%= sql %></div>
+
+<div id="paramQueryResult"></div>
+<% 
+	if (needInput) return; 
+
 	OldQuery q = new OldQuery(cn, sql, request);
 	ResultSet rs = q.getResultSet();
 	
@@ -37,21 +92,19 @@
 		idx = tbl.indexOf(" ");
 		if (idx > 0) tbl = tbl.substring(0, idx);
 	}
-//	System.out.println("XXX TBL=" + tbl);
+	//System.out.println("XXX TBL=" + tbl);
 	
 	String tname = tbl;
 	if (tname.indexOf(".") > 0) tname = tname.substring(tname.indexOf(".")+1);
-
 %>
 
-<h3><%= sql %>
-<a href="javascript:form1.submit()"><img border=0 src="image/icon_query.png" title="open query"></a>
+<h3>
+<a href="javascript:toolQuery()"><img border=0 src="image/icon_query.png" title="open query"></a>
+<%= sql %>
 </h3>
 
 <form id="form1" name="form1" target=_blank action="query.jsp" method="post">
-<textarea id="sql" name="sql" cols=70 rows=4 style="display: none;">
-<%= sql %>
-</textarea>
+<input type="hidden" id="form1sql" name="sql" value="<%= sql %>">
 </form>
 
 <table id="dataTable" class="gridBody" border=1>

@@ -70,7 +70,7 @@
 		setDoMode('sort');
 		$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 		var cnt = $("#recordCount").val();
-		if (cnt != "0") $("#buttonsDiv").show('slow');
+		if (cnt != "0") $("#buttonsDiv").slideDown();
 	});	    
 	
     $(document).ready(function(){
@@ -90,32 +90,37 @@
 
 <br/><br/>
 
-<div id="tableList1">
-<a href="Javascript:showRelatedTables('<%=tbl%>')">Show Related Tables</a>
+<a href="Javascript:toggleHelp()"><img  style="float: left" id="helpDivImage" border="0" src="image/minus.gif"></a>
+<div id="div-help" style="float: left">
+	<div id="tableList1">
+	<a href="Javascript:showRelatedTables('<%=tbl%>')">Show Related Tables</a>
+	</div>
+
+	<div id="table-detail"></div>
+
+	<div>
+	<a href="Javascript:copyPaste('SELECT');">SELECT</a>&nbsp;
+	<a href="Javascript:copyPaste('COUNT(*)');">COUNT(*)</a>&nbsp;
+	<a href="Javascript:copyPaste('FROM');">FROM</a>&nbsp;
+	<a href="Javascript:copyPaste('WHERE');">WHERE</a>&nbsp;
+	<a href="Javascript:copyPaste('=');">=</a>&nbsp;
+	<a href="Javascript:copyPaste('LIKE');">LIKE</a>&nbsp;
+	<a href="Javascript:copyPaste('IS');">IS</a>&nbsp;
+	<a href="Javascript:copyPaste('NOT');">NOT</a>&nbsp;
+	<a href="Javascript:copyPaste('NULL');">NULL</a>&nbsp;
+	<a href="Javascript:copyPaste('AND');">AND</a>&nbsp;
+	<a href="Javascript:copyPaste('OR');">OR</a>&nbsp;
+	<a href="Javascript:copyPaste('IN');">IN</a>&nbsp;
+	<a href="Javascript:copyPaste('()');">()</a>&nbsp;
+	<a href="Javascript:copyPaste('EXISTS');">EXISTS</a>&nbsp;
+	<a href="Javascript:copyPaste('GROUP BY');">GROUP-BY</a>&nbsp;
+	<a href="Javascript:copyPaste('HAVING');">HAVING</a>&nbsp;
+	<a href="Javascript:copyPaste('ORDER BY');">ORDER-BY</a>&nbsp;
+	<a href="Javascript:copyPaste('DESC');">DESC</a>&nbsp;
+	</div>
+
 </div>
-
-<a href="Javascript:toggleTableDetail()"><img  style="float: left" id="tableDetailImage" border="0" src="image/minus.gif"></a>
-<div id="table-detail" style="float: left"></div>
 <br clear="all"/>
-
-<a href="Javascript:copyPaste('SELECT');">SELECT</a>&nbsp;
-<a href="Javascript:copyPaste('COUNT(*)');">COUNT(*)</a>&nbsp;
-<a href="Javascript:copyPaste('FROM');">FROM</a>&nbsp;
-<a href="Javascript:copyPaste('WHERE');">WHERE</a>&nbsp;
-<a href="Javascript:copyPaste('=');">=</a>&nbsp;
-<a href="Javascript:copyPaste('LIKE');">LIKE</a>&nbsp;
-<a href="Javascript:copyPaste('IS');">IS</a>&nbsp;
-<a href="Javascript:copyPaste('NOT');">NOT</a>&nbsp;
-<a href="Javascript:copyPaste('NULL');">NULL</a>&nbsp;
-<a href="Javascript:copyPaste('AND');">AND</a>&nbsp;
-<a href="Javascript:copyPaste('OR');">OR</a>&nbsp;
-<a href="Javascript:copyPaste('IN');">IN</a>&nbsp;
-<a href="Javascript:copyPaste('()');">()</a>&nbsp;
-<a href="Javascript:copyPaste('EXISTS');">EXISTS</a>&nbsp;
-<a href="Javascript:copyPaste('GROUP BY');">GROUP-BY</a>&nbsp;
-<a href="Javascript:copyPaste('HAVING');">HAVING</a>&nbsp;
-<a href="Javascript:copyPaste('ORDER BY');">ORDER-BY</a>&nbsp;
-<a href="Javascript:copyPaste('DESC');">DESC</a>&nbsp;
 
 <form name="form1" id="form1" method="post" action="query.jsp">
 <textarea id="sql" name="sql" cols=100 rows=<%= lineLength %>><%= sql %></textarea><br/>
@@ -159,7 +164,9 @@
 <TD><a class="qryBtn" id="modeSort" href="Javascript:setDoMode('sort')">Sort</a>
 <TD><a class="qryBtn" id="modeCopy" href="Javascript:setDoMode('copy')">Copy&amp;Paste</a></TD>
 <TD><a class="qryBtn" id="modeHide" href="Javascript:setDoMode('hide')">Hide Column</a>
-	<span id="showAllCol" style="display: none;"><a href="Javascript:showAllColumn()">Show All Column</a>&nbsp;</span>
+	<span id="showAllCol" style="display: none;">
+		<a href="Javascript:showAllColumn()">Show All Column</a>&nbsp;
+	</span>
 </TD>
 </TD>
 <TD><a class="qryBtn" id="modeFilter" href="Javascript:setDoMode('filter')">Filter</a></TD>

@@ -32,6 +32,9 @@
 var CATALOG="";
 var to;
 var to2;
+var stack = [];
+var stackFwd = [];
+
 $(window).resize(function() {
 	checkResize();
 });
@@ -121,6 +124,7 @@ function callserver() {
 
 <td>
 <a href="index.jsp">Home</a> |
+<a href="query.jsp" target="_blank">New Query</a> |
 <a href="javascript:queryHistory()">Query History</a> |
 <a href="javascript:clearCache()">Clear Cache</a> |
 <a href="logout.jsp">Log out</a>
@@ -171,6 +175,11 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 </td>
 <td valign=top>
 <div id="outer-result1">
+	<div id="inner-nav">
+		<a href="Javascript:goBack()"><img id="imgBackward" src="image/page_back.gif" title="back" border="0" style="display:none;"></a>
+		&nbsp;&nbsp;
+		<a href="Javascript:goFoward()"><img id="imgForward" src="image/page_forward.gif" title="forward" border="0" style="display:none;"></a>
+	</div>
 	<div id="inner-result1"><img src="image/genie_bw.png"/></div>
 </div>
 </td>
