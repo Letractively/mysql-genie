@@ -18,11 +18,11 @@
 </tr>
 <tr>
 	<td>Include Table</td>
-	<td><input name="inclTable" size="30"> (leave blank for all table)</td>
+	<td><input name="inclTable" size="30">partial table name to include (multiple)</td>
 </tr>
 <tr>
 	<td>Exclude Table</td>
-	<td><input name="exclTable" size="30"></td>
+	<td><input name="exclTable" size="30">partial table name to exclude (multiple)</td>
 </tr>
 <!-- <tr>
 	<td>Owner</td>
