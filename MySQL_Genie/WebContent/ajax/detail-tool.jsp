@@ -36,7 +36,7 @@
 
 <% } %>
 
-<% if (tool.equalsIgnoreCase("search content")) { %>
+<% if (tool.equalsIgnoreCase("search db content")) { %>
 <jsp:include page="content-search.jsp"/>
 <% } %>
 

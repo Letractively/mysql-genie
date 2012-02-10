@@ -65,24 +65,25 @@ var doMode = 'copy';
 		if (tbl == "") return;
 		
 		$("#table-detail").append("<div id='wait'><img src='image/loading.gif'/></div>");
-		
+		$("#table-detail").hide();
 		$.ajax({
 			url: "ajax/table_col.jsp?table=" + tbl + "&t=" + (new Date().getTime()),
 			success: function(data){
-				$("#table-detail").append(data);
 				$("#wait").remove();
+				$("#table-detail").append(data);
+				$("#table-detail").slideDown();
 			}
 		});	
 	}
 
-	function toggleTableDetail() {
-		var src = $("#tableDetailImage").attr('src');
+	function toggleHelp() {
+		var src = $("#helpDivImage").attr('src');
 		if (src.indexOf("minus")>0) {
-			$("#table-detail").slideUp();
-			$("#tableDetailImage").attr('src','image/plus.gif');
+			$("#div-help").slideUp();
+			$("#helpDivImage").attr('src','image/plus.gif');
 		} else {
-			$("#table-detail").slideDown();
-			$("#tableDetailImage").attr('src','image/minus.gif');
+			$("#div-help").slideDown();
+			$("#helpDivImage").attr('src','image/minus.gif');
 		}
 	}
 	
@@ -123,6 +124,7 @@ var doMode = 'copy';
 			select = "modeCopy";
 		} else if (mode == "hide") {
 			select = "modeHide";
+			hideNullColumnTable();
 		} else if (mode == "sort") {
 			select = "modeSort";
 		} else if (mode == "filter") {
@@ -134,17 +136,81 @@ var doMode = 'copy';
 		$("#" + select).css("background-color", "yellow");
 	}
 	
+    function numCol(table) {
+        var maxColNum = 0;
+
+        var i=0;
+        var trs = $("#"+table).find("tr");
+
+        for ( i=0; i<trs.length; i++ ) {
+            maxColNum = Math.max(maxColNum, getColForTr(trs[i]));
+        }
+
+        return maxColNum;
+    }
+    
+    function getColForTr(tr) {
+
+        var tds = $(tr).find("td");
+
+        var numCols = 0;
+
+        var i=0;
+        for ( i=0; i<tds.length; i++ ) {
+            var span = $(tds[i]).attr("colspan");
+
+            if ( span )
+                numCols += parseInt(span);
+            else {
+                numCols++;
+            }
+        }
+        return numCols;
+    }
+
+    function hideNullColumnTable() {
+    	var divName = "dataTable";
+    	var rowCount = $('#' + divName + ' tr').length;
+    	
+    	//if (rowCount > 2) return;
+    	
+   	    //var row = 1;
+   	 	var hideCol = []; 
+   	 	var colCnt = numCol(divName);
+   	 	//alert(rowCount + "," +colCnt);
+    	for (var col = 0; col < colCnt; col++) {
+   	 		var nullValue = true;
+       	 	for (var row=1; row<rowCount;row++) {
+	    		var value = $("#" + divName).children().children()[row].children[col].innerHTML;
+    			if (value.indexOf(">null<")<=0) {
+   				nullValue = false;
+	    		}
+   	    	}
+   	    	if (nullValue) hideCol.push(col+1);
+   	    }
+   	    
+   	 	for (var i = 0, l = hideCol.length; i < l; ++i) {
+   	 		//alert('hide ' + hideCol[i] );
+   	 		hideX(hideCol[i]);
+   	    }
+   	    
+    }
+
+    function hideX(idx) {
+		var cols = $("#hideColumn").val();
+		if (cols == "") cols = idx;
+		else cols += "," + idx;
+		
+		$("#hideColumn").val(cols);
+		hide(idx);
+		$("#showAllCol").show();    	
+    }
+    
 	function doAction(val, idx) {
 		if (doMode=='copy') {
 			copyPaste(val);
 		} else if (doMode=='hide') {
-			var cols = $("#hideColumn").val();
-			if (cols == "") cols = idx;
-			else cols += "," + idx;
-			
-			$("#hideColumn").val(cols);
-			hide(idx);
-			$("#showAllCol").show();
+			hideX(idx);
 		} else if (doMode=='sort') {
 			sort(val);
 		} else if (doMode=='filter') {

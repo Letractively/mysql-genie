@@ -15,6 +15,7 @@ import javax.servlet.http.HttpSession;
 public class SecurityFilter implements Filter {
 
 	String[] exceptionPages = {
+			"test/", 
 			"login.jsp", 
 			"ping.jsp",
 			"remove-cookie.jsp",
