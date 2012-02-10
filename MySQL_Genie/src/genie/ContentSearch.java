@@ -4,16 +4,14 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.StringTokenizer;
 
 public class ContentSearch {
 
 	private Connect cn;
 	
 	private String searchKeyword;
-	private String inclTable;
-	private String exclTable;
 	private String matchType;
-	private String caseType;
 
 	private static ContentSearch instance = null;
 	private static boolean running = false;
@@ -36,10 +34,7 @@ public class ContentSearch {
 		this.cn = cn;
 		
 		this.searchKeyword = searchKeyword;
-		this.inclTable = inclTable;
-		this.exclTable = exclTable;
 		this.matchType = matchType;
-		this.caseType = caseType;
 
 		this.progressStr = "";
 
@@ -51,9 +46,27 @@ public class ContentSearch {
 		running = true;
 		List<String> tables = new ArrayList<String>();
 		
-		String qry = "select table_name from information_schema.tables where table_schema='" + cn.getSchemaName()+ "' and table_type='BASE TABLE' AND table_name like '%" + inclTable.toUpperCase() +"%' ";
-		if (exclTable !=null && exclTable.length()>0)
-			qry += " AND TABLE_NAME NOT LIKE '%" + exclTable.toUpperCase() + "%' ";
+		String qry = "select table_name from information_schema.tables where table_schema='" + cn.getSchemaName()+ "' and table_type='BASE TABLE' ";
+
+		if (inclTable !=null && inclTable.length()>0) {
+			qry += " AND ( ";
+			StringTokenizer st = new StringTokenizer(inclTable, " ");
+			int i = 0;
+			while (st.hasMoreTokens()) {
+				i ++;
+				String token = st.nextToken();
+				if (i>1) qry += " OR ";
+				qry += "TABLE_NAME LIKE '%" + token.toUpperCase() + "%' ";
+			}
+			qry += " )";
+		}
+		if (exclTable !=null && exclTable.length()>0) {
+			StringTokenizer st = new StringTokenizer(exclTable, " ");
+			while (st.hasMoreTokens()) {
+				String token = st.nextToken();
+				qry += " AND TABLE_NAME NOT LIKE '%" + token.toUpperCase() + "%' ";
+			}
+		}
 		
 		qry += "ORDER BY TABLE_NAME";
 		System.out.println("qry=" + qry);
