@@ -76,7 +76,13 @@
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
+&nbsp;&nbsp;
+<a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
 <br/><br/>
+
+<div id="tableList1" style="display: hidden; margin-left: 20px;">
+</div>
+
 
 <b><%= table %></b>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" title="<%=sql%>"/></a>

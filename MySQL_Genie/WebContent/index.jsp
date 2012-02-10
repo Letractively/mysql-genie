@@ -176,9 +176,9 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 <td valign=top>
 <div id="outer-result1">
 	<div id="inner-nav">
-		<a href="Javascript:goBack()"><img id="imgBackward" src="image/page_back.gif" title="back" border="0" style="display:none;"></a>
+		<a href="Javascript:goBack()"><img id="imgBackward" src="image/blue_arrow_left.png" title="back" border="0" style="display:none;"></a>
 		&nbsp;&nbsp;
-		<a href="Javascript:goFoward()"><img id="imgForward" src="image/page_forward.gif" title="forward" border="0" style="display:none;"></a>
+		<a href="Javascript:goFoward()"><img id="imgForward" src="image/blue_arrow_right.png" title="forward" border="0" style="display:none;"></a>
 	</div>
 	<div id="inner-result1"><img src="image/genie_bw.png"/></div>
 </div>

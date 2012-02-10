@@ -20,9 +20,10 @@
 		qry = "SELECT * FROM USER_SEQUENCES ORDER BY 1";
 	else if (tool.equalsIgnoreCase("db link"))
 		qry = "SELECT * FROM USER_DB_LINKS ORDER BY 1";
-	else if (tool.equalsIgnoreCase("User role priv")) {
+	else if (tool.equalsIgnoreCase("User role priv")) 
 		qry = "SELECT * FROM USER_ROLE_PRIVS";
-	}
+	else if (tool.equalsIgnoreCase("test"))
+		qry = "select table_schema, table_name from information_schema.tables where table_name like '%[Enter search keyword]%'";
 	
 	// 
 %>

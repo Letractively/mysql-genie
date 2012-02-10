@@ -17,6 +17,7 @@
 
 	
 	list.add("System View");
+	list.add("test");
 /* 	list.add("Dictionary");
 	list.add("Sequence");
 	list.add("DB link");
