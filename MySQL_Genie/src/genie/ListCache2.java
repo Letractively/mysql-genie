@@ -10,27 +10,27 @@ import java.util.List;
  * @author Spencerh
  *
  */
-public class ListCache {
+public class ListCache2 {
 
-	static ListCache instance = null;
-	Hashtable<String, List<String>> lists = new Hashtable<String, List<String>>();
+	static ListCache2 instance = null;
+	Hashtable<String, List<String[]>> lists = new Hashtable<String, List<String[]>>();
 			
-	private ListCache() {
+	private ListCache2() {
 	}
 	
-	public static ListCache getInstance() {
+	public static ListCache2 getInstance() {
 		if (instance==null) {
-			instance = new ListCache();
+			instance = new ListCache2();
 		}
 		return instance;
 	}
 	
-	public List<String> getListObject(String sql) {
-		List<String> list = lists.get(sql);
+	public List<String[]> getListObject(String sql) {
+		List<String[]> list = lists.get(sql);
 		return list;
 	}
 	
-	public void addList(String sql, List<String> list) {
+	public void addList(String sql, List<String[]> list) {
 		lists.put(sql, list);
 	}
 	
@@ -41,9 +41,9 @@ public class ListCache {
 	public void clearAll() {
 		lists.clear();
 	}
-	
+
 	public Enumeration<String> getKeys() {
 		return lists.keys();
-	}		
-	
+	}
+
 }

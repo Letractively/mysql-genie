@@ -494,3 +494,7 @@ function loadERD(tname) {
 	});
 }
 
+
+function selectFromErd(tname) {
+	showTable(tname);
+}

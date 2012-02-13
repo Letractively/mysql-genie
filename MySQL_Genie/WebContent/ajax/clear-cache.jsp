@@ -8,8 +8,6 @@
 
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
-	
-	QueryCache.getInstance().clearAll();
-	ListCache.getInstance().clearAll();
-	StringCache.getInstance().clearAll();
+
+	cn.clearCache();
 %>

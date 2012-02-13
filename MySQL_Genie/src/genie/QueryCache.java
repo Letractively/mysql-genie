@@ -1,5 +1,6 @@
 package genie;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
@@ -39,5 +40,8 @@ public class QueryCache {
 	public void clearAll() {
 		qrys.clear();
 	}
-	
+
+	public Enumeration<String> getKeys() {
+		return qrys.keys();
+	}	
 }

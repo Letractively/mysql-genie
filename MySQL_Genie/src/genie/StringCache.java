@@ -1,5 +1,6 @@
 package genie;
 
+import java.util.Enumeration;
 import java.util.Hashtable;
 
 /**
@@ -40,5 +41,9 @@ public class StringCache {
 	public void clearAll() {
 		strings.clear();
 	}
-	
+
+	public Enumeration<String> getKeys() {
+		return strings.keys();
+	}
+
 }
