@@ -150,11 +150,18 @@ public class ContentSearch {
 			percent = (100 * currentTaleIndex) / totalTableCount;
 		
 		String status = "Processing " + currentTaleIndex + " of " + totalTableCount +
-				" ( " + percent + "% )<br/><br/>";
+				"<br/>";
 
 		if (!running)
 			status = "Finished " + currentTaleIndex + " of " + totalTableCount +
-				" ( " + percent + "% )<br/><br/>";
+				"<br/>";
+
+		status += 
+				"<div class='meter-wrap' id='meter-ex1' style='cursor: pointer'>"+
+				"<div class='meter-value' style='background-color: rgb(77, 164, 243); width: " + percent + "%; '>"+
+				"<div class='meter-text'>" + percent + "%</div>" +
+				"</div>" +
+				"</div><br/>";	
 		
 		return status + progressStr;
 		

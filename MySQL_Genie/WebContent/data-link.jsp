@@ -102,6 +102,7 @@
 <% if (fkLinkTab.size() > 0) {%>
 	&nbsp;&nbsp;<b><a href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
 <div id="div-fk">
+	<img style="margin-left: 20px;" src="image/arrow_down.jpg"><br/>
 <% } %>
 <%
 	for (int i=0; i<fkLinkTab.size(); i++) {
@@ -191,6 +192,7 @@
 <% if (cntRef == 1) {%>
 	&nbsp;&nbsp;<b><a href="Javascript:toggleChild()">Child Table <img id="img-child" src="image/minus.gif"></a></b><br/>
 <div id="div-child">
+	<img style="margin-left: 0px;" src="image/arrow_up.jpg"><br/>
 <% } %>
 
 <a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',0)"><b><%= refTab %></b> (<%= recCount %>) <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>

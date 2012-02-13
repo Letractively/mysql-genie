@@ -353,4 +353,8 @@
 		document.form0.submit();
 		
 	}
-		
+	
+	function hideDiv(divName) {
+		$("#"+divName).slideUp();
+	}
+	
