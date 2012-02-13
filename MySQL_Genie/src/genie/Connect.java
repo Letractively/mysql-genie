@@ -210,9 +210,7 @@ public class Connect implements HttpSessionBindingListener {
 
 	public void valueUnbound(HttpSessionBindingEvent arg0) {
 		printQueryLog();
-		ListCache.getInstance().clearAll();
-		QueryCache.getInstance().clearAll();
-		StringCache.getInstance().clearAll();
+		clearCache();
 		this.disconnect();
 	}
 	
@@ -224,9 +222,7 @@ public class Connect implements HttpSessionBindingListener {
 	
 	private void loadData() {
 		
-		ListCache.getInstance().clearAll();
-		QueryCache.getInstance().clearAll();
-		StringCache.getInstance().clearAll();
+		clearCache();
 		
 		loadSchema();
 		loadTables();
@@ -643,7 +639,7 @@ public class Connect implements HttpSessionBindingListener {
 		
 		return res;
 	}
-	
+/*	
 	public ResultSet getQueryRS(String sql)  {
 		ResultSet rs = null;
 		
@@ -658,7 +654,7 @@ public class Connect implements HttpSessionBindingListener {
 		
 		return rs;
 	}
-	
+*/	
 	public void addQueryHistory(String qry) {
 		QueryLog ql = new QueryLog(qry);
 		queryLog.put(qry, ql);
@@ -812,7 +808,7 @@ public class Connect implements HttpSessionBindingListener {
 		
 		if (tname.contains(".")) {
 			String[] temp = tname.split("\\.");
-			return getForeignKeys(temp[0], temp[1]);
+			return getForeignKeys(temp[1]);
 		}
 		
 		List<ForeignKey> list = new ArrayList<ForeignKey>();
@@ -837,6 +833,10 @@ public class Connect implements HttpSessionBindingListener {
 	}
 
 	public List<ForeignKey> getForeignKeys(String owner, String tname) {
+		return getForeignKeys(tname);
+	}
+/*	
+	public List<ForeignKey> getForeignKeys(String owner, String tname) {
 		List<ForeignKey> list = new ArrayList<ForeignKey>();
 //System.out.println("owner,tname=" + owner + "," + tname);		
 		try {
@@ -859,14 +859,15 @@ public class Connect implements HttpSessionBindingListener {
        		stmt.close();
 
 		} catch (SQLException e) {
-             System.err.println ("7 Cannot connect to database server");
+             System.err.println ("getForeignKeys - Cannot connect to database server");
              e.printStackTrace();
              message = e.getMessage();
  		}
 		
 		return list;
 	}
-
+*/
+	
 	public List<String> getReferencedTables(String tname) {
 		
 		if (tname.contains(".")) {
@@ -1309,7 +1310,10 @@ System.out.println(qry);
 	}
 	
 	public List<TableCol> getTableDetail(String owner, String tname) throws SQLException {
-		List<TableCol> list = new ArrayList<TableCol>();
+		List<TableCol> list = TableDetailCache.getInstance().get(owner, tname); 
+		if (list != null ) return list;
+		
+		list = new ArrayList<TableCol>();
 
     	DatabaseMetaData dbm = conn.getMetaData();
         ResultSet rs1 = dbm.getColumns(owner,"%",tname,"%");
@@ -1355,6 +1359,9 @@ for (String col : cols) {
 			list.add(rec);
 		}
 		
+		rs1.close();
+		
+		TableDetailCache.getInstance().add(owner, tname, list);
 		return list;
 	}
 
@@ -1411,10 +1418,10 @@ for (String col : cols) {
 	
 	public List<String[]> queryMultiCol(String qry, int cols) {
 		
-//		List<String> list = ListCache.getInstance().getListObject(qry);
-//		if (list != null) return list;
+		List<String[]> list = ListCache2.getInstance().getListObject(qry);
+		if (list != null) return list;
 		
-		List<String[]>list = new ArrayList<String[]>();
+		list = new ArrayList<String[]>();
 		try {
        		Statement stmt = conn.createStatement();
        		ResultSet rs = stmt.executeQuery(qry);	
@@ -1434,7 +1441,7 @@ for (String col : cols) {
              message = e.getMessage();
  		}
 		
-//		ListCache.getInstance().addList(qry, list);
+		ListCache2.getInstance().addList(qry, list);
 		return list;
 	}
 	
@@ -1453,5 +1460,14 @@ for (String col : cols) {
 		}
 		
 		return "";
+	}
+	
+	
+	public void clearCache() {
+		QueryCache.getInstance().clearAll();
+		ListCache.getInstance().clearAll();
+		ListCache2.getInstance().clearAll();
+		StringCache.getInstance().clearAll();
+		TableDetailCache.getInstance().clearAll();
 	}
 }

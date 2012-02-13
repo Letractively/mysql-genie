@@ -100,7 +100,7 @@
 <br/>
 
 <% if (fkLinkTab.size() > 0) {%>
-	<b><a href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
+	&nbsp;&nbsp;<b><a href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
 <div id="div-fk">
 <% } %>
 <%
@@ -189,7 +189,7 @@
 %>
 
 <% if (cntRef == 1) {%>
-	<b><a href="Javascript:toggleChild()">Child Table <img id="img-child" src="image/minus.gif"></a></b><br/>
+	&nbsp;&nbsp;<b><a href="Javascript:toggleChild()">Child Table <img id="img-child" src="image/minus.gif"></a></b><br/>
 <div id="div-child">
 <% } %>
 

@@ -30,12 +30,13 @@
 	if (catalog==null) catalog = cn.getSchemaName();
 
 	String pkName = cn.getPrimaryKeyName(tname);
+	ArrayList<String> pk = cn.getPrimaryKeys(catalog, tname);
 	if (pkName == null && owner != null) pkName = cn.getPrimaryKeyName(owner, tname);
-/*
-	String pkCols = cn.getConstraintCols(pkName);
+
+	String pkCols = cn.getConstraintCols(tname, pkName);
 	if (pkName != null && pkCols.equals(""))
 		pkCols = cn.getConstraintCols(owner, pkName);
-*/	
+
 	List<ForeignKey> fks = cn.getForeignKeys(tname);
 	if (owner != null) fks = cn.getForeignKeys(owner, tname);
 	
@@ -46,7 +47,7 @@
 
 <div id="ERD">
 
-<div id="parentDiv" style="width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
+<div id="parentDiv" style="background-color: #ffffcc; width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
 <div>
 <% for (ForeignKey rec: fks) { %>
 
@@ -58,15 +59,21 @@
 
 <img style="float:left;" src="image/blue_arrow_left.png">
 
-<div id="mainDiv" style="width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
-<%= tname %><br/>
+<div id="mainDiv" style="background-color: #ffffcc; width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
+<b><%= tname %></b>
+&nbsp;
+<a href="Javascript:selectFromErd('<%=tname%>')"><img border=0 src="image/view.png" /></a>
+<br/>
 <hr>
 <table>
-<% for (TableCol t: list) { %>
+<% for (TableCol t: list) {
+	String colDisp = t.getName().toLowerCase();
+	if (pk.contains(t.getName())) colDisp = "<b>" + colDisp + "</b>";
+%>
 <tr>
 <td width="20">&nbsp;</td>
 <td>
-<%= t.getName().toLowerCase() %>
+<%= colDisp %>
 </td>
 <td>
 <%= t.getTypeName() %>
@@ -79,7 +86,7 @@
 
 <img style="float:left;" src="image/blue_arrow_left.png">
 
-<div id="childDiv" style="width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
+<div id="childDiv" style="background-color: #ffffcc; width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
 <div>
 <% for (String t: refTabs) { %>
 <a href="javascript:loadERD('<%= t %>')"><%= t %></a><br/>

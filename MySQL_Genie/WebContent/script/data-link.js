@@ -88,7 +88,7 @@
     function showAllColumn() {
 		$("table ").each(function() {
 			var divName = $(this).attr('id');
-			if (divName.indexOf("table-")>=0) {
+			if (divName != null && divName.indexOf("table-")>=0) {
 				showAllColumnTable(divName);
 			}
 		});
@@ -107,7 +107,7 @@
 	function hideNullColumn() {
 		$("table ").each(function() {
 			var divName = $(this).attr('id');
-			if (divName.indexOf("table-")>=0) {
+			if (divName != null && divName.indexOf("table-")>=0) {
 				var id = divName.substring(6);
 				hideNullColumnTable(id);
 			}
@@ -343,5 +343,14 @@
 				$("#ERD").html(data);
 			}
 		});
+	}
+
+	
+	function selectFromErd(tname) {
+//		alert(tname);
+		var sql = "SELECT * FROM " + tname;
+		$("#sql").val(sql);
+		document.form0.submit();
+		
 	}
 		
