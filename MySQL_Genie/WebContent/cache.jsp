@@ -8,13 +8,6 @@
 %>
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
-/*
-	QueryCache.getInstance().clearAll();
-	ListCache.getInstance().clearAll();
-	ListCache2.getInstance().clearAll();
-	StringCache.getInstance().clearAll();
-	TableDetailCache.getInstance().clearAll();
-*/
 %>
 
 <html>
@@ -33,7 +26,7 @@
 
 Query Cache: <br/>
 <%
-	Enumeration<String> en1 = QueryCache.getInstance().getKeys();
+	Enumeration<String> en1 = cn.queryCache.getKeys();
 	while (en1.hasMoreElements()) {
 		String key = en1.nextElement();
 %>
@@ -43,7 +36,7 @@ Query Cache: <br/>
 
 List Cache: <br/>
 <%
-	Enumeration<String> en2 = ListCache.getInstance().getKeys();
+	Enumeration<String> en2 = cn.listCache.getKeys();
 	while (en2.hasMoreElements()) {
 		String key = en2.nextElement();
 %>
@@ -53,7 +46,7 @@ List Cache: <br/>
 
 List Cache2: <br/>
 <%
-	Enumeration<String> en3 = ListCache2.getInstance().getKeys();
+	Enumeration<String> en3 = cn.listCache2.getKeys();
 	while (en3.hasMoreElements()) {
 		String key = en3.nextElement();
 %>
@@ -63,7 +56,7 @@ List Cache2: <br/>
 
 String Cache: <br/>
 <%
-	Enumeration<String> en4 = StringCache.getInstance().getKeys();
+	Enumeration<String> en4 = cn.stringCache.getKeys();
 	while (en4.hasMoreElements()) {
 		String key = en4.nextElement();
 %>
@@ -73,7 +66,7 @@ String Cache: <br/>
 
 Table Detail Cache: <br/>
 <%
-	Enumeration<String> en5 = TableDetailCache.getInstance().getKeys();
+	Enumeration<String> en5 = cn.tableDetailCache.getKeys();
 	while (en5.hasMoreElements()) {
 		String key = en5.nextElement();
 %>

@@ -54,10 +54,10 @@
 	int lineLength = Util.countLines(sql);
 	if (lineLength <5) lineLength = 5;
 	
-	Query q = QueryCache.getInstance().getQueryObject(sql);
+	Query q = cn.queryCache.getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
-		QueryCache.getInstance().addQuery(sql, q);
+		cn.queryCache.addQuery(sql, q);
 	} else {
 //		System.out.println("*** REUSE Query");
 	}

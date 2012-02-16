@@ -17,10 +17,10 @@
 
 	String sql = cn.getPKLinkSql(table, key);
 //System.out.println("sql=" + sql);	
-	Query q = QueryCache.getInstance().getQueryObject(sql);
+	Query q = cn.queryCache.getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
-		QueryCache.getInstance().addQuery(sql, q);
+		cn.queryCache.addQuery(sql, q);
 	}
 	// Foreign keys - For FK lookup
 	List<ForeignKey> fks = cn.getForeignKeys(table);

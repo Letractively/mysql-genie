@@ -55,7 +55,13 @@ public class Connect implements HttpSessionBindingListener {
 	private HashMap<String, QueryLog> queryLog;
 	private HashMap<String, ArrayList<String>> pkMap;
 	private Stack<String> history;
-	
+
+	public QueryCache queryCache;
+	public ListCache listCache;
+	public ListCache2 listCache2;
+	public StringCache stringCache;
+	public TableDetailCache tableDetailCache; 
+
 	/**
 	 * Constructor
 	 * 
@@ -97,6 +103,12 @@ public class Connect implements HttpSessionBindingListener {
 //       		this.schemaName = userName;
 //       		System.out.println("this.schemaName=" + this.schemaName);
 
+            queryCache = QueryCache.getInstance(urlString);
+            listCache = ListCache.getInstance(urlString);
+            listCache2 = ListCache2.getInstance(urlString);
+            stringCache = StringCache.getInstance(urlString);
+            tableDetailCache = TableDetailCache.getInstance(urlString);
+       		
             loadData();
         }
         catch (Exception e)
@@ -1175,7 +1187,7 @@ System.out.println(qry);
 	public String queryOne(String qry) {
 		//System.out.println("queryOne="+qry);
 
-		String res = StringCache.getInstance().get(qry);
+		String res = stringCache.get(qry);
 		if (res != null) return res;
 		
 		try {
@@ -1192,14 +1204,14 @@ System.out.println(qry);
              System.err.println ("queryOne - " + qry);
              message = e.getMessage();
  		}
-		StringCache.getInstance().add(qry, res);
+		stringCache.add(qry, res);
 		return res;
 	}
 	
 	public List<String> queryMulti(String qry) {
 		
 		//System.out.println("queryMulti="+qry);
-		List<String> list = ListCache.getInstance().getListObject(qry);
+		List<String> list = listCache.getListObject(qry);
 		if (list != null) return list;
 		
 		list = new ArrayList<String>();
@@ -1219,7 +1231,7 @@ System.out.println(qry);
              message = e.getMessage();
  		}
 		
-		ListCache.getInstance().addList(qry, list);
+		listCache.addList(qry, list);
 		return list;
 	}
 
@@ -1310,7 +1322,7 @@ System.out.println(qry);
 	}
 	
 	public List<TableCol> getTableDetail(String owner, String tname) throws SQLException {
-		List<TableCol> list = TableDetailCache.getInstance().get(owner, tname); 
+		List<TableCol> list = tableDetailCache.get(owner, tname); 
 		if (list != null ) return list;
 		
 		list = new ArrayList<TableCol>();
@@ -1361,7 +1373,7 @@ for (String col : cols) {
 		
 		rs1.close();
 		
-		TableDetailCache.getInstance().add(owner, tname, list);
+		tableDetailCache.add(owner, tname, list);
 		return list;
 	}
 
@@ -1418,7 +1430,7 @@ for (String col : cols) {
 	
 	public List<String[]> queryMultiCol(String qry, int cols) {
 		
-		List<String[]> list = ListCache2.getInstance().getListObject(qry);
+		List<String[]> list = listCache2.getListObject(qry);
 		if (list != null) return list;
 		
 		list = new ArrayList<String[]>();
@@ -1441,7 +1453,7 @@ for (String col : cols) {
              message = e.getMessage();
  		}
 		
-		ListCache2.getInstance().addList(qry, list);
+		listCache2.addList(qry, list);
 		return list;
 	}
 	
@@ -1464,10 +1476,10 @@ for (String col : cols) {
 	
 	
 	public void clearCache() {
-		QueryCache.getInstance().clearAll();
-		ListCache.getInstance().clearAll();
-		ListCache2.getInstance().clearAll();
-		StringCache.getInstance().clearAll();
-		TableDetailCache.getInstance().clearAll();
+		if (queryCache!=null) queryCache.clearAll();
+		if (listCache!=null) listCache.clearAll();
+		if (listCache2!=null) listCache2.clearAll();
+		if (stringCache!=null) stringCache.clearAll();
+		if (tableDetailCache!=null) tableDetailCache.clearAll();
 	}
 }

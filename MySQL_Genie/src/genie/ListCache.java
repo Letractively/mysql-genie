@@ -13,13 +13,15 @@ import java.util.List;
 public class ListCache {
 
 	static ListCache instance = null;
+	static String urlString = null;	
 	Hashtable<String, List<String>> lists = new Hashtable<String, List<String>>();
 			
 	private ListCache() {
 	}
 	
-	public static ListCache getInstance() {
-		if (instance==null) {
+	public static ListCache getInstance(String urlStr) {
+		if (instance==null && urlString==null) {
+			urlString = urlStr;
 			instance = new ListCache();
 		}
 		return instance;

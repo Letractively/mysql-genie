@@ -13,13 +13,15 @@ import java.util.List;
 public class TableDetailCache {
 
 	static TableDetailCache instance = null;
+	static String urlString = null;
 	Hashtable<String, List<TableCol>> lists = new Hashtable<String, List<TableCol>>();
 			
 	private TableDetailCache() {
 	}
 	
-	public static TableDetailCache getInstance() {
-		if (instance==null) {
+	public static TableDetailCache getInstance(String urlStr) {
+		if (instance==null && urlString==null) {
+			urlString = urlStr;
 			instance = new TableDetailCache();
 		}
 		return instance;

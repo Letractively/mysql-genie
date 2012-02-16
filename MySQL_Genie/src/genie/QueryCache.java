@@ -12,13 +12,15 @@ import java.util.Hashtable;
 public class QueryCache {
 
 	static QueryCache instance = null;
+	static String urlString = null;
 	Hashtable<String, Query> qrys = new Hashtable<String, Query>();
 			
 	private QueryCache() {
 	}
 	
-	public static QueryCache getInstance() {
-		if (instance==null) {
+	public static QueryCache getInstance(String urlStr) {
+		if (instance==null && urlString==null) {
+			urlString = urlStr;
 			instance = new QueryCache();
 		}
 		return instance;
