@@ -95,6 +95,16 @@
 		});
 	}
 	
+	function runQuery(tab) {
+		var sList = "";
+		var form = "DIV_" + tab; 
+
+		var query = "SELECT * FROM " + tab + " A";
+		
+		$("#sql").val(query);
+		$("#FORM_query").submit();
+	}
+	
 </script>
 </head> 
 
@@ -111,6 +121,10 @@
 <a href="Javascript:closeAll()">Close All</a>
 <br/><br/>
 
+<form id="FORM_query" name="FORM_query" action="query.jsp" target="_blank" method="post">
+<input id="sql" name="sql" type="hidden"/>
+<input name="norun" type="hidden" value="YES"/>
+</form>
 
 <div id="parentDiv" style="width: 100%; overflow:auto;">
 &nbsp;
@@ -123,6 +137,7 @@
 <div id="div-<%=id%>" style="margin-left: 20px; background-color: #ffffcc; width:220px; border: 1px solid #cccccc; float: left;">
 <a href="erd.jsp?tname=<%= rec.rTableName %>"><%= rec.rTableName %></a>
 <a href="javascript:toggleDiv('<%= id %>')"><img id="img-<%=id%>" align=top src="image/plus.gif"></a>
+<a href="javascript:runQuery('<%= rec.rTableName %>')"><img src="image/view.png"></a>
 <a href="javascript:hideDiv('<%= id %>')">x</a>
 
 <div id="sub-<%=id%>" style="display: none;">
@@ -160,6 +175,7 @@ for (TableCol t: list1) {
 <div id="mainDiv" style="margin-left: 80px; background-color: #99FFFF; width:220px; border: 1px solid #cccccc;">
 <b><%= tname %></b>
 <a href="javascript:toggleDiv('<%= id %>')"><img id="img-<%=id%>" align=top src="image/minus.gif"></a>
+<a href="javascript:runQuery('<%= tname %>')"><img src="image/view.png"></a>
 <div id="sub-<%=id%>" style="display: block;">
 <table>
 <%
@@ -195,6 +211,7 @@ for (TableCol t: list) {
 <div id="div-<%=id%>" style="margin-left: 20px; background-color: #ffffcc; width:220px; border: 1px solid #cccccc; float: left;">
 <a href="erd.jsp?tname=<%= tbl %>"><%= tbl %></a>
 <a href="javascript:toggleDiv('<%= id %>')"><img id="img-<%=id%>" align=top src="image/plus.gif"></a>
+<a href="javascript:runQuery('<%= tbl %>')"><img src="image/view.png"></a>
 <a href="javascript:hideDiv('<%= id %>')">x</a>
 
 <div id="sub-<%=id%>" style="display: none;">

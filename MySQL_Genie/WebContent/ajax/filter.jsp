@@ -21,10 +21,10 @@
 	Connect cn = (Connect) session.getAttribute("CN");
 	
 //	Query q = (Query) session.getAttribute(sql);
-	Query q = QueryCache.getInstance().getQueryObject(sql);
+	Query q = cn.queryCache.getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
-		QueryCache.getInstance().addQuery(sql, q);
+		cn.queryCache.addQuery(sql, q);
 	} else {
 //		System.out.println("*** REUSE Query");
 	}

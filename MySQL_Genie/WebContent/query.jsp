@@ -25,11 +25,11 @@
 	int lineLength = Util.countLines(sql);
 	if (lineLength <3) lineLength = 3;
 	
-	QueryCache.getInstance().removeQuery(sql);
+	cn.queryCache.removeQuery(sql);
 	Query q = new Query(cn, sql);
 
 	if (!q.isError())
-		QueryCache.getInstance().addQuery(sql, q);
+		cn.queryCache.addQuery(sql, q);
 	
 	// get table name
 	String tbl = null;

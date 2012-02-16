@@ -35,11 +35,14 @@
 	if (searchValue==null) searchValue = "";
 	
 	Connect cn = (Connect) session.getAttribute("CN");
+/* DOT NOT use cache
 	Query q = QueryCache.getInstance().getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
 		QueryCache.getInstance().addQuery(sql, q);
 	}
+*/	
+	Query q = new Query(cn, sql);
 	if (q.isError()) {
 %>
 		<%= q.getMessage() %>
