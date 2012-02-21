@@ -100,9 +100,9 @@
 <br/>
 
 <% if (fkLinkTab.size() > 0) {%>
-	&nbsp;&nbsp;<b><a href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
+	<b><a style="margin-left: 70px;" href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
 <div id="div-fk">
-	<img style="margin-left: 20px;" src="image/arrow_down.jpg"><br/>
+	<img style="margin-left: 70px;" src="image/arrow_down.jpg"><br/>
 <% } %>
 <%
 	for (int i=0; i<fkLinkTab.size(); i++) {
@@ -128,14 +128,17 @@
 		id = Util.getId();
 		autoLoadFK.add(id);
 %>
-<a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
+<div id="div-fkk-<%=id%>">
+<a style="margin-left: 100px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle  title="<%=fsql%>"/></a>
 (<%= table %>.<%= fc %>)
+&nbsp;&nbsp;<a href="javascript:hideDiv('div-fkk-<%=id%>')">x</a>
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
-<div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
+<div id="div-<%=id%>" style="margin-left: 100px; display: none;"></div>
 <br/>
+</div>
 <% } %>
 
 <% if (fkLinkTab.size() > 0) {%>
@@ -195,8 +198,10 @@
 	<img style="margin-left: 0px;" src="image/arrow_up.jpg"><br/>
 <% } %>
 
+<div id="div-child-<%=id%>">
 <a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',0)"><b><%= refTab %></b> (<%= recCount %>) <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle  title="<%=refsql%>"/></a>
+&nbsp;&nbsp;<a href="javascript:hideDiv('div-child-<%=id%>')">x</a>
 <div style="display: none;" id="sql-<%=id%>"><%= refsql%></div>
 <div style="display: none;" id="hide-<%=id%>"></div>
 <div style="display: none;" id="sort-<%=id%>"></div>
@@ -204,6 +209,7 @@
 <div style="display: none;" id="mode-<%=id%>">sort</div>
 <div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
 <br/>
+</div>
 <%	
 	}	
 %>
