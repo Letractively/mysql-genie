@@ -328,14 +328,16 @@ for (int i=0; i<fkLinkTab.size(); i++) {
 	id = Util.getId();
 %>
 
+<div id="div-fkk-<%=id %>">
 <br/>
-
 <a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle title="<%=fsql%>"/></a>
  (<%= tname %>.<%= fc %>)
+&nbsp;&nbsp;<a href="javascript:hideDiv('div-fkk-<%=id%>')">x</a>
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
 <div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
+</div>
 <% } %>
 
