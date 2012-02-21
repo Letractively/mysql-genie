@@ -357,4 +357,13 @@
 	function hideDiv(divName) {
 		$("#"+divName).slideUp();
 	}
+
+	function doQuery() {
+		document.formQry.submit();
+	}
+
+	function doQueryNew() {
+		document.formQry.target="_blank"; 
+		document.formQry.submit();
+	}
 	
