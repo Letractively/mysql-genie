@@ -128,6 +128,7 @@
     	for (var col = 0; col < colCnt; col++) {
    	 		var nullValue = true;
        	 	for (var row=1; row<rowCount;row++) {
+       	 		//console.log(divName);
 	    		var value = $("#" + divName).children().children()[row].children[col].innerHTML;
     			if (value.indexOf(">null<")<=0) {
    				nullValue = false;
@@ -258,6 +259,7 @@
 	function setColumn(id, colName, colIdx) {
 		var mode = $("#mode-"+id).html();
 //		alert(mode);
+		if (mode==null) mode="hide";
 		
 		if (mode=='hide') {
 			hideColumn(id, colIdx);
@@ -366,4 +368,16 @@
 		document.formQry.target="_blank"; 
 		document.formQry.submit();
 	}
-	
+
+	function showDialog(table, key) {
+		var id = "id"+(new Date().getTime());
+		var temp ="<div id='" + id + "' title='" + table + "' >"
+		$.ajax({
+			url: "ajax/dialog.jsp?table=" + table + "&key=" + key,
+			success: function(data){
+				temp = temp + data + "</div>";
+				$("BODY").append(temp);
+				$("#"+id).dialog({ width: 700, height: 120 });
+			}
+		});		
+	}

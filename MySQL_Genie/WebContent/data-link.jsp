@@ -16,12 +16,15 @@
 	List<String> refTabs = cn.getReferencedTables(table);
 
 	String sql = cn.getPKLinkSql(table, key);
-//System.out.println("sql=" + sql);	
+/*
 	Query q = cn.queryCache.getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
 		cn.queryCache.addQuery(sql, q);
 	}
+*/
+	Query q = new Query(cn, sql);
+
 	// Foreign keys - For FK lookup
 	List<ForeignKey> fks = cn.getForeignKeys(table);
 //System.out.println("fks.size()=" + fks.size());	
@@ -56,6 +59,8 @@
     <link rel="stylesheet" href="css/colorbox.css" />
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
     
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js" type="text/javascript"></script>
 </head> 
 
 <body>
@@ -68,11 +73,6 @@
 
 <br/>
 
-<h3>
-<a href="javascript:openQuery('<%=id%>')"><img src="image/icon_query.png"></a>
-<%= sql %>
-</h3>
-
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
@@ -83,26 +83,9 @@
 <div id="tableList1" style="display: hidden; margin-left: 20px;">
 </div>
 
-
-<b><%= table %></b>
-&nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" title="<%=sql%>"/></a>
-<div style="display: none;" id="sql-<%=id%>"><%= sql%></div>
-<div style="display: none;" id="mode-<%=id%>">hide</div>
-<div style="display: none;" id="hide-<%=id%>"></div>
-<br/>
-<div id="data-div">
-<jsp:include page="ajax/qry-simple.jsp">
-	<jsp:param value="<%= sql %>" name="sql"/>
-	<jsp:param value="0" name="dataLink"/>
-	<jsp:param value="<%= id %>" name="id"/>
-</jsp:include>
-</div>
-<br/>
-
 <% if (fkLinkTab.size() > 0) {%>
-	<b><a style="margin-left: 70px;" href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
-<div id="div-fk">
-	<img style="margin-left: 70px;" src="image/arrow_down.jpg"><br/>
+	<b><a style="margin-left: 50px;" href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
+<div id="div-fk" style="margin-top:10px;">
 <% } %>
 <%
 	for (int i=0; i<fkLinkTab.size(); i++) {
@@ -128,22 +111,61 @@
 		id = Util.getId();
 		autoLoadFK.add(id);
 %>
+
+
 <div id="div-fkk-<%=id%>">
-<a style="margin-left: 100px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
+<a style="margin-left: 70px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle  title="<%=fsql%>"/></a>
 (<%= table %>.<%= fc %>)
-&nbsp;&nbsp;<a href="javascript:hideDiv('div-fkk-<%=id%>')">x</a>
+&nbsp;&nbsp;<a href="javascript:hideDiv('div-fkk-<%=id%>')"><img src="image/clear.gif" border=0/></a>
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
-<div id="div-<%=id%>" style="margin-left: 100px; display: none;"></div>
+<div id="div-<%=id%>" style="margin-left: 70px; display: none;"></div>
 <br/>
 </div>
 <% } %>
 
 <% if (fkLinkTab.size() > 0) {%>
+	<img style="margin-left: 70px;" src="image/arrow_up.jpg"><br/>
 </div>
 <% } %>
+
+
+
+
+<%
+	id = Util.getId();
+%>
+
+<b><%= table %></b>
+&nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" title="<%=sql%>"/></a>
+<div style="display: none;" id="sql-<%=id%>"><%= sql%></div>
+<div style="display: none;" id="mode-<%=id%>">hide</div>
+<div style="display: none;" id="hide-<%=id%>"></div>
+<br/>
+<div id="data-div">
+<jsp:include page="ajax/qry-simple.jsp">
+	<jsp:param value="<%= sql %>" name="sql"/>
+	<jsp:param value="0" name="dataLink"/>
+	<jsp:param value="<%= id %>" name="id"/>
+</jsp:include>
+</div>
+<br/>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 <div style="display: none;">
 <form name="form0" id="form0" action="query.jsp">
@@ -161,8 +183,6 @@
 <input type="hidden" id="rowsPerPage" name="rowsPerPage" value="20">
 </form>
 </div>
-
-<br/>
 
 
 <%
@@ -193,21 +213,21 @@
 %>
 
 <% if (cntRef == 1) {%>
-	&nbsp;&nbsp;<b><a href="Javascript:toggleChild()">Child Table <img id="img-child" src="image/minus.gif"></a></b><br/>
+	<b><a style="margin-left: 50px;" href="Javascript:toggleChild()">Child Table <img id="img-child" src="image/minus.gif"></a></b><br/>
 <div id="div-child">
-	<img style="margin-left: 0px;" src="image/arrow_up.jpg"><br/>
+	<img style="margin-left: 70px;" src="image/arrow_up.jpg"><br/>
 <% } %>
 
 <div id="div-child-<%=id%>">
-<a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',0)"><b><%= refTab %></b> (<%= recCount %>) <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
+<a style="margin-left: 70px;" href="javascript:loadData('<%=id%>',0)"><b><%= refTab %></b> (<%= recCount %>) <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle  title="<%=refsql%>"/></a>
-&nbsp;&nbsp;<a href="javascript:hideDiv('div-child-<%=id%>')">x</a>
+&nbsp;&nbsp;<a href="javascript:hideDiv('div-child-<%=id%>')"><img src="image/clear.gif" border=0/></a>
 <div style="display: none;" id="sql-<%=id%>"><%= refsql%></div>
 <div style="display: none;" id="hide-<%=id%>"></div>
 <div style="display: none;" id="sort-<%=id%>"></div>
 <div style="display: none;" id="sortdir-<%=id%>">0</div>
 <div style="display: none;" id="mode-<%=id%>">sort</div>
-<div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
+<div id="div-<%=id%>" style="margin-left: 70px; display: none;"></div>
 <br/>
 </div>
 <%	
