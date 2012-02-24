@@ -44,7 +44,7 @@ Please select a Table to see the detail.
 %>
 
 <h2>TABLE: <%= table %> &nbsp;&nbsp;<a href="Javascript:runQuery('','<%=tname%>')"><img border=0 src="image/icon_query.png" title="query"></a>
-<a href="erd.jsp?tname=<%=tname%>" target="_blank"><img title="ERD" src="http://information-management.softlandmark.com/images/screenshots/11809.gif"></a>
+<a href="erd.jsp?tname=<%=tname%>" target="_blank"><img title="ERD" src="image/erd.gif"></a>
 </h2>
 
 <%= owner==null?cn.getComment(tname):cn.getSynTableComment(owner, tname) %><br/>
