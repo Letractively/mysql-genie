@@ -245,9 +245,11 @@ Rows/Page
 
 <% } %>
 
-&nbsp;&nbsp;<img src="image/view.png"><input id="search" name="search" value="<%= searchValue %>" size=20 onChange="searchRecords($(this).val())">
+<% if (totalCount > 1) { %>
+&nbsp;&nbsp;<img src="image/view.png">
+<input id="search" name="search" value="<%= searchValue %>" size=20 onChange="searchRecords($(this).val())">
 <a href="Javascript:clearSearch()"><img border="0" src="image/clear.gif"></a>
-
+<% } %>
 <table id="dataTable" border=1 class="gridBody">
 <tr>
 
