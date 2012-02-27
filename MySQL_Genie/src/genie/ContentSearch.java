@@ -15,9 +15,12 @@ public class ContentSearch {
 
 	private static ContentSearch instance = null;
 	private static boolean running = false;
+	private static boolean skipTable = false;	
 	private static String progressStr;
 	private int totalTableCount;
 	private int currentTaleIndex;
+	private String currentTable;
+	private int currentRow;
 	
 	private ContentSearch() {
 	}
@@ -44,6 +47,7 @@ public class ContentSearch {
 */		this.searchKeyword = searchKeyword.toUpperCase();
 		
 		running = true;
+		skipTable = false;
 		List<String> tables = new ArrayList<String>();
 		
 		String qry = "select table_name from information_schema.tables where table_schema='" + cn.getSchemaName()+ "' and table_type='BASE TABLE' ";
@@ -76,6 +80,7 @@ public class ContentSearch {
 		currentTaleIndex = 0;
 		for (String tname : tlist) {
 			currentTaleIndex ++;
+			currentTable = tname;
 			progressStr = tname + "<br/>" + progressStr;
 			String foundColumn = searchTable(tname);
 			if (foundColumn!=null) {
@@ -85,9 +90,11 @@ public class ContentSearch {
 			}
 			
 			if (!running) break; 
+			if (skipTable) break;
 		}
 
 		running = false;
+		skipTable = false;
 		return tables;
 	}
 	
@@ -103,7 +110,9 @@ public class ContentSearch {
 			int cnt=0;
 			while (rs.next() && cnt <= 5000) {
 				if (!running) break; 
+				if (skipTable) break;
 				cnt++;
+				currentRow = cnt;
 				for  (int i = 1; i<= rs.getMetaData().getColumnCount(); i++){
 					String val = q.getValue(i);
 					if (val==null || val.equals("")) continue;
@@ -128,6 +137,7 @@ public class ContentSearch {
 				
 				if (foundColumn != null) break;
 			}
+			skipTable = false;
 			q.close();
 			
 		} catch (SQLException e) {
@@ -141,6 +151,11 @@ public class ContentSearch {
 	
 	public void cancel() {
 		running = false; 
+		skipTable = false;
+	}
+
+	public void skip() {
+		skipTable = true; 
 	}
 	
 	public String getProgress() {
@@ -149,8 +164,8 @@ public class ContentSearch {
 		if (totalTableCount >0)
 			percent = (100 * currentTaleIndex) / totalTableCount;
 		
-		String status = "Processing " + currentTaleIndex + " of " + totalTableCount +
-				"<br/>";
+		String status = "Processing " + currentTaleIndex + " of " + totalTableCount + "<br/>" +
+				currentTable + " " + currentRow + "<br/>";
 
 		if (!running)
 			status = "Finished " + currentTaleIndex + " of " + totalTableCount +
