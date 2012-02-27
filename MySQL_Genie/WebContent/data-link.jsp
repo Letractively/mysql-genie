@@ -84,7 +84,7 @@
 </div>
 
 <% if (fkLinkTab.size() > 0) {%>
-	<b><a style="margin-left: 50px;" href="Javascript:toggleFK()">Foreign Key <img id="img-fk" src="image/minus.gif"></a></b><br/>
+	<b><a style="margin-left: 50px;" href="Javascript:toggleFK()">Foreign Key <img id="img-fk" border=0 src="image/minus.gif"></a></b><br/>
 <div id="div-fk" style="margin-top:10px;">
 <% } %>
 <%

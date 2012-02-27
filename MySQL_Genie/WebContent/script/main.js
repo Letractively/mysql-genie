@@ -440,4 +440,14 @@ function runQuery(catalog,tab) {
 			$("#imgForward").hide();
     }
 
-    
+    function toggleDiv(imgId, divId) {
+		var src = $("#" + imgId).attr('src');
+		if (src.indexOf("minus")>0) {
+			$("#"+divId).slideUp();
+			$("#"+imgId).attr('src','image/plus.gif');
+		} else {
+			$("#"+divId).slideDown();
+			$("#"+imgId).attr('src','image/minus.gif');
+		}
+    	
+    }    
