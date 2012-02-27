@@ -184,6 +184,8 @@ Please select a Table to see the detail.
 	if (refTabs.size()>0) { 
 %>
 <b>Related Table</b>
+<a href="Javascript:toggleDiv('imgTable','divTable')"><img id="imgTable" src="image/minus.gif"></a>
+<div id="divTable">
 <table border=0>
 <td width=10>&nbsp;</td>
 <td valign=top>
@@ -207,41 +209,8 @@ Please select a Table to see the detail.
 %>
 </td>
 </table>
+</div>
 <% }
-%>
-
-
-<br/>
-<% 
-	if (refPkgs.size()>0) { 
-%>
-<b>Related Program</b>
-<table border=0>
-<td width=10>&nbsp;</td>
-<td valign=top>
-<%
-	int listSize = (refPkgs.size() / 3) + 1;
-	int cnt = 0;
-	for (int i=0; i<refPkgs.size(); i++) {
-		String refPkg = refPkgs.get(i);
-		cnt++;
-%>
-
-<% if ((cnt-1)>=listSize) { %>
-		</td><td valign=top>
-<%
-		cnt = 1;
-	} 
-%>
-
-		<a href="Javascript:loadPackage('<%= refPkg %>')"><%= refPkg %></a>&nbsp;&nbsp;<br/>		
-<% }
-%>
-</td>
-</table>
-
-<%
-}
 %>
 
 <br/>
@@ -249,6 +218,8 @@ Please select a Table to see the detail.
 	if (refViews.size()>0) { 
 %>
 <b>Related View</b>
+<a href="Javascript:toggleDiv('imgView','divView')"><img id="imgView" src="image/minus.gif"></a>
+<div id="divView">
 <table border=0>
 <td width=10>&nbsp;</td>
 <td valign=top>
@@ -272,6 +243,7 @@ Please select a Table to see the detail.
 %>
 </td>
 </table>
+</div>
 <%
 	}
 %>
@@ -281,6 +253,8 @@ Please select a Table to see the detail.
 	if (refTrgs.size()>0) { 
 %>
 <b>Related Trigger</b>
+<a href="Javascript:toggleDiv('imgTrg','divTrg')"><img id="imgTrg" src="image/minus.gif"></a>
+<div id="divTrg">
 <table border=0>
 <td width=10>&nbsp;</td>
 <td valign=top>
@@ -301,10 +275,49 @@ Please select a Table to see the detail.
 
 		<a href="Javascript:loadPackage('<%= refTrg %>')"><%= refTrg %></a>&nbsp;&nbsp;<br/>		
 <% }
-}
 %>
 </td>
 </table>
+</div>
+
+<%
+	}
+%>
+
+<br/>
+<% 
+	if (refPkgs.size()>0) { 
+%>
+<b>Related Program</b>
+<a href="Javascript:toggleDiv('imgPgm','divPgm')"><img id="imgPgm" src="image/minus.gif"></a>
+<div id="divPgm">
+<table border=0>
+<td width=10>&nbsp;</td>
+<td valign=top>
+<%
+	int listSize = (refPkgs.size() / 3) + 1;
+	int cnt = 0;
+	for (int i=0; i<refPkgs.size(); i++) {
+		String refPkg = refPkgs.get(i);
+		cnt++;
+%>
+
+<% if ((cnt-1)>=listSize) { %>
+		</td><td valign=top>
+<%
+		cnt = 1;
+	} 
+%>
+
+		<a href="Javascript:loadPackage('<%= refPkg %>')"><%= refPkg %></a>&nbsp;&nbsp;<br/>		
+<% }
+%>
+</td>
+</table>
+</div>
+<%
+}
+%>
 
 
 </div>
