@@ -1,5 +1,6 @@
 <%@ page language="java" 
 	import="java.util.*" 
+	import="java.util.Date" 
 	import="java.sql.*" 
 	import="genie.*" 
 	contentType="text/html; charset=utf-8"
@@ -7,6 +8,6 @@
 %>
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
-	ContentSearch cs = cn.contentSearch;  
+
+	cn.createTable();
 %>
-<%= cs.getProgress() %>

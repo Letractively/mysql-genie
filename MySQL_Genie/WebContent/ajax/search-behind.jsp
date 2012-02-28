@@ -28,7 +28,7 @@ caseType=<%=caseType%> <br/>
 
 <%
 
-	ContentSearch cs = ContentSearch.getInstance(); 
+	ContentSearch cs = cn.contentSearch;
 	List<String> tables = cs.search(cn, searchKey, inclTable, exclTable, matchType, caseType);
 %>
 Found in <%= tables.size() %> table(s).<br/><br/>
