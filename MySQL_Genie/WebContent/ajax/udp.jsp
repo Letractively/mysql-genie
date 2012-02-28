@@ -49,4 +49,5 @@ GENIE needs to create the following 2 tables to use "User Defined Page" feature.
 
 <br/>
 <br/>
-<a href="edit_udp.jsp" target="_blank">Edit</a>
+<br/><br/><br/><br/><br/><br/><br/><br/>
+<a href="edit_udp.jsp" target="_blank">Edit / Add User defined page</a>
