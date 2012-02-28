@@ -41,3 +41,8 @@
 <jsp:include page="content-search.jsp"/>
 <% } %>
 
+
+<% if (tool.equalsIgnoreCase("user defined page")) { %>
+<jsp:include page="udp.jsp"/>
+<% } %>
+

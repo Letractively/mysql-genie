@@ -16,6 +16,7 @@
 	String caseType = request.getParameter("caseType");
 %>
 <%
+
 	ContentSearch cs = cn.contentSearch;  
-	cs.skip();
+	cs.cancel();
 %>

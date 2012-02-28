@@ -335,10 +335,11 @@ function runQuery(catalog,tab) {
     function readySearch() {
     	$("#startButton").attr("disabled", false);
     	$("#cancelButton").attr("disabled", true);
-    	clearTimeout(to2);
+    	//clearTimeout(to2);
     }
     
     function cancelSearch() {
+    	clearTimeout(to2);
 		$.ajax({
 			type: 'POST',
 			url: "ajax/cancel-search.jsp",
@@ -352,6 +353,7 @@ function runQuery(catalog,tab) {
     }    
     
     function checkProgress() {
+    	clearTimeout(to2);
     	var current = $("#searchProgress").html();
 		$.ajax({
 			type: 'POST',
@@ -360,7 +362,11 @@ function runQuery(catalog,tab) {
 				if (current != data) {
 	    			$("#searchProgress").html(data);
 				}
-	   			to2 = setTimeout("checkProgress()",1000);
+				
+				if (data.indexOf("Finished") == 0)
+					clearTimeout(to2);
+				else
+					to2 = setTimeout("checkProgress()",1000);
 			}
 		});	    	
     }	
@@ -461,6 +467,16 @@ function runQuery(catalog,tab) {
 			success: function(data){
 				checkProgress();
 //				readySearch();
+			}
+		});	
+    }
+    
+    function createGenieTable() {
+		$.ajax({
+			type: 'POST',
+			url: "ajax/create-table.jsp",
+			success: function(data){
+				alert('Done');
 			}
 		});	
     }

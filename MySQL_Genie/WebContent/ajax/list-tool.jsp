@@ -15,6 +15,8 @@
 //	list.add("Search Program");
 	list.add("");
 
+	list.add("User Defined Page");
+	list.add("");
 	
 	list.add("System View");
 	list.add("test");

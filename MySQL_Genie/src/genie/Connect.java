@@ -61,7 +61,8 @@ public class Connect implements HttpSessionBindingListener {
 	public ListCache2 listCache2;
 	public StringCache stringCache;
 	public TableDetailCache tableDetailCache; 
-
+	public ContentSearch contentSearch;
+	
 	/**
 	 * Constructor
 	 * 
@@ -108,6 +109,7 @@ public class Connect implements HttpSessionBindingListener {
             listCache2 = ListCache2.getInstance(urlString);
             stringCache = StringCache.getInstance(urlString);
             tableDetailCache = TableDetailCache.getInstance(urlString);
+            contentSearch = ContentSearch.getInstance(urlString);
        		
             loadData();
         }
@@ -1184,11 +1186,11 @@ System.out.println(qry);
 		return res;
 	}
 
-	public String queryOne(String qry) {
+	public String queryOne(String qry, boolean useCache) {
 		//System.out.println("queryOne="+qry);
 
 		String res = stringCache.get(qry);
-		if (res != null) return res;
+		if (res != null && useCache) return res;
 		
 		try {
        		Statement stmt = conn.createStatement();
@@ -1206,6 +1208,11 @@ System.out.println(qry);
  		}
 		stringCache.add(qry, res);
 		return res;
+	}
+
+
+	public String queryOne(String qry) {
+		return queryOne(qry, true);
 	}
 	
 	public List<String> queryMulti(String qry) {
@@ -1481,5 +1488,50 @@ for (String col : cols) {
 		if (listCache2!=null) listCache2.clearAll();
 		if (stringCache!=null) stringCache.clearAll();
 		if (tableDetailCache!=null) tableDetailCache.clearAll();
+	}
+
+	
+	public void createTable() throws SQLException {
+        conn.setReadOnly(false);
+
+		String stmt1 = 
+				"CREATE TABLE GENIE_PAGE (	"+
+				"PAGE_ID	VARCHAR(100),"+
+				"TITLE		VARCHAR(100),"+
+				"PARAM1	VARCHAR(100),"+
+				"PARAM2	VARCHAR(100),"+
+				"PARAM3	VARCHAR(100),"+
+				"PRIMARY KEY (PAGE_ID) ) ENGINE=InnoDB;";
+			
+		String stmt2 = 
+				"CREATE TABLE GENIE_PAGE_SQL (	"+
+				"PAGE_ID	VARCHAR(100)," +
+				"SEQ		INT,"+
+				"TITLE		VARCHAR(100),"+
+				"SQL_STMT	VARCHAR(1000),"+
+				"INDENT	INT		DEFAULT 0,"+
+				"PRIMARY KEY (PAGE_ID, SEQ),"+
+				"CONSTRAINT FOREIGN KEY (PAGE_ID) REFERENCES GENIE_PAGE(PAGE_ID) ON DELETE CASCADE) ENGINE=InnoDB;";
+
+		Statement stmt = conn.createStatement();
+		stmt.execute(stmt1);
+		stmt.execute(stmt2);
+		stmt.close();
+		
+		stmt = conn.createStatement();
+		String sql = "INSERT INTO GENIE_PAGE VALUES ('TABLE','User Defined Page Sample','tname',null,null)";
+		stmt.executeUpdate(sql);
+
+		sql = "INSERT INTO GENIE_PAGE_SQL VALUES ('TABLE',1, 'Table Detail', 'SELECT * FROM USER_TABLES WHERE TABLE_NAME=upper(''[tname]'')',0)";
+		stmt.executeUpdate(sql);
+
+		sql = "INSERT INTO GENIE_PAGE_SQL VALUES ('TABLE',2, 'Column List', 'SELECT * FROM USER_TAB_COLUMNS WHERE TABLE_NAME=upper(''[tname]'') ORDER BY COLUMN_ID',30)";
+		stmt.executeUpdate(sql);
+		
+		sql = "INSERT INTO GENIE_PAGE_SQL VALUES ('TABLE',3, 'Indexes', 'SELECT * FROM USER_INDEXES WHERE TABLE_NAME=upper(''[tname]'')',30)";
+		stmt.executeUpdate(sql);
+		
+		stmt.close();
+        conn.setReadOnly(false);
 	}
 }
