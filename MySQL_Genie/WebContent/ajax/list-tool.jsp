@@ -19,7 +19,7 @@
 	list.add("");
 	
 	list.add("System View");
-	list.add("test");
+//	list.add("test");
 /* 	list.add("Dictionary");
 	list.add("Sequence");
 	list.add("DB link");
@@ -29,9 +29,15 @@
 	if (filter !=null) filter = filter.toUpperCase();
 	for (int i=0; i<list.size();i++) {
 		if (filter != null && !list.get(i).toUpperCase().contains(filter)) continue;
+
+		if (list.get(i)==null || list.get(i).equals("")) {
 %>
+	<br/>
+<%	} else { %>
+
 	<li><a href="javascript:loadTool('<%=list.get(i)%>');"><%=list.get(i)%></a></li>
 <% 
 	} 
+	}
 %>
 

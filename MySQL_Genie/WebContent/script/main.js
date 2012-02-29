@@ -477,6 +477,7 @@ function runQuery(catalog,tab) {
 			url: "ajax/create-table.jsp",
 			success: function(data){
 				alert('Done');
+				loadTool("User Defined Page");
 			}
 		});	
     }
