@@ -16,7 +16,7 @@
 	
 	<script src="script/jquery.js" type="text/javascript"></script>
     <script src="script/jquery.colorbox-min.js"></script>
-	<script src="script/main.js" type="text/javascript"></script>
+	<script src="script/main.js?20120301" type="text/javascript"></script>
 
     <link rel="stylesheet" href="css/colorbox.css" />
     <link rel='stylesheet' type='text/css' href='css/style.css'> 

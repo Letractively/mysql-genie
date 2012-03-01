@@ -124,7 +124,7 @@ var doMode = 'copy';
 			select = "modeCopy";
 		} else if (mode == "hide") {
 			select = "modeHide";
-			hideNullColumnTable();
+			hideNullColumnTableMaster();
 		} else if (mode == "sort") {
 			select = "modeSort";
 		} else if (mode == "filter") {
@@ -168,7 +168,7 @@ var doMode = 'copy';
         return numCols;
     }
 
-    function hideNullColumnTable() {
+    function hideNullColumnTableMaster() {
     	var divName = "dataTable";
     	var rowCount = $('#' + divName + ' tr').length;
     	
