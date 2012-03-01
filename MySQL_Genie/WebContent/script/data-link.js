@@ -56,11 +56,7 @@
 			data: $("#form0").serialize(),
 			success: function(data){
 				$("#" + divName).html(data);
-				$('.simplehighlight').hover(function(){
-					$(this).children().addClass('datahighlight');
-				},function(){
-					$(this).children().removeClass('datahighlight');
-				});
+				setHighlight();
 				$("#" + divName).slideDown();
 				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 			}
@@ -78,11 +74,7 @@
 	}
 
     $(document).ready(function() {
-		$('.simplehighlight').hover(function(){
-			$(this).children().addClass('datahighlight');
-		},function(){
-			$(this).children().removeClass('datahighlight');
-		});
+    	setHighlight();
     });	    
 
     function showAllColumn() {
@@ -228,11 +220,7 @@
 				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 				hideIfAny(id);
 				
-				$('.simplehighlight').hover(function(){
-					$(this).children().addClass('datahighlight');
-				},function(){
-					$(this).children().removeClass('datahighlight');
-				});
+				setHighlight();
 			}
 		});	
 	}
@@ -377,7 +365,8 @@
 			success: function(data){
 				temp = temp + data + "</div>";
 				$("BODY").append(temp);
-				$("#"+id).dialog({ width: 700, height: 120 });
+				$("#"+id).dialog({ width: 700, height: 150 });
+				setHighlight();
 			}
 		});		
 	}
@@ -394,3 +383,10 @@
     	
     }   
    
+    function setHighlight() {
+    	$('.simplehighlight').hover(function(){
+    		$(this).children().addClass('datahighlight');
+    	},function(){
+    		$(this).children().removeClass('datahighlight');
+    	});
+    }

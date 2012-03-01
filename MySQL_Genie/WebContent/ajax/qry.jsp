@@ -394,7 +394,8 @@ if (fkLinkTab.size()>0 && dLink) {
 				String linkImage = "image/view.png";
 				if (lTable != null  && dLink) {
 					isLinked = true;
-					linkUrl = "ajax/fk-lookup.jsp?table=" + lTable + "&key=" + Util.encodeUrl(keyValue);
+//					linkUrl = "ajax/fk-lookup.jsp?table=" + lTable + "&key=" + Util.encodeUrl(keyValue);
+					linkUrl = "Javascript:showDialog('" + lTable + "','" + Util.encodeUrl(keyValue) + "' )";
 				} else if (val != null && val.startsWith("BLOB ")) {
 					isLinked = true;
 					String tpkName = cn.getPrimaryKeyName(tbl);
@@ -412,7 +413,8 @@ if (fkLinkTab.size()>0 && dLink) {
 
 %>
 <td class="<%= rowClass%>" <%= (numberCol[colIdx])?"align=right":""%>><%=valDisp%>
-<%= (val!=null && isLinked?"<a class='inspect' href='" + linkUrl  + "'><img border=0 src='" + linkImage + "'></a>":"")%>
+<%= (val!=null && isLinked && !linkUrl.startsWith("Javascript")?"<a class='inspect' href=\"" + linkUrl  + "\"><img border=0 src='" + linkImage + "'></a>":"")%>
+<%= (val!=null && isLinked && linkUrl.startsWith("Javascript")?"<a href=\"" + linkUrl  + "\"><img border=0 src='" + linkImage + "'></a>":"")%>
 </td>
 <%
 		}
