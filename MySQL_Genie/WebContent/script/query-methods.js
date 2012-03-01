@@ -279,11 +279,7 @@ var doMode = 'copy';
 				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 				hideIfAny();
 				
-				$('.simplehighlight').hover(function(){
-					$(this).children().addClass('datahighlight');
-				},function(){
-					$(this).children().removeClass('datahighlight');
-				});
+				setHighlight();
 			}
 		});	
 	}
@@ -497,4 +493,79 @@ function loadERD(tname) {
 
 function selectFromErd(tname) {
 	showTable(tname);
+}
+
+function showDialog(table, key) {
+	var id = "id"+(new Date().getTime());
+	var temp ="<div id='" + id + "' title='" + table + "' >"
+	$.ajax({
+		url: "ajax/dialog.jsp?table=" + table + "&key=" + key,
+		success: function(data){
+			temp = temp + data + "</div>";
+			$("BODY").append(temp);
+			$("#"+id).dialog({ width: 700, height: 150 });
+			setHighlight();
+		}
+	});		
+}
+
+function openQuery(id) {
+	var sql = $("#sql-" + id).html();
+	var divName = "div-" + id;
+	//alert(sql);
+	
+	$("#sql").val(sql);
+	document.form0.submit();
+}
+
+function hideNullColumnTable(id) {
+	var divName = id;
+	if (divName.indexOf("table-")<0) divName = 'table-' + id;
+	var rowCount = $('#' + divName + ' tr').length;
+	
+	//if (rowCount > 2) return;
+	
+	    //var row = 1;
+	 	var hideCol = []; 
+	 	var colCnt = numCol(divName);
+	 	//alert(rowCount + "," +colCnt);
+	for (var col = 0; col < colCnt; col++) {
+	 		var nullValue = true;
+   	 	for (var row=1; row<rowCount;row++) {
+   	 		//console.log(divName);
+    		var value = $("#" + divName).children().children()[row].children[col].innerHTML;
+			if (value.indexOf(">null<")<=0) {
+				nullValue = false;
+    		}
+	    	}
+	    	if (nullValue) hideCol.push(col+1);
+	    }
+	    
+	 	for (var i = 0, l = hideCol.length; i < l; ++i) {
+	 		//alert('hide ' + hideCol[i] );
+	 		hideColumn(id, hideCol[i]);
+	    }
+	    
+}
+
+function hideColumn(id, col) {
+	var tableId = 'table-'+ id;
+	var cols = $("#hide-" + id).val();
+	if (cols == "") cols = col;
+	else cols += "," + col;
+	
+	$("#hide-"+id).val(cols);
+	$('table#'+tableId).hideCol(col);
+}
+
+function showColumn(tableId, col) {
+	$('table#'+tableId).showCol(col);
+}
+
+function setHighlight() {
+	$('.simplehighlight').hover(function(){
+		$(this).children().addClass('datahighlight');
+	},function(){
+		$(this).children().removeClass('datahighlight');
+	});
 }

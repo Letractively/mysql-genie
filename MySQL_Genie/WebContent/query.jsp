@@ -64,6 +64,9 @@
     <link rel="stylesheet" href="css/colorbox.css" />
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
     
+	<link rel="stylesheet" href="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/themes/base/jquery-ui.css" type="text/css" media="all" />
+	<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8.17/jquery-ui.min.js" type="text/javascript"></script>
+
     <script type="text/javascript">
 	$(document).ready(function() {
 		showTable('<%=tbl%>');
@@ -74,11 +77,7 @@
 	});	    
 	
     $(document).ready(function(){
-		$('.simplehighlight').hover(function(){
-			$(this).children().addClass('datahighlight');
-		},function(){
-			$(this).children().removeClass('datahighlight');
-		});
+    	setHighlight();
       });
     </script>
 </head> 
