@@ -44,14 +44,16 @@
 
 	List<String> autoLoadFK = new ArrayList<String>();
 	List<String> autoLoadChild = new ArrayList<String>();
+	
+	String title = table + " " + key;	
 %>
 
 
 <html>
 <head> 
-	<title>Genie - Data Link</title>
+	<title><%= title %></title>
     <script src="script/jquery.js" type="text/javascript"></script>
-    <script src="script/data-methods.js?20120301" type="text/javascript"></script>
+    <script src="script/data-methods.js?20120302" type="text/javascript"></script>
 
     <script src="script/jquery.colorbox-min.js"></script>
 
@@ -78,6 +80,9 @@
 <a href="Javascript:showAllColumn()">Show All</a>
 &nbsp;&nbsp;
 <a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
+
+&nbsp;&nbsp;
+<a id="showERD" href="Javascript:newQry()">New Query</a>
 <br/><br/>
 
 <div id="tableList1" style="display: hidden; margin-left: 20px;">

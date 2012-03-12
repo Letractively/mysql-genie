@@ -133,7 +133,7 @@
 <head> 
 	<title>Genie - Edit User Defined Page</title>
     <script src="script/jquery.js" type="text/javascript"></script>
-    <script src="script/data-methods.js?20120301" type="text/javascript"></script>
+    <script src="script/data-methods.js?20120302" type="text/javascript"></script>
 
     <script src="script/jquery.colorbox-min.js"></script>
 

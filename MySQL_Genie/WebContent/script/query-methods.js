@@ -321,7 +321,7 @@ var doMode = 'copy';
 	}
 	
 	function copyPaste(val) {
-		$("#sql").insertAtCaret(" " + val);
+		$("#sql1").insertAtCaret(" " + val);
 	}
 
 	function removeDiv(divId) {
@@ -514,8 +514,8 @@ function openQuery(id) {
 	var divName = "div-" + id;
 	//alert(sql);
 	
-	$("#sql").val(sql);
-	document.form0.submit();
+	$("#sql1").val(sql);
+	document.form1.submit();	
 }
 
 function hideNullColumnTable(id) {
