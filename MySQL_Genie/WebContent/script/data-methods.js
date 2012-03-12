@@ -416,6 +416,7 @@
 			data: $("#form0").serialize(),
 			success: function(data){
 				$("#div-"+id).html(data);
+				setHighlight();
 			}
 		});		
 	}
