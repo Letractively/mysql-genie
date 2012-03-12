@@ -8,11 +8,13 @@
 
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
+
+	String title = "Genie " + cn.getUrlString();
 %>
 
 <html>
 <head> 
-	<title>Genie</title>
+	<title><%= title %></title>
 	
 	<script src="script/jquery.js" type="text/javascript"></script>
     <script src="script/jquery.colorbox-min.js"></script>
