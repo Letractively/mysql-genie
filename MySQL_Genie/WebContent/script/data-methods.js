@@ -210,6 +210,8 @@
 		var sql = $("#sql-" + id).html();
 		$("#sql").val(sql);
 		$("#id").val(id);
+		$("#sortColumn").val($("#sort-"+id).val());
+		$("#sortDirection").val($("#sortdir-"+id).val());		
 
 		$.ajax({
 			type: 'POST',
@@ -261,15 +263,15 @@
 	
 	function sort(id, col) {
 		$("#pageNo").val(1);
-		var prevSortColumn = $("#sortColumn").val();
-		var prevSortDirection = $("#sortDirection").val();
+		var prevSortColumn = $("#sort-"+id).val();
+		var prevSortDirection = $("#sortdir-"+id).val();
 		var newSortDirection = "0";
 		
 		if (prevSortColumn==col && prevSortDirection=="0") { 
 			newSortDirection = "1";  
 		}
-		$("#sortColumn").val(col);
-		$("#sortDirection").val(newSortDirection);
+		$("#sort-"+id).val(col);
+		$("#sortdir-"+id).val(newSortDirection);
 		
 		reloadData(id);
 	}	
@@ -409,7 +411,9 @@
 
 	function doQry(id) {
 		var sql = $("#input-"+id).val();
+		$("#sql-"+id).html(sql);
 		$("#sql").val(sql);
+		$("#id").val(id);
 //		alert(sql);
 		$.ajax({
 			url: "ajax/qry-simple.jsp",
