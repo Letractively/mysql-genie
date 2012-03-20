@@ -103,7 +103,7 @@ public class Query {
 		}
 		 
 		cols = cols.trim();	
-		cols = cols.replaceAll(" ", "");
+//		cols = cols.replaceAll(" ", "");
 
 		String newCols = null;		
 		StringTokenizer st = new StringTokenizer(cols,",");

@@ -48,7 +48,9 @@ public class Util {
 			
 			if (keys[i].equals("is null"))
 				res = res + " AND " + cols[i].trim() + " IS NULL";
-			else if (keys[i].length()==19 && keys[i].substring(4,5).endsWith("-")) { // date 
+			else if (keys[i].length()==10 && keys[i].substring(4,5).endsWith("-")) { // date 
+				res = res + " AND " + cols[i].trim() + "= to_date('" + keys[i] + "','yyyy-mm-dd')";
+			} else if (keys[i].length()==19 && keys[i].substring(4,5).endsWith("-")) { // date 
 				res = res + " AND " + cols[i].trim() + "= to_date('" + keys[i] + "','yyyy-mm-dd hh24:mi:ss')";
 			} else {
 				res = res + " AND " + cols[i].trim() + "='" + keys[i] + "'";
