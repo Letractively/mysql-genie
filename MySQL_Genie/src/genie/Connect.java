@@ -1215,11 +1215,19 @@ System.out.println(qry);
 		return queryOne(qry, true);
 	}
 	
+
 	public List<String> queryMulti(String qry) {
+		return queryMulti(qry, true);
+	}
 		
-		//System.out.println("queryMulti="+qry);
-		List<String> list = listCache.getListObject(qry);
-		if (list != null) return list;
+	public List<String> queryMulti(String qry, boolean useCache) {
+		
+		List<String> list = null;
+		
+		if (useCache) {
+			list = listCache.getListObject(qry);
+			if (list != null) return list;
+		}
 		
 		list = new ArrayList<String>();
 		try {
@@ -1238,7 +1246,7 @@ System.out.println(qry);
              message = e.getMessage();
  		}
 		
-		listCache.addList(qry, list);
+		if (useCache) listCache.addList(qry, list);
 		return list;
 	}
 
@@ -1435,10 +1443,18 @@ for (String col : cols) {
 	}
 */
 	
+
 	public List<String[]> queryMultiCol(String qry, int cols) {
+		return queryMultiCol(qry, cols, true);
+	}
+	
+	public List<String[]> queryMultiCol(String qry, int cols, boolean useCache) {
 		
-		List<String[]> list = listCache2.getListObject(qry);
-		if (list != null) return list;
+		List<String[]> list = null;
+		if (useCache) {
+			list = listCache2.getListObject(qry);
+			if (list != null) return list;
+		}
 		
 		list = new ArrayList<String[]>();
 		try {
@@ -1460,7 +1476,7 @@ for (String col : cols) {
              message = e.getMessage();
  		}
 		
-		listCache2.addList(qry, list);
+		if (useCache) listCache2.addList(qry, list);
 		return list;
 	}
 	

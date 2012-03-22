@@ -24,6 +24,9 @@
 		qry = "SELECT * FROM USER_ROLE_PRIVS";
 	else if (tool.equalsIgnoreCase("test"))
 		qry = "select table_schema, table_name from information_schema.tables where table_name like '%[Enter search keyword]%'";
+	else if (tool.equalsIgnoreCase("table column")) 
+		qry = "SELECT table_name, table_type, engine FROM information_schema.tables WHERE table_schema='" + cn.getSchemaName()+ "' AND TABLE_NAME IN " +
+		"(SELECT TABLE_NAME FROM information_schema.columns WHERE table_schema='" + cn.getSchemaName()+ "' AND COLUMN_NAME = '[Column Name]') ORDER BY 1";
 	
 	// 
 %>
@@ -46,3 +49,7 @@
 <jsp:include page="udp.jsp"/>
 <% } %>
 
+
+<% if (tool.equalsIgnoreCase("Schema Diff")) { %>
+<jsp:include page="schema-diff.jsp"/>
+<% } %>

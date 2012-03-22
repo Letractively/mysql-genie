@@ -13,8 +13,10 @@
 	List<String> list = new ArrayList<String>();
 	list.add("Search DB Content");
 //	list.add("Search Program");
+	list.add("Table Column");
+	list.add("Schema Diff");
 	list.add("");
-
+	
 	list.add("User Defined Page");
 	list.add("");
 	
