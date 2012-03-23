@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Utility class for Genie
@@ -97,4 +99,32 @@ public class Util {
 		return res;
 	}
 
+	
+	public static List<String> getTables(String sql) {
+		List<String> tables = new ArrayList<String>();
+
+		String temp=sql.replaceAll("[\n\r\t]", " ");
+		
+		int idx = temp.toUpperCase().indexOf(" FROM ");
+		if (idx > 0) {
+			// process multiple tables
+			String temp2 = temp.substring(idx + 6);
+			int idx2 = temp2.toUpperCase().indexOf(" WHERE ");
+			if (idx2 > 0) temp2 = temp2.substring(0, idx2);
+			
+			System.out.println("temp2=" +temp2);
+			
+			String a[] = temp2.split(",");
+			for (int i=0; i<a.length; i++) {
+				String tname = a[i].trim();
+				int x = tname.indexOf(" ");
+				if (x > 0) tname = tname.substring(0, x).trim();
+				System.out.println(i + "=" +tname);
+				
+				tables.add(tname);
+			}
+		}
+		
+		return tables;
+	}
 }

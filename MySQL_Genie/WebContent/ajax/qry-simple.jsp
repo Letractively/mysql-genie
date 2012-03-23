@@ -60,22 +60,9 @@
 	
 	// get table name
 	String tbl = null;
-	//String temp = sql.replaceAll("\n", " ").trim();
-	String temp=sql.replaceAll("[\n\r\t]", " ");
-	
-	int idx = temp.toUpperCase().indexOf(" FROM ");
-	if (idx >0) {
-		temp = temp.substring(idx + 6);
-		idx = temp.indexOf(" ");
-		if (idx > 0) temp = temp.substring(0, idx).trim();
-		
-		tbl = temp.trim();
-		
-		
-		idx = tbl.indexOf(" ");
-		if (idx > 0) tbl = tbl.substring(0, idx);
-	}
-//	System.out.println("XXX TBL=" + tbl);
+	List<String> tbls = Util.getTables(sql); 
+	if (tbls.size()>0) tbl = tbls.get(0);
+	//	System.out.println("XXX TBL=" + tbl);
 
 	boolean hasDataLink = false;
 	String tname = tbl;
