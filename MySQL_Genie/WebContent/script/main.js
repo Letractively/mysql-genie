@@ -237,7 +237,7 @@ function runQuery(catalog,tab) {
 		});
 
 		$("#" + select).css("font-weight", "bold");
-		$("#" + select).css("background-color", "yellow");
+		$("#" + select).css("background-color", "#d0d0ff");
 		
 		gMode = mode;
 	}
