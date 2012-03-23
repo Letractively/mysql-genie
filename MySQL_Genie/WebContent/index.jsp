@@ -191,12 +191,7 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 </div>
 </td>
 </table>
-
-<br/>
-
 <form id="FORM_query" name="FORM_query" action="query.jsp" target="_blank" method="post">
 <input id="sql" name="sql" type="hidden"/>
 <input name="norun" type="hidden" value="YES"/>
 </form>
-
-

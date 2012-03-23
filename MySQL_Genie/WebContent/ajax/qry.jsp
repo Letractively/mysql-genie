@@ -85,21 +85,8 @@
 	
 	// get table name
 	String tbl = null;
-	//String temp = sql.replaceAll("\n", " ").trim();
-	String temp=sql.replaceAll("[\n\r\t]", " ");
-	
-	int idx = temp.toUpperCase().indexOf(" FROM ");
-	if (idx >0) {
-		temp = temp.substring(idx + 6);
-		idx = temp.indexOf(" ");
-		if (idx > 0) temp = temp.substring(0, idx).trim();
-		
-		tbl = temp.trim();
-		
-		
-		idx = tbl.indexOf(" ");
-		if (idx > 0) tbl = tbl.substring(0, idx);
-	}
+	List<String> tbls = Util.getTables(sql); 
+	if (tbls.size()>0) tbl = tbls.get(0);
 //	System.out.println("XXX TBL=" + tbl);
 
 	boolean hasDataLink = false;
@@ -176,7 +163,7 @@ System.out.println("pkColList=" + pkColList.get(0));
 			}
 		}
 
-		hasPK = true;
+		if (tbls.size()==1) hasPK = true;
 System.out.println("hasPK=" + hasPK);		
 		// there should be other tables that has FK to this
 		List<String> refTabs = cn.getReferencedTables(tname);
@@ -336,7 +323,7 @@ System.out.println("pkColList.get(i)=" + pkColList.get(i));
 		String linkUrlTree = "data-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
 %>
 	<td class="<%= rowClass%>">
-	<% if (pkLink) { %>
+	<% if (pkLink && false) { %>
 		<a class='inspect' href='<%= linkUrl %>'><img border=0 src="image/link.gif" title="Related Tables"></a>
 		&nbsp;
 	<% } %>
@@ -405,7 +392,7 @@ if (fkLinkTab.size()>0 && dLink) {
 					linkUrl ="ajax/blob.jsp?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue);
 				}
 				
-				if (pkColIndex >0 && i == pkColIndex) {
+				if (pkColIndex >0 && i == pkColIndex && false) {
 					isLinked = true;
 					linkUrl = "ajax/pk-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
 					linkImage = "image/link.gif";
