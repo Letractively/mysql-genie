@@ -70,7 +70,8 @@
 	String id = Util.getId();
 %>
 
-<img src="image/data-link.png" align="middle"/>
+<img src="image/data-link.png" align="middle"/> <b>DATA LINK</b>
+&nbsp;&nbsp;
 <%= cn.getUrlString() %>
 
 <br/>
@@ -82,7 +83,7 @@
 <a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
 
 &nbsp;&nbsp;
-<a id="showERD" href="Javascript:newQry()">New Query</a>
+<a id="showERD" href="Javascript:newQry()">Query</a>
 <br/><br/>
 
 <div id="tableList1" style="display: hidden; margin-left: 20px;">

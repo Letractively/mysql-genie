@@ -81,9 +81,9 @@ $(document).ready(function(){
 		if (h > 500) {
 			var diff = $('#outer-table').position().top - $('#outer-result1').position().top;
 			//alert(diff);
-			var newH = h - 70;
+			var newH = h - 80;
 
-			var tmp = w - $('#outer-table').width() - $('#outer-result2').width() - 35; 
+			var tmp = w - $('#outer-table').width() - $('#outer-result2').width() - 45; 
 
 			$('#outer-table').height(newH-diff);
 			$('#outer-result1').height(newH);
@@ -110,9 +110,9 @@ function callserver() {
 
 </head> 
 
-<table width=98%>
+<table width=100%>
 <td><img src="image/lamp.png"/></td>
-<td><%= cn.getUrlString() %></td>
+<td valign=bottom><h3><%= cn.getUrlString() %></h3></td>
 <td>
 &nbsp;
 <select name="schema" id="shcmeaList" onchange="loadSchema(this.options[this.selectedIndex].value);">

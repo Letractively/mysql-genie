@@ -31,7 +31,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
 <html>
   <head>
-    <title>Schema Comparison - Genie</title>
+    <title>Schema Diff - Genie</title>
     <link rel='stylesheet' type='text/css' href='css/style.css'> 
     <link rel='stylesheet' type='text/css' href='css/slideshow.css'> 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
@@ -126,7 +126,7 @@
 	}
 %>
 
-<h2><img src="image/icon_query.png" align="middle"/> Schema Diff</h2>
+<h2><img src="image/diff.jpg" align="bottom"/> Schema Diff</h2>
 
 <b>
 Schema 1: <%= cn.getUrlString() %>

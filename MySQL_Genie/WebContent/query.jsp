@@ -85,7 +85,8 @@
 
 <body>
 
-<img src="image/icon_query.png" align="middle"/>
+<img src="image/icon_query.png" align="middle"/> <b>QUERY</b>
+&nbsp;&nbsp;
 <%= cn.getUrlString() %>
 
 <br/><br/>
