@@ -71,7 +71,7 @@ public class Connect implements HttpSessionBindingListener {
 	 * @param password	database password
 	 * @param ipAddress	user's local ip address
 	 */
-    public Connect(String url, String userName, String password, String ipAddress)
+    public Connect(String url, String userName, String password, String ipAddress, boolean loadData)
     {
     	//pkColumn = new Hashtable<String, String>();
     	queryResult = new HashMap<String, String>();
@@ -89,6 +89,7 @@ public class Connect implements HttpSessionBindingListener {
             urlString = userName + "@" + url;  
             System.out.println ("Database connection established for " + urlString + " @" + (new Date()) + " " + ipAddress);
            
+            if (!loadData) return; 
             	
             tables = new Vector<String>();
             comments = new Hashtable<String, String>();
@@ -119,6 +120,10 @@ public class Connect implements HttpSessionBindingListener {
             message = e.getMessage();
         }
     }
+    
+    public Connect(String url, String userName, String password, String ipAddress) {
+    	this(url, userName, password, ipAddress, true);
+	}    
     
     /**
      * 
