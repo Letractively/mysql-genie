@@ -248,7 +248,7 @@ Rows/Page
 	<th class="headerRow"><b>PK</b></th>
 <%
 	}
-	if (fkLinkTab.size()>0 && dLink) {
+	if (fkLinkTab.size()>0 && dLink && false) {
 		offset ++;
 %>
 	<th class="headerRow"><b>FK Link</b></th>
@@ -331,7 +331,7 @@ System.out.println("pkColList.get(i)=" + pkColList.get(i));
 	</td>
 <%
 	}
-if (fkLinkTab.size()>0 && dLink) {
+if (fkLinkTab.size()>0 && dLink && false) {
 %>
 <td class="<%= rowClass%>">
 <% 
