@@ -80,7 +80,7 @@
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
 &nbsp;&nbsp;
-<a id="showERD" href="Javascript:newQry()">Query</a>
+<a href="Javascript:newQry()">Query</a>
 &nbsp;&nbsp;
 <a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
 

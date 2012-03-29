@@ -126,8 +126,9 @@ function callserver() {
 
 <td>
 <a href="index.jsp">Home</a> |
-<a href="query.jsp" target="_blank">New Query</a> |
-<a href="javascript:queryHistory()">Query History</a> |
+<a href="query.jsp" target="_blank">Query</a> |
+<a href="worksheet.jsp" target="_blank">Work Sheet</a> |
+<a href="javascript:queryHistory()">History</a> |
 <a href="javascript:clearCache()">Clear Cache</a> |
 <a href="logout.jsp">Log out</a>
 &nbsp;
