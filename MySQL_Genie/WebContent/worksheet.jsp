@@ -165,11 +165,11 @@
 		//var id = "id"+(new Date().getTime());
 		gid = gid + 1;
 		var id = "id-" + gid;
-		var temp ="<div id='" + id + "' title=\"" + sql + "\"' >";
+		var temp ="<div id='" + id + "' title='Query' >";
 		//alert(temp);
 		//alert(encodeURI(sql));
 		$.ajax({
-			url: "ajax/dialog-openqry.jsp?sql=" + encodeURI(sql),
+			url: "ajax/dialog-qry.jsp?sql=" + encodeURI(sql),
 			success: function(data){
 				temp = temp + data + "</div>";
 				$("BODY").append(temp);
@@ -183,11 +183,11 @@
 		//var id = "id"+(new Date().getTime());
 		gid = gid + 1;
 		var id = "id-" + gid;
-		var temp ="<div id='" + id + "' title=\"" + sql + "\"' >";
+		var temp ="<div id='" + id + "' title='Query' >";
 		//alert(temp);
 		//alert(encodeURI(sql));
 		$.ajax({
-			url: "ajax/dialog-openqry.jsp?sql=" + encodeURI(sql),
+			url: "ajax/dialog-qry.jsp?sql=" + encodeURI(sql),
 			success: function(data){
 				temp = temp + data + "</div>";
 				$("BODY").append(temp);
