@@ -84,6 +84,9 @@
 &nbsp;&nbsp;
 <a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
 
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="Javascript:openWorksheet()">Open Worksheet</a>
+
 <br/><br/>
 
 <div id="tableList1" style="display: hidden; margin-left: 20px;">
@@ -150,7 +153,7 @@
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
 <br/>
-<div id="data-div">
+<div id="div-<%=id %>" style1="padding: 5px; background-color: gray;">
 <jsp:include page="ajax/qry-simple.jsp">
 	<jsp:param value="<%= sql %>" name="sql"/>
 	<jsp:param value="0" name="dataLink"/>
@@ -270,6 +273,10 @@ loadData(<%=id1%>,0);
 %>
 });	    
 </script>
+
+<form name="form_worksheet" target="_blank" action="worksheet.jsp" method="post">
+<input id="sqls" name="sqls" type="hidden">
+</form>
 
 </body>
 </html>

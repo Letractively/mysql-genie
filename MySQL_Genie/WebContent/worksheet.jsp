@@ -9,6 +9,13 @@
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
 	String title = "Worksheet";
+	
+	String sqls = request.getParameter("sqls");
+	String sqlsStr[] = null;
+	
+	if (sqls != null) {
+		sqlsStr = sqls.split("!");
+	}
 %>
 
 
@@ -36,15 +43,16 @@
 <%= cn.getUrlString() %>
 
 <br/>
-
-<a href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
-<div id="div1">
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
 &nbsp;&nbsp;
 <a href="Javascript:newQry()">Query</a>
 &nbsp;&nbsp;
+
+<br>
+<a href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
+<div id="div1">
 <a href="Javascript:showHelp()">Help</a>
 <div id="helper" style="display: none">
 
@@ -118,7 +126,7 @@
 <textarea id="qry_stmt" rows=3 cols=80>
 </textarea>
 <br/>
-<input type="button" value="Query" onClick="openQry()">
+<input type="button" value="Query" onClick="runQry()">
 <input type="button" value="Clear" onClick="clearQuery()">
 </form>
 </div>
@@ -143,20 +151,25 @@
 
 <script type="text/javascript">
 	var gMode = "table";
+	var gid = 0;
 
 	function clearQuery() {
 		$("#qry_stmt").val('');	
 	}
-	function openQry() {
-		var id = "id"+(new Date().getTime());
+	function runQry() {
 		var sql = $("#qry_stmt").val();
-		$("#sql").val(sql);
-		var temp ="<div id='" + id + "' title='" + sql + "' >";
-		
+		openQry(sql);
+	}
+	
+	function openQry(sql) {
+		//var id = "id"+(new Date().getTime());
+		gid = gid + 1;
+		var id = "id-" + gid;
+		var temp ="<div id='" + id + "' title=\"" + sql + "\"' >";
+		//alert(temp);
+		//alert(encodeURI(sql));
 		$.ajax({
-			type: 'POST',
-			url: "ajax/dialog-openqry.jsp",
-			data: $("#form0").serialize(),
+			url: "ajax/dialog-openqry.jsp?sql=" + encodeURI(sql),
 			success: function(data){
 				temp = temp + data + "</div>";
 				$("BODY").append(temp);
@@ -166,12 +179,32 @@
 		});
 	}    
 	
+	function openQryIndex(sql, idx) {
+		//var id = "id"+(new Date().getTime());
+		gid = gid + 1;
+		var id = "id-" + gid;
+		var temp ="<div id='" + id + "' title=\"" + sql + "\"' >";
+		//alert(temp);
+		//alert(encodeURI(sql));
+		$.ajax({
+			url: "ajax/dialog-openqry.jsp?sql=" + encodeURI(sql),
+			success: function(data){
+				temp = temp + data + "</div>";
+				$("BODY").append(temp);
+				$("#"+id).dialog({ width: 700, height: 200 });
+				$("#"+id).dialog("option", "position", [200 + idx*50, 200 + idx*50]);
+				//alert($("#"+id + " > table[0]").height());
+				setHighlight();
+			}
+		});
+	}    
+	
 	function doOpenQry(id) {
 		var sql = $("#sql-"+id).html();
-		$("#id").val(id);
+		//$("#id").val(id);
+		$("#div-"+id).html("<img src='image/loading.gif'/>");
 		$.ajax({
-			url: "ajax/qry-simple.jsp",
-			data: $("#form0").serialize(),
+			url: "ajax/qry-simple.jsp?id=" + id  + "&sql="+ encodeURI(sql),
 			success: function(data){
 				$("#div-"+id).html(data);
 				setHighlight();
@@ -305,6 +338,17 @@
 			var filter = $(this).val().toUpperCase();
 			searchWithFilter(filter);
 	 	})
+	 	
+<% if (sqls != null) { 
+	 int idx = 0;
+	 for (String s : sqlsStr) {
+		 idx ++;
+%>
+		openQryIndex("<%=s%>", <%= idx %>);
+<%
+	 }
+ }
+%>
 	 	
 	})	
 </script>

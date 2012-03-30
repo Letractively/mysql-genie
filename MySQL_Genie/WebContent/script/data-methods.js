@@ -414,6 +414,7 @@
 		$("#sql-"+id).html(sql);
 		$("#sql").val(sql);
 		$("#id").val(id);
+		$("#div-"+id).html("<img src='image/loading.gif'/>");
 //		alert(sql);
 		$.ajax({
 			url: "ajax/qry-simple.jsp",
@@ -424,4 +425,21 @@
 			}
 		});		
 	}
-	    
+
+	function openWorksheet() {
+		var temp = "";
+		$("div ").each(function() {
+			var divName = $(this).attr('id');
+			if (divName != null && divName.indexOf("sql-")>=0) {
+				var id = divName.substring(4);
+				if ($("#div-" +id+":visible").length > 0) {
+					var q = $("#" + divName).html();
+					temp += q + "!";
+				}
+			}
+		});
+		//alert(temp);
+		$("#sqls").val(temp);
+		document.form_worksheet.submit();
+	}
+	
