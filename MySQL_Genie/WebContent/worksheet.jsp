@@ -37,14 +37,83 @@
 
 <br/>
 
-
-
+<a href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
+<div id="div1">
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
 &nbsp;&nbsp;
 <a href="Javascript:newQry()">Query</a>
+&nbsp;&nbsp;
+<a href="Javascript:showHelp()">Help</a>
+<div id="helper" style="display: none">
 
+<table border=0 cellspacing=0>
+<td valign=top width=250>
+
+<a class="mainBtn" href="Javascript:setMode('table')" id="selectTable">Table</a> | 
+<a class="mainBtn" href="Javascript:setMode('view')" id="selectView">View</a> 
+&nbsp;
+<b>Search</b> <input id="searchFilter" style="width: 140px;"/>
+<a href="Javascript:clearField()"><img border=0 src="image/clear.gif"></a>
+<div id="outer-helper">
+<div id="inner-helper">
+</div>
+</div>
+</td>
+<td valign=bottom>
+<div id="outer-detail">
+<div id="inner-detail">
+</td>
+</table>
+
+
+	<div>
+	<a href="Javascript:copyPaste('SELECT');">SELECT</a>&nbsp;
+	<a href="Javascript:copyPaste('*');">*</a>&nbsp;
+	<a href="Javascript:copyPaste('FROM');">FROM</a>&nbsp;
+	<a href="Javascript:copyPaste('WHERE');">WHERE</a>&nbsp;
+	<a href="Javascript:copyPaste('=');">=</a>&nbsp;
+	<a href="Javascript:copyPaste('LIKE');">LIKE</a>&nbsp;
+	<a href="Javascript:copyPaste('\'%\'');">'%'</a>&nbsp;
+	<a href="Javascript:copyPaste('IS');">IS</a>&nbsp;
+	<a href="Javascript:copyPaste('NOT');">NOT</a>&nbsp;
+	<a href="Javascript:copyPaste('NULL');">NULL</a>&nbsp;
+	<a href="Javascript:copyPaste('AND');">AND</a>&nbsp;
+	<a href="Javascript:copyPaste('OR');">OR</a>&nbsp;
+	<a href="Javascript:copyPaste('IN');">IN</a>&nbsp;
+	<a href="Javascript:copyPaste('( )');">( )</a>&nbsp;
+	<a href="Javascript:copyPaste('EXISTS');">EXISTS</a>&nbsp;
+	<a href="Javascript:copyPaste('ORDER BY');">ORDER-BY</a>&nbsp;
+	<a href="Javascript:copyPaste('DESC');">DESC</a>&nbsp;
+<!-- 
+	<br/>
+	&nbsp;&nbsp;&nbsp;
+	<a href="Javascript:copyPaste('LOWER( )');">LOWER( )</a>&nbsp;
+	<a href="Javascript:copyPaste('UPPER( )');">UPPER( )</a>&nbsp;
+	<a href="Javascript:copyPaste('SUBSTR( )');">SUBSTR( )</a>&nbsp;
+	<a href="Javascript:copyPaste('TRIM( )');">TRIM( )</a>&nbsp;
+	<a href="Javascript:copyPaste('LENGTH( )');">LENGTH( )</a>&nbsp;
+	&nbsp;&nbsp;&nbsp;
+	<a href="Javascript:copyPaste('TO_DATE( )');">TO_DATE( )</a>&nbsp;
+	<a href="Javascript:copyPaste('TO_NUMBER( )');">TO_NUMBER( )</a>&nbsp;
+	<a href="Javascript:copyPaste('TO_CHAR( )');">TO_CHAR( )</a>&nbsp;
+
+ -->
+ 	<br/>
+	&nbsp;&nbsp;&nbsp;
+	<a href="Javascript:copyPaste('GROUP BY');">GROUP-BY</a>&nbsp;
+	<a href="Javascript:copyPaste('HAVING');">HAVING</a>&nbsp;
+	<a href="Javascript:copyPaste('COUNT(*)');">COUNT(*)</a>&nbsp;
+	<a href="Javascript:copyPaste('SUM( )');">SUM( )</a>&nbsp;
+	<a href="Javascript:copyPaste('AVG( )');">AVG( )</a>&nbsp;
+	<a href="Javascript:copyPaste('MIN( )');">MIN( )</a>&nbsp;
+	<a href="Javascript:copyPaste('MAX( )');">MAX( )</a>&nbsp;
+	
+	</div>
+
+
+</div>
 <form>
 <textarea id="qry_stmt" rows=3 cols=80>
 </textarea>
@@ -52,7 +121,7 @@
 <input type="button" value="Query" onClick="openQry()">
 <input type="button" value="Clear" onClick="clearQuery()">
 </form>
-
+</div>
 <br/><br/>
 
 
@@ -73,6 +142,8 @@
 </div>
 
 <script type="text/javascript">
+	var gMode = "table";
+
 	function clearQuery() {
 		$("#qry_stmt").val('');	
 	}
@@ -107,6 +178,135 @@
 			}
 		});		
 	}	
+	
+	function showHelp() {
+		$("#helper").slideToggle();
+	}	
+	
+	function setMode(mode) {
+		var gotoUrl = "";
+		var select = "";
+		
+		if (mode == "table") {
+			gotoUrl = "ajax/list-table.jsp";
+			select = "selectTable";
+		} else if (mode == "view") {
+			gotoUrl = "ajax/list-view.jsp";
+			select = "selectView";
+		}
+
+		$("#selectTable").css("font-weight", "");
+		$("#selectView").css("font-weight", "");
+		$("#selectTable").css("background-color", "");
+		$("#selectView").css("background-color", "");
+
+		cleanPage();
+		$("#inner-helper").html("<img src='image/loading.gif'/>");
+		$.ajax({
+			url: gotoUrl,
+			success: function(data){
+				$("#inner-helper").html(data);
+			}
+		});
+		
+		$("#" + select).css("font-weight", "bold");
+		$("#" + select).css("background-color", "#d0d0ff");
+		
+		gMode = mode;
+	}
+
+	function cleanPage() {
+		$("#searchFilter").val("");
+		$("#inner-helper").html('');
+	}
+
+	function searchWithFilter(filter) {
+		var mode = gMode;
+		var gotoUrl = "";
+		
+		if (mode == "table") {
+			gotoUrl = "ajax/list-table.jsp?filter=" + filter;
+		} else if (mode == "view") {
+			gotoUrl = "ajax/list-view.jsp?filter=" + filter;
+		}
+
+		$.ajax({
+			url: gotoUrl,
+			success: function(data){
+				$("#inner-helper").html(data);
+			}
+		});
+		
+	}
+
+	function loadTable(tName) {
+		var tableName = tName;
+		$("#inner-detail").html("<img src='image/loading.gif'/>");
+
+		$.ajax({
+			url: "ajax/detail-help-table.jsp?table=" + tableName + "&t=" + (new Date().getTime()),
+			success: function(data){
+				$("#inner-detail").html(data);
+			}
+		});	
+	}
+
+	function loadView(tName) {
+		var tableName = tName;
+		$("#inner-detail").html("<img src='image/loading.gif'/>");
+
+		$.ajax({
+			url: "ajax/detail-help-table.jsp?table=" + tableName + "&t=" + (new Date().getTime()),
+			success: function(data){
+				$("#inner-detail").html(data);
+			}
+		});	
+	}
+	
+	function clearField() {
+		$("#searchFilter").val("");
+		searchWithFilter('');
+	}
+
+	function copyPaste(val) {
+		$("#qry_stmt").insertAtCaret(" " + val);
+	}
+	
+	$.fn.insertAtCaret = function (tagName) {
+		return this.each(function(){
+			if (document.selection) {
+				//IE support
+				this.focus();
+				sel = document.selection.createRange();
+				sel.text = tagName;
+				this.focus();
+			}else if (this.selectionStart || this.selectionStart == '0') {
+				//MOZILLA/NETSCAPE support
+				startPos = this.selectionStart;
+				endPos = this.selectionEnd;
+				scrollTop = this.scrollTop;
+				this.value = this.value.substring(0, startPos) + tagName + this.value.substring(endPos,this.value.length);
+				this.focus();
+				this.selectionStart = startPos + tagName.length;
+				this.selectionEnd = startPos + tagName.length;
+				this.scrollTop = scrollTop;
+			} else {
+				this.value += tagName;
+				this.focus();
+			}
+		});
+	};	
+			
+	$(document).ready(function(){
+
+		setMode('table');
+
+		$('#searchFilter').change(function(){
+			var filter = $(this).val().toUpperCase();
+			searchWithFilter(filter);
+	 	})
+	 	
+	})	
 </script>
 
 </body>
