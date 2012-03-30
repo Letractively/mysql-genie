@@ -403,7 +403,7 @@
 			success: function(data){
 				temp = temp + data + "</div>";
 				$("BODY").append(temp);
-				$("#"+id).dialog({ width: 700, height: 150 });
+				$("#"+id).dialog({ width: 700, height: 400 });
 				setHighlight();
 			}
 		});		
@@ -426,6 +426,34 @@
 		});		
 	}
 
+	function editText(id) {
+		$("#divText"+id).show();
+		$("#divSql"+id).hide();		
+	}
+	
+	function doTextQry(id) {
+		var sql = $("#text-"+id).val();
+		$("#sql-"+id).html(sql);
+		$("#sql").val(sql);
+		$("#id").val(id);
+		
+		$("#divSql"+id).html("<b>" + sql + "</b> <a href='Javascript:editText("+ id +")'>edit</a>");
+		
+		$("#divText"+id).hide();
+		$("#divSql"+id).show();
+		
+		$("#div-"+id).html("<img src='image/loading.gif'/>");
+//		alert(sql);
+		$.ajax({
+			url: "ajax/qry-simple.jsp",
+			data: $("#form0").serialize(),
+			success: function(data){
+				$("#div-"+id).html(data);
+				setHighlight();
+			}
+		});		
+	}
+	
 	function openWorksheet() {
 		var temp = "";
 		$("div ").each(function() {
