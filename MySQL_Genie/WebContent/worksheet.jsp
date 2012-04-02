@@ -42,7 +42,7 @@
 &nbsp;&nbsp;
 <%= cn.getUrlString() %>
 
-<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
@@ -51,8 +51,8 @@
 &nbsp;&nbsp;
 
 <br>
-<a href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
-<div id="div1">
+<a style="float: left;" href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
+<div id="div1" style="float: left;">
 <a href="Javascript:showHelp()">Help</a>
 <div id="helper" style="display: none">
 
