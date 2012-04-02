@@ -6,6 +6,8 @@ import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Utility class for Genie
@@ -102,29 +104,36 @@ public class Util {
 	
 	public static List<String> getTables(String sql) {
 		List<String> tables = new ArrayList<String>();
+		Set<String> tbls = new HashSet<String>();
 
-		String temp=sql.replaceAll("[\n\r\t]", " ");
+		String temp=sql.replaceAll("[\n\r\t]", " ").toUpperCase();
+
+		String froms[] = temp.split(" FROM ");
 		
-		int idx = temp.toUpperCase().indexOf(" FROM ");
-		if (idx > 0) {
-			// process multiple tables
-			String temp2 = temp.substring(idx + 6);
-			int idx2 = temp2.toUpperCase().indexOf(" WHERE ");
-			if (idx2 > 0) temp2 = temp2.substring(0, idx2);
+		for (int i=1; i < froms.length; i++) {
+			String str = froms[i];
+			System.out.println(i + ": " + str);
+			if (str.startsWith("(")) continue;
 			
-			System.out.println("temp2=" +temp2);
+			int idx = str.indexOf(" WHERE ");
+			if (idx > 0) str = str.substring(0, idx);
+
+			System.out.println("*** " + i + ": " + str);
 			
-			String a[] = temp2.split(",");
-			for (int i=0; i<a.length; i++) {
-				String tname = a[i].trim();
+			String a[] = str.split(",");
+			for (int j=0; j<a.length; j++) {
+				String tname = a[j].trim();
 				int x = tname.indexOf(" ");
 				if (x > 0) tname = tname.substring(0, x).trim();
-				System.out.println(i + "=" +tname);
+				System.out.println(j + "=" +tname);
 				
-				tables.add(tname);
-			}
+				tbls.add(tname);
+			}			
 		}
+		
+		tables.addAll(tbls);
 		
 		return tables;
 	}
+	
 }
