@@ -13,6 +13,8 @@
 	String object = request.getParameter("object");
 	String incl = request.getParameter("incl");
 	String excl = request.getParameter("excl");
+
+	String sql = request.getParameter("text_sql");
 	
 	SchemaDiff sd = (SchemaDiff) session.getAttribute("SD");
 	if (sd== null) {
@@ -20,7 +22,8 @@
 		session.setAttribute("SD", sd);
 	}
 	
-	sd.startCompare(object, incl, excl);
+	if (sql !=null) object = "Q";
+	sd.startCompare(object, incl, excl, sql);
 %>
 
 <%= sd.getResult() %>

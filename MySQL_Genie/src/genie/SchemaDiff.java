@@ -21,7 +21,7 @@ public class SchemaDiff {
 		this.cn2 = cn2;
 	}
 	
-	public void startCompare(String object, String incl, String excl) {
+	public void startCompare(String object, String incl, String excl, String sql) {
 		running = true;
 		progressStr = "";
 		resultStr = "";
@@ -37,12 +37,49 @@ public class SchemaDiff {
 		if (object.equals("P")) compareProgram();
 		if (object.equals("TR")) compareTrigger();
 		
+		if (object.equals("Q")) compareQuery(sql);
+		
 		addProgress("Done.");
 
 		this.resultStr = "Finished <br/><br/>" + resultStr;
 		
 //		cn2.disconnect();
 		running = false;		
+	}
+	
+	public void compareQuery(String sql) {
+		System.out.println(sql);
+
+		List<String[]> c1 = cn1.queryMultiCol(sql, 0, false);
+		List<String[]> c2 = cn2.queryMultiCol(sql, 0, false);
+		
+		boolean diff = false;
+
+		if (c1.size() != c2.size()) diff = true;
+		for (int i=0; c2.size() > 0 && i<c1.size(); i++) {
+			String[] a1 = c1.get(i);
+			String[] a2 = c2.get(i);
+					
+			for (int j=0; j < a1.length; j ++) {
+				if (a1[j] == null) {
+					if (a2[j] != null) {
+						diff = true;
+						break;
+					}
+				} else if (!a1[j].equals(a2[j])) {
+					diff = true;
+					break;
+				}
+			}
+		
+			if (diff) break;
+		}
+
+		if (diff) {
+			addResult("RESULT", c1, c2);
+		} else {
+			resultStr = "Identical!";
+		}
 	}
 	
 	public void compareTable() {
@@ -441,7 +478,7 @@ System.out.println(qry1);
                 i++;
                 j++;
             }
-            else if (opt[i+1][j] >= opt[i][j+1]) res += ("< " + x[i++] + "<br>"); 
+            else if (opt[i+1][j] >= opt[i][j+1]) res += ("< <span style='color: #0000ff'>" + x[i++] + "</span><br>"); 
             		
             else                                 res += ("> " + y[j++] + "<br>");
         }
@@ -449,11 +486,12 @@ System.out.println(qry1);
         // dump out one remainder of one string if the other is exhausted
         while(i < M || j < N) {
             if      (i == M) res += ("> " + y[j++] + "<br>");
-            else if (j == N) res += ("< " + x[i++] + "<br>");
+            else if (j == N) res += ("< <span style='color: #0000ff'>" + x[i++] + "</span><br>");
         }
         
         return res;
     }
+
 
     public void cancel() {
     	this.running = false;

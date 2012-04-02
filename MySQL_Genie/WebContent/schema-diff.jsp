@@ -105,9 +105,58 @@
     	$("#stopButton").attr("disabled", true);
     }
     
-/*     $(document).ready(function() {
-        startCompare();
-	}); */
+    function showDivA() {
+    	$("#divA").show();
+    	$("#divB").hide();
+    }
+
+    function showDivB() {
+    	$("#divB").show();
+    	$("#divA").hide();
+    }
+
+    function setReady2() {
+    	$("#startButton2").attr("disabled", false);
+    	$("#stopButton2").attr("disabled", true);
+    }
+    
+    function startCompare2() {
+    	$("#startButton2").attr("disabled", true);
+    	$("#stopButton2").attr("disabled", false);
+    	startCompareRoutine2();
+    }
+    
+    function stopCompare2() {
+    	
+    	clearTimeout(to2);
+		$.ajax({
+			type: 'POST',
+			url: "ajax/cancel-compare.jsp",
+			data: $("#form0").serialize(),
+			success: function(data){
+		    	setReady2();
+			}
+		});	    	
+
+    }    
+    
+    function startCompareRoutine2() {
+    	$("#comparisonResult").html("Comparing...");
+		$("#comparisonResult").append("<div id='wait'><img src='image/loading.gif'/></div>");
+
+		$.ajax({
+			type: 'POST',
+			url: "ajax/compare-behind.jsp",
+			data: $("#form2").serialize(),
+			success: function(data){
+				$("#comparisonResult").html(data);
+				$("#wait").remove();
+				setReady2();
+			}
+		});	
+    	
+    }      
+
     </script>
   </head>
   
@@ -133,6 +182,10 @@ Schema 1: <%= cn.getUrlString() %>
 <br/>
 Schema 2: <%= cn2.getUrlString() %>
 </b><br/><br/>
+
+
+<div id="divA">
+<a href="Javascript:showDivB();">Compare Data By Query</a>
 
 <form name="form0" id="form0">
 <table style="margin-left: 40px;">
@@ -171,6 +224,29 @@ Schema 2: <%= cn2.getUrlString() %>
 <div id="progressDiv" style="margin-left: 40px; border: 1px solid #D9D9D9; width: 400px; height: 200px; overflow: auto;">
 	<div id="comparisonProgress"></div>
 </div>
+
+</div>
+
+<div id="divB" style="display: none;">
+<a href="Javascript:showDivA();">Compare Schema</a>
+<form name="form1" id="form2">
+<table style="margin-left: 40px;">
+<tr>
+	<td>Query statement<br/>
+		<input name="object" type="hidden" value="S">
+		<textarea id="text_sql" name="text_sql" rows=5 cols=60></textarea>
+	</td>
+</tr>
+<tr>
+	<td colspan=2>
+		<input id="startButton2" type="button" value="Start Compare" onClick="javascript:startCompare2()">
+		<input id="stopButton2" type="button" value="Stop" disabled="true"  onClick="javascript:stopCompare2()">
+	</td>
+</tr>
+</table>
+</form>
+</div>
+
 
 <br/><br/>
 
