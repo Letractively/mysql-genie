@@ -59,7 +59,10 @@
 				setHighlight();
 				$("#" + divName).slideDown();
 				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	
     	
 	}
@@ -213,6 +216,7 @@
 		$("#sortColumn").val($("#sort-"+id).val());
 		$("#sortDirection").val($("#sortdir-"+id).val());		
 
+		$('body').css('cursor', 'wait'); 
 		$.ajax({
 			type: 'POST',
 			url: "ajax/qry-simple.jsp",
@@ -223,7 +227,11 @@
 				hideIfAny(id);
 				
 				setHighlight();
-			}
+				$('body').css('cursor', 'default'); 
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	
 	}
 
@@ -326,7 +334,10 @@
 			success: function(data){
 				$("#tableList1").html(data);
 				$("#tableList1").slideDown();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});
 	}
 
@@ -335,7 +346,10 @@
 			url: "ajax/show-erd.jsp?tname=" + tname + "&t=" + (new Date().getTime()),
 			success: function(data){
 				$("#ERD").html(data);
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});
 	}
 
@@ -371,7 +385,10 @@
 				$("BODY").append(temp);
 				$("#"+id).dialog({ width: 700, height: 150 });
 				setHighlight();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});		
 	}
 
@@ -405,7 +422,10 @@
 				$("BODY").append(temp);
 				$("#"+id).dialog({ width: 700, height: 400 });
 				setHighlight();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});		
 	}
 
@@ -422,7 +442,10 @@
 			success: function(data){
 				$("#div-"+id).html(data);
 				setHighlight();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});		
 	}
 
@@ -450,7 +473,10 @@
 			success: function(data){
 				$("#div-"+id).html(data);
 				setHighlight();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});		
 	}
 	

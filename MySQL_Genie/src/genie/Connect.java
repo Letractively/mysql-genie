@@ -331,7 +331,7 @@ public class Connect implements HttpSessionBindingListener {
        			String conName = rs.getString("CONSTRAINT_NAME");
        			String tabName = rs.getString("TABLE_NAME");
 
-       			pkByTab.put(tabName, conName);
+       			pkByTab.put(tabName.toUpperCase(), conName);
        			pkByCon.put(conName, tabName);
        			//System.out.println(tabName + "," + conName);
        		}
@@ -704,7 +704,7 @@ public class Connect implements HttpSessionBindingListener {
 			return getPrimaryKeyName(temp[0], temp[1]);
 		}
 		
-		String pkName = pkByTab.get(tname);
+		String pkName = pkByTab.get(tname.toUpperCase());
 		
 		// check for Synonym
 		if (pkName == null) {
@@ -836,7 +836,7 @@ public class Connect implements HttpSessionBindingListener {
 		
 		for (int i=0; i<foreignKeys.size(); i++) {
 			ForeignKey fk = foreignKeys.get(i);
-			if (fk.tableName.equals(tname)) {
+			if (fk.tableName.equalsIgnoreCase(tname)) {
 				list.add(fk);
 			}
 		}

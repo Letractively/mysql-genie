@@ -29,7 +29,7 @@
 &nbsp;
 <a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" border="0"></a>
 &nbsp;
-<a href="Javascript:hideNullColumnTable('<%=id%>')">Hide Null</a>
+<%-- <a href="Javascript:hideNullColumnTable('<%=id%>')">Hide Null</a> --%>
 <div id="div-<%=id%>">
 <jsp:include page='qry-simple.jsp'>
 	<jsp:param value="<%= sql %>" name="sql"/>
