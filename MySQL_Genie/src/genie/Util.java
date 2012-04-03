@@ -118,14 +118,14 @@ public class Util {
 			int idx = str.indexOf(" WHERE ");
 			if (idx > 0) str = str.substring(0, idx);
 
-			System.out.println("*** " + i + ": " + str);
+			//System.out.println("*** " + i + ": " + str);
 			
 			String a[] = str.split(",");
 			for (int j=0; j<a.length; j++) {
 				String tname = a[j].trim();
 				int x = tname.indexOf(" ");
 				if (x > 0) tname = tname.substring(0, x).trim();
-				System.out.println(j + "=" +tname);
+				//System.out.println(j + "=" +tname);
 				
 				tbls.add(tname);
 			}			

@@ -56,7 +56,10 @@
 				$("#wait").remove();
 				checkProgress();
 				setReady();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	
     	
     }    
@@ -76,7 +79,10 @@
 					clearTimeout(to2);
 				else
 					to2 = setTimeout("checkProgress()",1000);
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	    	
     }
     
@@ -95,7 +101,10 @@
 			data: $("#form0").serialize(),
 			success: function(data){
 		    	setReady();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	    	
 
     }
@@ -135,7 +144,10 @@
 			data: $("#form0").serialize(),
 			success: function(data){
 		    	setReady2();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	    	
 
     }    
@@ -152,7 +164,10 @@
 				$("#comparisonResult").html(data);
 				$("#wait").remove();
 				setReady2();
-			}
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
 		});	
     	
     }      

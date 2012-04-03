@@ -89,6 +89,22 @@
 	if (tbls.size()>0) tbl = tbls.get(0);
 //	System.out.println("XXX TBL=" + tbl);
 
+	//String temp = sql.replaceAll("\n", " ").trim();
+	String temp=sql.replaceAll("[\n\r\t]", " ");
+	
+	int idx = temp.toUpperCase().indexOf(" FROM ");
+	if (idx >0) {
+		temp = temp.substring(idx + 6);
+		idx = temp.indexOf(" ");
+		if (idx > 0) temp = temp.substring(0, idx).trim();
+		
+		tbl = temp.trim();
+		
+		
+		idx = tbl.indexOf(" ");
+		if (idx > 0) tbl = tbl.substring(0, idx);
+	}
+
 	boolean hasDataLink = false;
 	String tname = tbl;
 	if (tname.indexOf(".") > 0) tname = tname.substring(tname.indexOf(".")+1);
@@ -248,7 +264,7 @@ Rows/Page
 	<th class="headerRow"><b>PK</b></th>
 <%
 	}
-	if (fkLinkTab.size()>0 && dLink && false) {
+	if (fkLinkTab.size()>0 && dLink) {
 		offset ++;
 %>
 	<th class="headerRow"><b>FK Link</b></th>
@@ -331,7 +347,7 @@ System.out.println("pkColList.get(i)=" + pkColList.get(i));
 	</td>
 <%
 	}
-if (fkLinkTab.size()>0 && dLink && false) {
+if (fkLinkTab.size()>0 && dLink) {
 %>
 <td class="<%= rowClass%>">
 <% 
