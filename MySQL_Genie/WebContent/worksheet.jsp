@@ -50,6 +50,12 @@
 <a href="Javascript:newQry()">Query</a>
 &nbsp;&nbsp;
 
+<a href="Javascript:clearWorksheet()">Clear</a>
+&nbsp;&nbsp;
+<a href="Javascript:saveWorksheet()">Save</a>
+&nbsp;&nbsp;
+<a id="load" style="display:none;" href="Javascript:loadWorksheet()">Load</a>
+
 <br>
 <a style="float: left;" href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
 <div id="div1" style="float: left;">
@@ -152,6 +158,76 @@
 <script type="text/javascript">
 	var gMode = "table";
 	var gid = 0;
+	var DBSTR = "<%= cn.getUrlString() %>";
+
+	function htmlDecode(input){
+		var e = document.createElement('div');
+		e.innerHTML = input;
+		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
+	}
+	
+	function clearWorksheet(){
+		temp2 = "";
+		$("div.ui-dialog").each(function() {
+			$(this).remove();
+		});		
+	}
+	
+	function saveWorksheet() {
+		var temp = "";
+		$("div ").each(function() {
+			var divName = $(this).attr('id');
+			if (divName != null && divName.indexOf("divSql")>=0) {
+				var id = divName.substring(4);
+				if ($("#" +divName+":visible").length > 0) {
+					var q = $("#" + divName+" b").html();
+					temp += htmlDecode(q) + "!";
+				}
+			}
+		});
+		//alert(temp);
+
+		temp2 = "";
+		$("div.ui-dialog").each(function() {
+			var pos = $(this).position();
+			if ($(this).is(':visible')) {
+				var divName = pos.left + "," + pos.top + "," + $(this).width() + "," + $(this).height();
+ 				temp2 += divName + "!";
+			}
+		});
+//		alert(temp2);
+		
+		localStorage.setItem(DBSTR + ' genie-worksheet-sql', temp);
+		localStorage.setItem(DBSTR + ' genie-worksheet-pos', temp2);
+		
+		$("#load").show();
+	}
+
+	function loadWorksheet() {
+		var sqls = localStorage.getItem(DBSTR + ' genie-worksheet-sql');
+		var positions = localStorage.getItem(DBSTR + ' genie-worksheet-pos');
+		
+		var s = sqls.split("!");
+		var p = positions.split("!");
+		
+//		alert(sqls);
+//		alert(positions);
+		
+		for (i=0;i<s.length;i++) {
+//			alert(i + ":" + s[i] + " " + p[i]);
+			
+			var t = p[i].split(",");
+			var left = t[0];
+			var top = t[1];
+			var width = t[2];
+			var height = t[3];
+			
+			if (s[i].length > 1)
+				openQryPos(s[i], left, top, width, height);
+		}	
+//		openQryPos("select * from tab", 300, 150, 500, 300);
+//		openQryPos("select * from tab", 500, 399, 300, 600);
+	}
 
 	function clearQuery() {
 		$("#qry_stmt").val('');	
@@ -205,6 +281,29 @@
 		});
 	}    
 	
+	function openQryPos(sql, l, t, w, h) {
+		//var id = "id"+(new Date().getTime());
+		gid = gid + 1;
+		var id = "id-" + gid;
+		var temp ="<div id='" + id + "' title='Query' >";
+		//alert(temp);
+		
+		$.ajax({
+			url: "ajax/dialog-qry.jsp?sql=" + encodeURI(sql),
+			success: function(data){
+				temp = temp + data + "</div>";
+				$("BODY").append(temp);
+				$("#"+id).dialog({ width: w, height: h });
+				$("#"+id).dialog("option", "position", [Number(l), Number(t)]);
+				setHighlight();
+//				alert(l + "," + t);
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
+		});
+	}    
+/*
 	function doOpenQry(id) {
 		var sql = $("#sql-"+id).html();
 		//$("#id").val(id);
@@ -220,7 +319,7 @@
             }  
 		});		
 	}	
-	
+*/	
 	function showHelp() {
 		$("#helper").slideToggle();
 	}	
@@ -370,7 +469,10 @@
 	 }
  }
 %>
-	 	
+
+		var sqls = localStorage.getItem(DBSTR + ' genie-worksheet-sql');
+		if (sqls != null && sqls.length > 0) $("#load").show();
+
 	})	
 </script>
 
