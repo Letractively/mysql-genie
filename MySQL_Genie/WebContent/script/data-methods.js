@@ -468,11 +468,12 @@
 		$("#div-"+id).html("<img src='image/loading.gif'/>");
 //		alert(sql);
 		$.ajax({
-			url: "ajax/qry-simple.jsp",
+			url: "ajax/qry-work.jsp",
 			data: $("#form0").serialize(),
 			success: function(data){
 				$("#div-"+id).html(data);
 				setHighlight();
+				hideNullColumnTable(""+id);
 			},
             error:function (jqXHR, textStatus, errorThrown){
             	alert(jqXHR.status + " " + errorThrown);

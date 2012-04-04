@@ -74,7 +74,7 @@
 &nbsp;&nbsp;
 <%= cn.getUrlString() %>
 
-<br/>
+&nbsp;&nbsp;&nbsp;&nbsp;
 
 <a href="Javascript:hideNullColumn()">Hide Null</a>
 &nbsp;&nbsp;

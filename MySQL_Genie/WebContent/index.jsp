@@ -17,13 +17,17 @@
 	<title><%= title %></title>
 	
 	<script src="script/jquery.js" type="text/javascript"></script>
-    <script src="script/jquery.colorbox-min.js"></script>
+<!--     <script src="script/jquery.colorbox-min.js"></script> -->
 	<script src="script/main.js?20120301" type="text/javascript"></script>
 
-    <link rel="stylesheet" href="css/colorbox.css" />
-    <link rel='stylesheet' type='text/css' href='css/style.css'> 
+<!--     <link rel="stylesheet" href="css/colorbox.css" /> -->
+    <link rel='stylesheet' type='text/css' href='css/style.css'>
 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
+	
+	<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" type="text/css"/>
+	<script src="script/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
+
 <%--
 	<script type="text/javascript" src="script/shCore.js"></script>
 	<script type="text/javascript" src="script/shBrushSql.js"></script>
@@ -43,7 +47,7 @@ $(window).resize(function() {
 	
 $(document).ready(function(){
 
-	$(".about").colorbox();
+//	$(".about").colorbox();
 
 	setMode('table');
 	checkResize();
@@ -63,6 +67,22 @@ $(document).ready(function(){
  	
 })
 
+	function aboutGenie() {
+		// a workaround for a flaw in the demo system (http://dev.jqueryui.com/ticket/4375), ignore!
+		$( "#dialog:ui-dialog" ).dialog( "destroy" );
+	
+		$( "#dialog-modal" ).dialog({
+			height: 450,
+			width: 500,
+			modal: true,
+			buttons: {
+				Ok: function() {
+					$( this ).dialog( "close" );
+				}
+			}			
+		});
+	}
+	
 	function toggleKeepAlive() {
 		var t = $("#keepalivelink").html();
 		if (t=="Off") {
@@ -110,6 +130,8 @@ function callserver() {
 
 </head> 
 
+<body>
+
 <table width=100%>
 <td><img src="image/lamp.png"/></td>
 <td valign=bottom><h3><%= cn.getUrlString() %></h3></td>
@@ -138,8 +160,9 @@ function callserver() {
 Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 --%>
 
-<a class='about' href='ajax/about-genie.jsp'>About Genie</a>
+<!-- <a class='about' href='ajax/about-genie.jsp'>About Genie</a> -->
 
+<a href='Javascript:aboutGenie()'>About Genie</a>
 </td>
 <td align=right>
 <b>Search</b> <input id="globalSearch" style="width: 200px;"/>
@@ -196,3 +219,30 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 <input id="sql" name="sql" type="hidden"/>
 <input name="norun" type="hidden" value="YES"/>
 </form>
+
+
+<div id="dialog-modal" title="About MySQL Genie" style="display:none; background: #ffffff;">
+<img src="image/genie2.jpg" align="center" />
+<br/>
+Thanks for using MySQL Genie.<br/>
+
+Genie is open-source web-based tool for MySQL database.<br/>
+Genie will help you navigate through database objects and their relationships.<br/> 
+
+<br/>
+If you have any question or suggestion, please feel free to contact me.
+<br/><br/>
+
+Please download the latest version here:<br/>
+<a href="http://code.google.com/p/mysql-genie/">http://code.google.com/p/mysql-genie/</a>
+<br/><br/>
+
+Apr. 4, 2012<br/>
+Spencer Hwang - the creator of Genie<br/>
+<a href="mailto:spencer.hwang@gmail.com">spencer.hwang@gmail.com</a>
+
+</div>
+
+	
+</body>
+</html>

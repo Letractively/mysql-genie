@@ -31,10 +31,13 @@
 &nbsp;
 <%-- <a href="Javascript:hideNullColumnTable('<%=id%>')">Hide Null</a> --%>
 <div id="div-<%=id%>">
-<jsp:include page='qry-simple.jsp'>
+<jsp:include page='qry-work.jsp'>
 	<jsp:param value="<%= sql %>" name="sql"/>
 	<jsp:param value="0" name="dataLink"/>
 	<jsp:param value="<%= id %>" name="id"/>
 </jsp:include>
 </div>
 
+<script type="text/javascript">
+	hideNullColumn("" + <%= id %>);
+</script>
