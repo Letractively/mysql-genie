@@ -8,7 +8,7 @@
 %>
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
-	String title = "Worksheet";
+	String title = "Work Sheet";
 	
 	String sqls = request.getParameter("sqls");
 	String sqlsStr[] = null;
@@ -16,14 +16,21 @@
 	if (sqls != null) {
 		sqlsStr = sqls.split("!");
 	}
-%>
 
+	String worksheetName = request.getParameter("name"); 
+	
+	if (worksheetName == null) worksheetName = "no name";
+
+	String qry = "SELECT SQL_STMTS, COORDS FROM GENIE_WORK_SHEET where id ='" + Util.escapeQuote(worksheetName) + "'";
+	List<String[]> loaded = cn.queryMultiCol(qry, 2, false);
+%>
 
 <html>
 <head> 
-	<title><%= title %></title>
+	<title><%= title %>- <%= worksheetName %></title>
     <script src="script/jquery.js" type="text/javascript"></script>
-    <script src="script/data-methods.js?20120302" type="text/javascript"></script>
+    <script src="script/data-methods.js?20120405" type="text/javascript"></script>
+    <script src="script/worksheet-methods.js?20120405" type="text/javascript"></script>
 
     <script src="script/jquery.colorbox-min.js"></script>
 
@@ -33,14 +40,54 @@
 
 	<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" type="text/css"/>
 	<script src="script/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
+
+	<style>
+		input.text { margin-bottom:12px; width:95%; padding: .4em; }
+		fieldset { padding:0; border:0; margin-top:25px; }
+		.ui-dialog .ui-state-error { padding: .3em; }
+		.validateTips { border: 1px solid transparent; padding: 0.3em; }
+	</style>
+	<script>
+	</script>
+
     
 </head> 
 
-<body>
+<body style="background-color:#ffffff;">
 
-<img src="image/worksheet.png" align="middle"/> <b>WORKSHEET</b>
+<div style="float: left;">
+<img src="image/worksheet.png" align="middle"/> <b>WORK SHEET</b>
 &nbsp;&nbsp;
 <%= cn.getUrlString() %>
+</div>
+
+<div style="float: right;">
+
+<div id="dialog-form" title="Rename Work Sheet">
+	<form>
+	<fieldset>
+		<label for="name">Work Sheet Name</label>
+		<input type="text" name="name1" id="name1" class="text ui-widget-content ui-corner-all" />
+	</fieldset>
+	</form>
+</div>
+
+<div id="dialog-form2" title="Load Work Sheet">
+<div id="load-worksheet-list"></div>
+</div>
+
+
+<div id="rename-contain" class="ui-widget">
+	Name: <span style="color: #0000FF;"><b><span id="worksheetNameDisp"><%= worksheetName %></span></b></span>
+	<button id="rename1">Rename</button>
+	<button id="save1">Save</button>
+	<button id="clear1">Clear</button>
+	<button id="load1">Load</button>
+</div>
+
+
+</div><!-- End demo -->
+<br clear="all"/>
 
 &nbsp;&nbsp;&nbsp;&nbsp;
 <a href="Javascript:hideNullColumn()">Hide Null</a>
@@ -50,14 +97,10 @@
 <a href="Javascript:newQry()">Query</a>
 &nbsp;&nbsp;
 
-<a href="Javascript:clearWorksheet()">Clear</a>
-&nbsp;&nbsp;
-<a href="Javascript:saveWorksheet()">Save</a>
-&nbsp;&nbsp;
-<a id="load" style="display:none;" href="Javascript:loadWorksheet()">Load</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 
 <br>
-<a style="float: left;" href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" src="image/minus.gif"></a>
+<a style="float: left;" href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" border=0 src="image/minus.gif"></a>
 <div id="div1" style="float: left;">
 <a href="Javascript:showHelp()">Help</a>
 <div id="helper" style="display: none">
@@ -100,20 +143,7 @@
 	<a href="Javascript:copyPaste('EXISTS');">EXISTS</a>&nbsp;
 	<a href="Javascript:copyPaste('ORDER BY');">ORDER-BY</a>&nbsp;
 	<a href="Javascript:copyPaste('DESC');">DESC</a>&nbsp;
-<!-- 
-	<br/>
-	&nbsp;&nbsp;&nbsp;
-	<a href="Javascript:copyPaste('LOWER( )');">LOWER( )</a>&nbsp;
-	<a href="Javascript:copyPaste('UPPER( )');">UPPER( )</a>&nbsp;
-	<a href="Javascript:copyPaste('SUBSTR( )');">SUBSTR( )</a>&nbsp;
-	<a href="Javascript:copyPaste('TRIM( )');">TRIM( )</a>&nbsp;
-	<a href="Javascript:copyPaste('LENGTH( )');">LENGTH( )</a>&nbsp;
-	&nbsp;&nbsp;&nbsp;
-	<a href="Javascript:copyPaste('TO_DATE( )');">TO_DATE( )</a>&nbsp;
-	<a href="Javascript:copyPaste('TO_NUMBER( )');">TO_NUMBER( )</a>&nbsp;
-	<a href="Javascript:copyPaste('TO_CHAR( )');">TO_CHAR( )</a>&nbsp;
 
- -->
  	<br/>
 	&nbsp;&nbsp;&nbsp;
 	<a href="Javascript:copyPaste('GROUP BY');">GROUP-BY</a>&nbsp;
@@ -125,8 +155,6 @@
 	<a href="Javascript:copyPaste('MAX( )');">MAX( )</a>&nbsp;
 	
 	</div>
-
-
 </div>
 <form>
 <textarea id="qry_stmt" rows=3 cols=80>
@@ -159,297 +187,8 @@
 	var gMode = "table";
 	var gid = 0;
 	var DBSTR = "<%= cn.getUrlString() %>";
+	var gWorksheetName = "<%= worksheetName %>";
 
-	function htmlDecode(input){
-		var e = document.createElement('div');
-		e.innerHTML = input;
-		return e.childNodes.length === 0 ? "" : e.childNodes[0].nodeValue;
-	}
-	
-	function clearWorksheet(){
-		temp2 = "";
-		$("div.ui-dialog").each(function() {
-			$(this).remove();
-		});		
-	}
-	
-	function saveWorksheet() {
-		var temp = "";
-		$("div ").each(function() {
-			var divName = $(this).attr('id');
-			if (divName != null && divName.indexOf("divSql")>=0) {
-				var id = divName.substring(4);
-				if ($("#" +divName+":visible").length > 0) {
-					var q = $("#" + divName+" b").html();
-					temp += htmlDecode(q) + "!";
-				}
-			}
-		});
-		//alert(temp);
-
-		temp2 = "";
-		$("div.ui-dialog").each(function() {
-			var pos = $(this).position();
-			if ($(this).is(':visible')) {
-				var divName = pos.left + "," + pos.top + "," + $(this).width() + "," + $(this).height();
- 				temp2 += divName + "!";
-			}
-		});
-//		alert(temp2);
-		
-		localStorage.setItem(DBSTR + ' genie-worksheet-sql', temp);
-		localStorage.setItem(DBSTR + ' genie-worksheet-pos', temp2);
-		
-		$("#load").show();
-	}
-
-	function loadWorksheet() {
-		var sqls = localStorage.getItem(DBSTR + ' genie-worksheet-sql');
-		var positions = localStorage.getItem(DBSTR + ' genie-worksheet-pos');
-		
-		var s = sqls.split("!");
-		var p = positions.split("!");
-		
-//		alert(sqls);
-//		alert(positions);
-		
-		for (i=0;i<s.length;i++) {
-//			alert(i + ":" + s[i] + " " + p[i]);
-			
-			var t = p[i].split(",");
-			var left = t[0];
-			var top = t[1];
-			var width = t[2];
-			var height = t[3];
-			
-			if (s[i].length > 1)
-				openQryPos(s[i], left, top, width, height);
-		}	
-//		openQryPos("select * from tab", 300, 150, 500, 300);
-//		openQryPos("select * from tab", 500, 399, 300, 600);
-	}
-
-	function clearQuery() {
-		$("#qry_stmt").val('');	
-	}
-	function runQry() {
-		var sql = $("#qry_stmt").val();
-		openQry(sql);
-	}
-	
-	function openQry(sql) {
-		//var id = "id"+(new Date().getTime());
-		gid = gid + 1;
-		var id = "id-" + gid;
-		var temp ="<div id='" + id + "' title='Query' >";
-		//alert(temp);
-		//alert(encodeURI(sql));
-		$.ajax({
-			url: "ajax/dialog-qry.jsp?sql=" + encodeURI(sql),
-			success: function(data){
-				temp = temp + data + "</div>";
-				$("BODY").append(temp);
-				$("#"+id).dialog({ width: 700, height: 400 });
-				setHighlight();
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});
-	}    
-	
-	function openQryIndex(sql, idx) {
-		//var id = "id"+(new Date().getTime());
-		gid = gid + 1;
-		var id = "id-" + gid;
-		var temp ="<div id='" + id + "' title='Query' >";
-		//alert(temp);
-		//alert(encodeURI(sql));
-		$.ajax({
-			url: "ajax/dialog-qry.jsp?sql=" + encodeURI(sql),
-			success: function(data){
-				temp = temp + data + "</div>";
-				$("BODY").append(temp);
-				$("#"+id).dialog({ width: 700, height: 200 });
-				$("#"+id).dialog("option", "position", [200 + idx*50, 200 + idx*50]);
-				//alert($("#"+id + " > table[0]").height());
-				setHighlight();
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});
-	}    
-	
-	function openQryPos(sql, l, t, w, h) {
-		//var id = "id"+(new Date().getTime());
-		gid = gid + 1;
-		var id = "id-" + gid;
-		var temp ="<div id='" + id + "' title='Query' >";
-		//alert(temp);
-		
-		$.ajax({
-			url: "ajax/dialog-qry.jsp?sql=" + encodeURI(sql),
-			success: function(data){
-				temp = temp + data + "</div>";
-				$("BODY").append(temp);
-				$("#"+id).dialog({ width: w, height: h });
-				$("#"+id).dialog("option", "position", [Number(l), Number(t)]);
-				setHighlight();
-//				alert(l + "," + t);
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});
-	}    
-/*
-	function doOpenQry(id) {
-		var sql = $("#sql-"+id).html();
-		//$("#id").val(id);
-		$("#div-"+id).html("<img src='image/loading.gif'/>");
-		$.ajax({
-			url: "ajax/qry-simple.jsp?id=" + id  + "&sql="+ encodeURI(sql),
-			success: function(data){
-				$("#div-"+id).html(data);
-				setHighlight();
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});		
-	}	
-*/	
-	function showHelp() {
-		$("#helper").slideToggle();
-	}	
-	
-	function setMode(mode) {
-		var gotoUrl = "";
-		var select = "";
-		
-		if (mode == "table") {
-			gotoUrl = "ajax/list-table.jsp";
-			select = "selectTable";
-		} else if (mode == "view") {
-			gotoUrl = "ajax/list-view.jsp";
-			select = "selectView";
-		}
-
-		$("#selectTable").css("font-weight", "");
-		$("#selectView").css("font-weight", "");
-		$("#selectTable").css("background-color", "");
-		$("#selectView").css("background-color", "");
-
-		cleanPage();
-		$("#inner-helper").html("<img src='image/loading.gif'/>");
-		$.ajax({
-			url: gotoUrl,
-			success: function(data){
-				$("#inner-helper").html(data);
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});
-		
-		$("#" + select).css("font-weight", "bold");
-		$("#" + select).css("background-color", "#d0d0ff");
-		
-		gMode = mode;
-	}
-
-	function cleanPage() {
-		$("#searchFilter").val("");
-		$("#inner-helper").html('');
-	}
-
-	function searchWithFilter(filter) {
-		var mode = gMode;
-		var gotoUrl = "";
-		
-		if (mode == "table") {
-			gotoUrl = "ajax/list-table.jsp?filter=" + filter;
-		} else if (mode == "view") {
-			gotoUrl = "ajax/list-view.jsp?filter=" + filter;
-		}
-
-		$.ajax({
-			url: gotoUrl,
-			success: function(data){
-				$("#inner-helper").html(data);
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});
-		
-	}
-
-	function loadTable(tName) {
-		var tableName = tName;
-		$("#inner-detail").html("<img src='image/loading.gif'/>");
-
-		$.ajax({
-			url: "ajax/detail-help-table.jsp?table=" + tableName + "&t=" + (new Date().getTime()),
-			success: function(data){
-				$("#inner-detail").html(data);
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});	
-	}
-
-	function loadView(tName) {
-		var tableName = tName;
-		$("#inner-detail").html("<img src='image/loading.gif'/>");
-
-		$.ajax({
-			url: "ajax/detail-help-table.jsp?table=" + tableName + "&t=" + (new Date().getTime()),
-			success: function(data){
-				$("#inner-detail").html(data);
-			},
-            error:function (jqXHR, textStatus, errorThrown){
-            	alert(jqXHR.status + " " + errorThrown);
-            }  
-		});	
-	}
-	
-	function clearField() {
-		$("#searchFilter").val("");
-		searchWithFilter('');
-	}
-
-	function copyPaste(val) {
-		$("#qry_stmt").insertAtCaret(" " + val);
-	}
-	
-	$.fn.insertAtCaret = function (tagName) {
-		return this.each(function(){
-			if (document.selection) {
-				//IE support
-				this.focus();
-				sel = document.selection.createRange();
-				sel.text = tagName;
-				this.focus();
-			}else if (this.selectionStart || this.selectionStart == '0') {
-				//MOZILLA/NETSCAPE support
-				startPos = this.selectionStart;
-				endPos = this.selectionEnd;
-				scrollTop = this.scrollTop;
-				this.value = this.value.substring(0, startPos) + tagName + this.value.substring(endPos,this.value.length);
-				this.focus();
-				this.selectionStart = startPos + tagName.length;
-				this.selectionEnd = startPos + tagName.length;
-				this.scrollTop = scrollTop;
-			} else {
-				this.value += tagName;
-				this.focus();
-			}
-		});
-	};	
-			
 	$(document).ready(function(){
 
 		setMode('table');
@@ -458,6 +197,8 @@
 			var filter = $(this).val().toUpperCase();
 			searchWithFilter(filter);
 	 	})
+	 	
+	 	showLoadWorksheet();
 	 	
 <% if (sqls != null) { 
 	 int idx = 0;
@@ -470,11 +211,32 @@
  }
 %>
 
-		var sqls = localStorage.getItem(DBSTR + ' genie-worksheet-sql');
-		if (sqls != null && sqls.length > 0) $("#load").show();
-
+//		var sqls = localStorage.getItem(DBSTR + ' genie-worksheet-sql');
 	})	
 </script>
+
+
+
+<form id="form-save" name="form-save">
+<input type="hidden" id="save-name" name="name" value=""/>
+<input type="hidden" id="save-sqls" name="sqls" value=""/>
+<input type="hidden" id="save-coords" name="coords" value=""/>
+</form>
+
+<form id="form-load" name="form-load" method="GET">
+<input type="hidden" id="load-name" name="name" value=""/>
+</form>
+
+<%
+	String s1="";
+	String s2="";
+	if (loaded.size() >= 1) {
+		s1 = loaded.get(0)[1];
+		s2 = loaded.get(0)[2];
+	}
+%>
+<div id="loadedSqls" style="display:none;"><%= Util.escapeHtml(s1) %></div>
+<div id="loadedCoords" style="display:none;"><%= Util.escapeHtml(s2) %></div>
 
 </body>
 </html>
