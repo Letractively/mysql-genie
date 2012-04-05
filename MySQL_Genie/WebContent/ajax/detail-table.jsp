@@ -44,7 +44,7 @@ Please select a Table to see the detail.
 %>
 
 <h2>TABLE: <%= table %> &nbsp;&nbsp;<a href="Javascript:runQuery('','<%=tname%>')"><img border=0 src="image/icon_query.png" title="query"></a>
-<a href="erd.jsp?tname=<%=tname%>" target="_blank"><img title="ERD" src="image/erd.gif"></a>
+<a href="erd.jsp?tname=<%=tname%>" target="_blank"><img title="ERD" border=0 src="image/erd.gif"></a>
 </h2>
 
 <%= owner==null?cn.getComment(tname):cn.getSynTableComment(owner, tname) %><br/>
@@ -184,7 +184,7 @@ Please select a Table to see the detail.
 	if (refTabs.size()>0) { 
 %>
 <b>Related Table</b>
-<a href="Javascript:toggleDiv('imgTable','divTable')"><img id="imgTable" src="image/minus.gif"></a>
+<a href="Javascript:toggleDiv('imgTable','divTable')"><img id="imgTable" border=0 src="image/minus.gif"></a>
 <div id="divTable">
 <table border=0>
 <td width=10>&nbsp;</td>
@@ -218,7 +218,7 @@ Please select a Table to see the detail.
 	if (refViews.size()>0) { 
 %>
 <b>Related View</b>
-<a href="Javascript:toggleDiv('imgView','divView')"><img id="imgView" src="image/minus.gif"></a>
+<a href="Javascript:toggleDiv('imgView','divView')"><img id="imgView" border=0 src="image/minus.gif"></a>
 <div id="divView">
 <table border=0>
 <td width=10>&nbsp;</td>
@@ -253,7 +253,7 @@ Please select a Table to see the detail.
 	if (refTrgs.size()>0) { 
 %>
 <b>Related Trigger</b>
-<a href="Javascript:toggleDiv('imgTrg','divTrg')"><img id="imgTrg" src="image/minus.gif"></a>
+<a href="Javascript:toggleDiv('imgTrg','divTrg')"><img id="imgTrg" border=0 src="image/minus.gif"></a>
 <div id="divTrg">
 <table border=0>
 <td width=10>&nbsp;</td>
@@ -289,7 +289,7 @@ Please select a Table to see the detail.
 	if (refPkgs.size()>0) { 
 %>
 <b>Related Program</b>
-<a href="Javascript:toggleDiv('imgPgm','divPgm')"><img id="imgPgm" src="image/minus.gif"></a>
+<a href="Javascript:toggleDiv('imgPgm','divPgm')"><img id="imgPgm" border=0 src="image/minus.gif"></a>
 <div id="divPgm">
 <table border=0>
 <td width=10>&nbsp;</td>

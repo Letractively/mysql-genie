@@ -308,7 +308,7 @@ Found: <%= filteredCount %>
 	id = Util.getId();
 %>
 
-<a href="Javascript:toggleDiv('img-<%=id%>','div-<%=id%>')"><img id="img-<%=id%>" src="image/minus.gif"></a>
+<a href="Javascript:toggleDiv('img-<%=id%>','div-<%=id%>')"><img id="img-<%=id%>" border=0 src="image/minus.gif"></a>
 <div id="div-<%=id%>">
 <%
 for (int i=0; i<fkLinkTab.size(); i++) {

@@ -85,7 +85,7 @@
 <a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
 
 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="Javascript:openWorksheet()">Open Worksheet</a>
+<a href="Javascript:openWorksheet()">Open Work Sheet</a>
 
 <br/><br/>
 
