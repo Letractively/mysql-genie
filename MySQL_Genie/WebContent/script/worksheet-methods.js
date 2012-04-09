@@ -46,7 +46,7 @@
 					var bValid = true;
 					allFields.removeClass( "ui-state-error" );
 
-					bValid = bValid && checkLength( name, "name1", 3, 30 );
+					bValid = bValid && checkLength( name, "name1", 3, 100 );
 
 					if ( bValid ) {
 						renameWorksheet(name.val());
@@ -135,7 +135,11 @@
 			if (nm != 'ui-dialog-title-dialog-form' && nm != 'ui-dialog-title-dialog-form2') {
 				$(this).remove();
 			}
-		});		
+		});	
+		
+		$("div.jSticky-medium").each(function() {
+			$(this).remove();
+		});	
 	}
 	
 	function saveWorksheet() {
@@ -144,23 +148,54 @@
 		$("div ").each(function() {
 			var divName = $(this).attr('id');
 			if (divName != null && divName.indexOf("divSql")>=0) {
-				var id = divName.substring(4);
+				var id = divName.substring(6);
 				if ($("#" +divName+":visible").length > 0) {
 					var q = $("#" + divName+" b").html();
-					temp += htmlDecode(q) + "!";
+					temp += htmlDecode(q) + "!^!";
+				} else {
+					if ($("#divText" +id+":visible").length > 0) {
+						var q = $("#text-" + id).val();
+						temp += htmlDecode(q) + "!^!";
+					}
 				}
 			}
 		});
+		$("p").each(function() {
+			var divName = $(this).attr('id');
+			if (divName != null && divName.indexOf("p-note-")>=0) {
+				var q = 'note:' + $("#" + divName).html();
+				temp += htmlDecode(q) + "!^!";
+			}
+		});			
+		$("textarea").each(function() {
+			
+			//alert("zzz");
+			var divName = $(this).attr('id');
+			//alert("divName=" + divName);
+			if (divName != null && divName.indexOf("textarea-note-")>=0) {
+				//alert(divName);
+				var q = 'note:' + $("#" + divName).val();
+				temp += htmlDecode(q) + "!^!";
+			}
+		});			
 		//alert(temp);
-
+		
 		temp2 = "";
 		$("div.ui-dialog").each(function() {
 			var pos = $(this).position();
 			if ($(this).is(':visible')) {
 				var divName = pos.left + "," + pos.top + "," + $(this).width() + "," + $(this).height();
- 				temp2 += divName + "!";
+ 				temp2 += divName + "!^!";
 			}
 		});
+		$("div.jSticky-medium").each(function() {
+			var pos = $(this).position();
+			if ($(this).is(':visible')) {
+				var divName = pos.left + "," + pos.top + "," + $(this).width() + "," + $(this).height();
+ 				temp2 += divName + "!^!";
+			}
+		});			
+		
 		//alert(temp2);
 		
 		saveToDb(gWorksheetName, temp, temp2);
@@ -236,8 +271,8 @@
 	function showLoadWorksheet() {
 		var sqls = htmlDecode( $("#loadedSqls").html() );
 		var positions = $("#loadedCoords").html();
-		var s = sqls.split("!");
-		var p = positions.split("!");
+		var s = sqls.split("!^!");
+		var p = positions.split("!^!");
 		
 //		alert(sqls);
 //		alert(positions);
@@ -251,8 +286,14 @@
 			var width = t[2];
 			var height = t[3];
 			
-			if (s[i].length > 1)
-				openQryPos(s[i], left, top, width, height);
+			if (s[i].length > 1 && s[i].indexOf('note:')==0) {
+				//alert(s[i]);
+				var note = s[i].substring(5);
+				openNotePos(note, left, top, width, height);
+			} else {
+				if (s[i].length > 1)
+					openQryPos(s[i], left, top, width, height);
+			}
 		}	
 	}	
 	
@@ -329,6 +370,34 @@
             	alert(jqXHR.status + " " + errorThrown);
             }  
 		});
+	}    
+
+	function openNotePos(note, l, t, w, h) {
+		
+		jQuery.fn.stickyNotes.createNote2(note, l, t, w, h);
+		
+/*		
+		gid = gid + 1;
+		var id = "id-" + gid;
+		var options = {
+				notes:[{"id":id,
+				      "text":note,
+					  "pos_x": l,
+					  "pos_y": t,	
+					  "width": w,							
+					  "height": h,													
+				    }]
+				,resizable: true
+				,controls: true 
+				,editCallback: edited
+				,createCallback: created
+				,deleteCallback: deleted
+				,moveCallback: moved					
+				,resizeCallback: resized					
+				
+			};
+			$("#notes").stickyNotes(options);
+*/			
 	}    
 
 	function showHelp() {
@@ -461,4 +530,7 @@
 		});
 	};	
 			
+	function newNote() {
+		jQuery.fn.stickyNotes.createNote();
+	}
 	

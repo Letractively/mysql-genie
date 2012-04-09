@@ -72,7 +72,7 @@ $(document).ready(function(){
 		$( "#dialog:ui-dialog" ).dialog( "destroy" );
 	
 		$( "#dialog-modal" ).dialog({
-			height: 450,
+			height: 500,
 			width: 500,
 			modal: true,
 			buttons: {
@@ -237,7 +237,7 @@ Please download the latest version here:<br/>
 <a href="http://code.google.com/p/mysql-genie/">http://code.google.com/p/mysql-genie/</a>
 <br/><br/>
 
-Apr. 5, 2012<br/>
+Apr. 9, 2012<br/>
 Spencer Hwang - the creator of Genie<br/>
 <a href="mailto:spencer.hwang@gmail.com">spencer.hwang@gmail.com</a>
 

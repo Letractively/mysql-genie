@@ -216,7 +216,7 @@
 		$("#sortColumn").val($("#sort-"+id).val());
 		$("#sortDirection").val($("#sortdir-"+id).val());		
 
-		$('body').css('cursor', 'wait'); 
+		//$('body').css('cursor', 'wait'); 
 		$.ajax({
 			type: 'POST',
 			url: "ajax/qry-simple.jsp",
@@ -227,7 +227,7 @@
 				hideIfAny(id);
 				
 				setHighlight();
-				$('body').css('cursor', 'default'); 
+				//$('body').css('cursor', 'default'); 
 			},
             error:function (jqXHR, textStatus, errorThrown){
             	alert(jqXHR.status + " " + errorThrown);
@@ -460,7 +460,7 @@
 		$("#sql").val(sql);
 		$("#id").val(id);
 		
-		$("#divSql"+id).html("<b>" + sql + "</b> <a href='Javascript:editText("+ id +")'>edit</a>");
+		$("#divSql"+id).html("<b>" + sql + "</b> <a href='Javascript:editText("+ id +")'>edit</a> <a href='Javascript:doTextQry("+ id +")'>rerun</a>");
 		
 		$("#divText"+id).hide();
 		$("#divSql"+id).show();
@@ -489,7 +489,7 @@
 				var id = divName.substring(4);
 				if ($("#div-" +id+":visible").length > 0) {
 					var q = $("#" + divName).html();
-					temp += q + "!";
+					temp += q + "^";
 				}
 			}
 		});
