@@ -14,14 +14,14 @@
 	String sqlsStr[] = null;
 	
 	if (sqls != null) {
-		sqlsStr = sqls.split("!");
+		sqlsStr = sqls.split("\\^");
 	}
 
 	String worksheetName = request.getParameter("name"); 
 	
 	if (worksheetName == null) worksheetName = "no name";
 
-	String qry = "SELECT SQL_STMTS, COORDS FROM GENIE_WORK_SHEET where id ='" + Util.escapeQuote(worksheetName) + "'";
+	String qry = "SELECT SQL_STMTS, coords FROM GENIE_WORK_SHEET where id ='" + Util.escapeQuote(worksheetName) + "'";
 	List<String[]> loaded = cn.queryMultiCol(qry, 2, false);
 %>
 
@@ -31,10 +31,10 @@
     <script src="script/jquery.js" type="text/javascript"></script>
     <script src="script/data-methods.js?20120405" type="text/javascript"></script>
     <script src="script/worksheet-methods.js?20120405" type="text/javascript"></script>
-
-    <script src="script/jquery.colorbox-min.js"></script>
+    <script src="script/jquery.stickynotes.js"></script>
 
     <link rel='stylesheet' type='text/css' href='css/style.css'>
+    <link rel='stylesheet' type='text/css' href='css/jquery.stickynotes.css'>
     <link rel="stylesheet" href="css/colorbox.css" />
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
 
@@ -59,6 +59,17 @@
 <img src="image/worksheet.png" align="middle"/> <b>WORK SHEET</b>
 &nbsp;&nbsp;
 <%= cn.getUrlString() %>
+
+&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="Javascript:hideNullColumn()">Hide Null</a>
+&nbsp;&nbsp;
+<a href="Javascript:showAllColumn()">Show All</a>
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+<a href="Javascript:newQry()">New Query</a>
+&nbsp;&nbsp;
+<a href="Javascript:newNote()">New Note</a>
+
+
 </div>
 
 <div style="float: right;">
@@ -89,15 +100,11 @@
 </div><!-- End demo -->
 <br clear="all"/>
 
-&nbsp;&nbsp;&nbsp;&nbsp;
-<a href="Javascript:hideNullColumn()">Hide Null</a>
-&nbsp;&nbsp;
-<a href="Javascript:showAllColumn()">Show All</a>
-&nbsp;&nbsp;
-<a href="Javascript:newQry()">Query</a>
-&nbsp;&nbsp;
+<div id="notes" style="width:100%; height:100%; background-color: #ffffff;">
+</div>
 
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+
+<%--
 
 <br>
 <a style="float: left;" href="Javascript:toggleDiv('imgDiv1','div1')"><img id="imgDiv1" border=0 src="image/minus.gif"></a>
@@ -165,6 +172,7 @@
 </form>
 </div>
 <br/><br/>
+--%>
 
 
 <div style="display: none;">
@@ -182,13 +190,58 @@
 
 </form>
 </div>
-
+ 
 <script type="text/javascript">
 	var gMode = "table";
 	var gid = 0;
 	var DBSTR = "<%= cn.getUrlString() %>";
 	var gWorksheetName = "<%= worksheetName %>";
 
+	var edited = function(note) {
+		//alert("Edited note with id " + note.id + ", new text is: " + note.text);
+	}
+	var created = function(note) {
+		//alert("Created note with id " + note.id + ", text is: " + note.text);
+	}
+	
+	var deleted = function(note) {
+		//alert("Deleted note with id " + note.id + ", text is: " + note.text);
+	}
+	
+	var moved = function(note) {
+		//alert("Moved note with id " + note.id + ", text is: " + note.text);
+	}	
+	
+	var resized = function(note) {
+		//alert("Resized note with id " + note.id + ", text is: " + note.text);
+	}					
+
+ 	$(document).ready(function(){
+		var options = {
+			notes:[{"id":1,
+			      "text":"Note",
+				  "pos_x": 50,
+				  "pos_y": 50,	
+				  "width": 200,							
+				  "height": 200,													
+			    }]
+			,resizable: true
+			,controls: true 
+			,editCallback: edited
+			,createCallback: created
+			,deleteCallback: deleted
+			,moveCallback: moved					
+			,resizeCallback: resized					
+			
+		};
+		$("#notes").stickyNotes(options);
+
+		$("div.jSticky-medium").each(function() {
+			$(this).remove();
+		});
+
+	});
+	
 	$(document).ready(function(){
 
 		setMode('table');

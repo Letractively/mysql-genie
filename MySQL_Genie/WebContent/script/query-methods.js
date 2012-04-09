@@ -278,7 +278,7 @@ var doMode = 'copy';
 	function reloadData() {
 		$("#data-div").html("<div id='wait'><img src='image/loading.gif'/></div>");
 		
-		$('body').css('cursor', 'wait'); 
+		//$('body').css('cursor', 'wait'); 
 		$.ajax({
 			type: 'POST',
 			url: "ajax/qry.jsp",
@@ -290,7 +290,7 @@ var doMode = 'copy';
 				hideIfAny();
 				
 				setHighlight();
-				$('body').css('cursor', 'default'); 
+				//$('body').css('cursor', 'default'); 
 			},
             error:function (jqXHR, textStatus, errorThrown){
             	alert(jqXHR.status + " " + errorThrown);
