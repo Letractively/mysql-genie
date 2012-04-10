@@ -89,7 +89,7 @@ public class Util {
 	public static boolean isNumberType(int typeId) {
 		boolean res = false;
 		
-		int[] types = {2,3,4,5,7,8};
+		int[] types = {2,3,4,5,7,8,-5};
 		
 		for (int i : types) {
 			if (typeId == i) {
