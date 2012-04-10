@@ -43,7 +43,8 @@ Please select a Table to see the detail.
 	
 %>
 
-<h2>TABLE: <%= table %> &nbsp;&nbsp;<a href="Javascript:runQuery('','<%=tname%>')"><img border=0 src="image/icon_query.png" title="query"></a>
+<h2>TABLE: <%= table %> &nbsp;&nbsp;
+<a href="Javascript:runQuery('','<%=tname%>')"><img border=0 src="image/icon_query.png" title="query"></a>
 <a href="erd.jsp?tname=<%=tname%>" target="_blank"><img title="ERD" border=0 src="image/erd.gif"></a>
 </h2>
 
