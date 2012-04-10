@@ -1636,5 +1636,14 @@ for (String col : cols) {
 			e.printStackTrace();
 		}
 	}
-	
+
+
+	public String getTableRowCount(String tname) {
+		String numRows = null;
+
+		numRows = queryOne("SELECT TABLE_ROWS FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='"+this.getSchemaName()+"' AND  TABLE_NAME ='" + tname + "'");
+
+		if (numRows==null) numRows = "";
+		return numRows;
+	}
 }
