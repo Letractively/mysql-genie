@@ -36,7 +36,7 @@
     <link rel='stylesheet' type='text/css' href='css/slideshow.css'> 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
     
-    <script src="script/jquery.js" type="text/javascript"></script>
+    <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
     var to2;
     

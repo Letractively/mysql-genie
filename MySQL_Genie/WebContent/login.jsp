@@ -47,7 +47,7 @@
     <title>Genie</title>
     <link rel='stylesheet' type='text/css' href='css/style.css'> 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
-    <script src="script/jquery.js" type="text/javascript"></script>
+    <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
     	function setLogin(jdbcUrl, userId) {
     		$("#url").val(jdbcUrl);

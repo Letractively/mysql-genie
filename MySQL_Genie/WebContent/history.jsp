@@ -16,7 +16,7 @@
 <head> 
 	<title>Genie</title>
     <link rel='stylesheet' type='text/css' href='css/style.css'> 
-    <script src="script/jquery.js" type="text/javascript"></script>
+    <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
 	<script src="script/main.js?20120301" type="text/javascript"></script>
 	<style>
 		tr.even {  background-color: #e0e0ff; }

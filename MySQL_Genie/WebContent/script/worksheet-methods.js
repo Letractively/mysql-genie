@@ -166,7 +166,14 @@
 				var q = 'note:' + $("#" + divName).html();
 				temp += htmlDecode(q) + "!^!";
 			}
-		});			
+		});
+		$("div.jStickyNote textarea").each(function() {
+			if ($(this).is(':visible')) {
+				var q = 'note:' + $(this).val();
+				temp += htmlDecode(q) + "!^!";
+			}
+		});		
+/*		
 		$("textarea").each(function() {
 			
 			//alert("zzz");
@@ -178,7 +185,8 @@
 				temp += htmlDecode(q) + "!^!";
 			}
 		});			
-		//alert(temp);
+*/
+//		alert(temp);
 		
 		temp2 = "";
 		$("div.ui-dialog").each(function() {
@@ -196,7 +204,7 @@
 			}
 		});			
 		
-		//alert(temp2);
+//		alert(temp2);
 		
 		saveToDb(gWorksheetName, temp, temp2);
 /*		

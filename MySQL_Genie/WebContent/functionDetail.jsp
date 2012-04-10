@@ -66,7 +66,7 @@ Please select a Table to see the detail.
 <head> 
 	<title>Query result - Genie for MySQL</title>
     <link rel='stylesheet' type='text/css' href='css/style.css'> 
-	<script src="script/jquery.js" type="text/javascript"></script>
+	<script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
 
 	<style>
 		tr.even {  background-color: #e0e0ff; }
