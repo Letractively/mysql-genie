@@ -132,7 +132,7 @@
 		$("div.ui-dialog").each(function() {
 			var nm = $(this).attr('aria-labelledby');
 			//alert(nm);
-			if (nm != 'ui-dialog-title-dialog-form' && nm != 'ui-dialog-title-dialog-form2') {
+			if (nm != 'ui-dialog-title-dialog-form' && nm != 'ui-dialog-title-dialog-form2' && nm != 'ui-dialog-title-idHelp') {
 				$(this).remove();
 			}
 		});	
@@ -190,8 +190,11 @@
 		
 		temp2 = "";
 		$("div.ui-dialog").each(function() {
-			var pos = $(this).position();
-			if ($(this).is(':visible')) {
+
+			
+			var nm = $(this).attr('aria-labelledby');
+			if ($(this).is(':visible') && nm != 'ui-dialog-title-idHelp') {
+				var pos = $(this).position();
 				var divName = pos.left + "," + pos.top + "," + $(this).width() + "," + $(this).height();
  				temp2 += divName + "!^!";
 			}
@@ -540,5 +543,39 @@
 			
 	function newNote() {
 		jQuery.fn.stickyNotes.createNote();
+	}
+	
+	function newQry() {
+		var id = "id"+(new Date().getTime());
+		var temp ="<div id='" + id + "' title='Query' >"
+		$.ajax({
+			url: "ajax/dialog-qry.jsp",
+			success: function(data){
+				temp = temp + data + "</div>";
+				$("BODY").append(temp);
+				$("#"+id).dialog({ width: 700, height: 400 });
+				setHighlight();
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+                alert(jqXHR.status + " " + errorThrown);
+            }  
+		});		
+	}
+	
+	function showHelp() {
+		var id = "idHelp"; //+(new Date().getTime());
+		var temp ="<div id='" + id + "' title='Help' >"
+		$.ajax({
+			url: "ajax/dialog-help.jsp",
+			success: function(data){
+				temp = temp + data + "</div>";
+				$("BODY").append(temp);
+				$("#"+id).dialog({ width: 720, height: 400 });
+				setMode('table');
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+                alert(jqXHR.status + " " + errorThrown);
+            }  
+		});				
 	}
 	
