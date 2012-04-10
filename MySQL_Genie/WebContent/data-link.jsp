@@ -52,13 +52,10 @@
 <html>
 <head> 
 	<title><%= title %></title>
-    <script src="script/jquery.js" type="text/javascript"></script>
+    <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="script/data-methods.js?20120302" type="text/javascript"></script>
 
-    <script src="script/jquery.colorbox-min.js"></script>
-
     <link rel='stylesheet' type='text/css' href='css/style.css'>
-    <link rel="stylesheet" href="css/colorbox.css" />
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
     
 	<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" type="text/css"/>
@@ -253,7 +250,6 @@
 
 <script type="text/javascript">
 $(document).ready(function() {
-	$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 <%
 	for (String id1: autoLoadFK) {
 %>

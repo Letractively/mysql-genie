@@ -43,15 +43,13 @@
 <html>
 <head> 
 	<title><%= title %></title>
-    <script src="script/jquery.js" type="text/javascript"></script>
+    <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
 
-    <script src="script/jquery.colorbox-min.js"></script>
     <script src="script/data-methods.js?20120404" type="text/javascript"></script>
     <script src="script/query-methods.js?20120404" type="text/javascript"></script>
     
 
     <link rel='stylesheet' type='text/css' href='css/style.css'>
-    <link rel="stylesheet" href="css/colorbox.css" />
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
 
 	<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" type="text/css"/>
@@ -63,7 +61,6 @@
 		showTable('<%=tname%>');
 <% } %>
 		setDoMode('sort');
-		$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 		var cnt = $("#recordCount").val();
 		if (cnt != "0") $("#buttonsDiv").slideDown();
 	});	    

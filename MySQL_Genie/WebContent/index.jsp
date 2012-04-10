@@ -16,11 +16,9 @@
 <head> 
 	<title><%= title %></title>
 	
-	<script src="script/jquery.js" type="text/javascript"></script>
-<!--     <script src="script/jquery.colorbox-min.js"></script> -->
+	<script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
 	<script src="script/main.js?20120301" type="text/javascript"></script>
 
-<!--     <link rel="stylesheet" href="css/colorbox.css" /> -->
     <link rel='stylesheet' type='text/css' href='css/style.css'>
 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
@@ -46,8 +44,6 @@ $(window).resize(function() {
 });
 	
 $(document).ready(function(){
-
-//	$(".about").colorbox();
 
 	setMode('table');
 	checkResize();
@@ -237,7 +233,7 @@ Please download the latest version here:<br/>
 <a href="http://code.google.com/p/mysql-genie/">http://code.google.com/p/mysql-genie/</a>
 <br/><br/>
 
-Apr. 9, 2012<br/>
+Apr. 10, 2012<br/>
 Spencer Hwang - the creator of Genie<br/>
 <a href="mailto:spencer.hwang@gmail.com">spencer.hwang@gmail.com</a>
 

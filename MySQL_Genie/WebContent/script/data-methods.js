@@ -58,7 +58,6 @@
 				$("#" + divName).html(data);
 				setHighlight();
 				$("#" + divName).slideDown();
-				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 			},
             error:function (jqXHR, textStatus, errorThrown){
             	alert(jqXHR.status + " " + errorThrown);
@@ -223,7 +222,6 @@
 			data: $("#form0").serialize(),
 			success: function(data){
 				$("#"+divName).html(data);
-				$(".inspect").colorbox({transition:"none", width:"800", height:"600"});
 				hideIfAny(id);
 				
 				setHighlight();
