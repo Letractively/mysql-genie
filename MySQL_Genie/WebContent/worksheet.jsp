@@ -67,7 +67,8 @@
 <a href="Javascript:newQry()">New Query</a>
 &nbsp;&nbsp;
 <a href="Javascript:newNote()">New Note</a>
-
+&nbsp;&nbsp;
+<a href="Javascript:showHelp()">Help</a>
 
 </div>
 
