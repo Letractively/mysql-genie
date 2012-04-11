@@ -12,8 +12,18 @@
 
 	String qry = "SELECT ROUTINE_NAME FROM INFORMATION_SCHEMA.ROUTINES WHERE routine_schema	='"+cn.getSchemaName()+"' order by 1"; 	
 	List<String> list = cn.queryMulti(qry);
+	int totalCnt = list.size();
+	int selectedCnt = 0;
+	if (filter !=null) filter = filter.toUpperCase();
+	for (int i=0; i<list.size();i++) {
+		if (filter != null && !list.get(i).contains(filter)) continue;
+		selectedCnt ++;
+	}
+
 %>
-<% 
+Found <%= selectedCnt %> program(s).
+<br/><br/>
+<%	
 	if (filter !=null) filter = filter.toUpperCase();
 	for (int i=0; i<list.size();i++) {
 		if (filter != null && !list.get(i).contains(filter)) continue;
