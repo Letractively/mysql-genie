@@ -164,7 +164,7 @@ public class OldQuery {
 		}
 		
 //		if (val != null && val.endsWith(" 00:00:00.0")) val = val.substring(0, val.length()-11);
-		System.out.print("BLOB=" + val);
+//		System.out.print("BLOB=" + val);
 		return val;
 	}
 
