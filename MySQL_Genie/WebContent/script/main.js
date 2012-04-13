@@ -533,3 +533,38 @@ function runQuery(catalog,tab) {
 		});	
     }
     
+    function createGenieTable2() {
+		$.ajax({
+			type: 'POST',
+			url: "ajax/create-table2.jsp",
+			success: function(data){
+				alert('Done');
+				loadTool("Saved Query");
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
+		});	
+    }
+
+    function createGenieTable2() {
+		$.ajax({
+			type: 'POST',
+			url: "ajax/create-table2.jsp",
+			success: function(data){
+				alert('Done');
+				loadTool("Saved Query");
+			},
+            error:function (jqXHR, textStatus, errorThrown){
+            	alert(jqXHR.status + " " + errorThrown);
+            }  
+		});	
+    }
+    
+    function runSQ(id) {
+    	var sql = $("#SQ-"+id).html();
+    	$("#SQ_sql").val(sql);
+    	$("#form_SQ").submit();
+    }
+    
+    

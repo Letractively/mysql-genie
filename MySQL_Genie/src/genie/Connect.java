@@ -1567,6 +1567,26 @@ for (String col : cols) {
         conn.setReadOnly(false);
 	}
 
+	public void createTable2() throws SQLException {
+        conn.setReadOnly(false);
+		String stmt1 = 
+				"CREATE TABLE GENIE_SAVED_SQL (	"+
+				"ID	VARCHAR(100),"+
+				"SQL_STMT	VARCHAR(1000),"+
+				"TIMESTAMP DATE, " +
+				"PRIMARY KEY (ID) ) ENGINE=InnoDB;";
+
+		Statement stmt = conn.createStatement();
+		stmt.execute(stmt1);
+		stmt.close();
+		
+		stmt = conn.createStatement();
+		String sql = "INSERT INTO GENIE_SAVED_SQL VALUES ('Demo','SELECT * FROM TAB', SYSDATE())";
+		stmt.executeUpdate(sql);
+
+		stmt.close();		
+        conn.setReadOnly(true);
+	}
 
 
 	public void createTable4WorkSheet() {

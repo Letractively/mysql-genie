@@ -21,7 +21,11 @@
 	list.add("");
 	
 	list.add("System View");
-//	list.add("test");
+
+	list.add("");
+	list.add("Saved Query");
+	
+	//	list.add("test");
 /* 	list.add("Dictionary");
 	list.add("Sequence");
 	list.add("DB link");

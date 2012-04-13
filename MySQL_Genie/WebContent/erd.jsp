@@ -92,6 +92,19 @@
 		});
 	}
 	
+	function hideEmpty() {
+		$("span ").each(function() {
+			var spanName = $(this).attr('id');
+			if (spanName != undefined && spanName.substring(0,7) == "rowcnt-") {
+				var id = spanName.substring(7);
+				var rowcnt = $("#"+spanName+".rowcountstyle").html();
+				//alert('hide ' + id + " " + rowcnt);
+				if (rowcnt == "0") hideDiv(id);
+			}
+		});
+	}
+	
+	
 	function runQuery(tab) {
 		var sList = "";
 		var form = "DIV_" + tab; 
@@ -114,8 +127,8 @@
 
 <h3>ERD</h3>
 
-<a href="Javascript:openAll()">Open All</a>
-<a href="Javascript:closeAll()">Close All</a>
+<a href="Javascript:openAll()">Open All</a>&nbsp;
+<a href="Javascript:closeAll()">Close All</a>&nbsp;
 <br/><br/>
 
 <form id="FORM_query" name="FORM_query" action="query.jsp" target="_blank" method="post">
