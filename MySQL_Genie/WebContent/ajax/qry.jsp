@@ -53,7 +53,16 @@
 	
 	int lineLength = Util.countLines(sql);
 	if (lineLength <5) lineLength = 5;
+
+	Query q = null;
 	
+	if (norun==null) {
+		q = new Query(cn, sql);
+
+		if (!q.isError())
+			cn.queryCache.addQuery(sql, q);
+	}
+/*	
 	Query q = cn.queryCache.getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
@@ -61,8 +70,9 @@
 	} else {
 //		System.out.println("*** REUSE Query");
 	}
+*/
 
-	if (q.isError()) {
+	if (q != null && q.isError()) {
 %>
 		<%= q.getMessage() %>
 <%		
@@ -313,6 +323,7 @@ Rows/Page
 
 <%
 	int rowCnt = 0;
+	String pkValues = ""; 
 
 //System.out.println("pageNo=" + pgNo);
 //System.out.println("linesPerPage=" + linesPerPage);
@@ -336,6 +347,7 @@ System.out.println("pkColList.get(i)=" + pkColList.get(i));
 			if (i==0) keyValue = v;
 			else keyValue = keyValue + "^" + v; 
 		}
+		pkValues = keyValue;
 		
 		String linkUrl = "ajax/pk-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
 		String linkUrlTree = "data-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
@@ -381,6 +393,7 @@ if (fkLinkTab.size()>0 && dLink) {
 
 				colIdx++;
 				String val = q.getValue(i);
+				String colTypeName = q.getColumnTypeName(i);
 				String valDisp = Util.escapeHtml(val);
 				if (val != null && val.endsWith(" 00:00:00")) valDisp = val.substring(0, val.length()-9);
 				if (val==null) valDisp = "<span class='nullstyle'>null</span>";
@@ -405,13 +418,28 @@ if (fkLinkTab.size()>0 && dLink) {
 					isLinked = true;
 					String tpkName = cn.getPrimaryKeyName(tbl);
 					String tpkCol = cn.getConstraintCols(tbl, tpkName);
-					String tpkValue = q.getValue(tpkCol);
+					//String tpkValue = q.getValue(tpkCol);
+					String tpkValue = pkValues;
 					
 //					linkUrl ="blob.jsp?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue);
 					String fname = "unknown";
 					fname = q.getValue("filename");
-					linkUrl ="download?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue)+"&filename="+fname;
-					linkImage ="image/download.gif";				}
+					linkUrl ="blob_download?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue)+"&filename="+fname;
+					linkImage ="image/download.gif";
+				} else if (colTypeName.equals("CLOB")) {
+					isLinked = true;
+					String tpkName = cn.getPrimaryKeyName(tbl);
+					String tpkCol = cn.getConstraintCols(tbl, tpkName);
+					String tpkValue = pkValues;
+					
+//					linkUrl ="blob.jsp?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue);
+					String fname = "download.txt";
+					if (val.startsWith("<?xml")) fname = "download.xml";
+					if (val.startsWith("<html")) fname = "download.html";
+					
+					linkUrl ="clob_download?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue)+"&filename="+fname;
+					linkImage ="image/download.gif";
+				}
 				
 				if (pkColIndex >0 && i == pkColIndex && false) {
 					isLinked = true;

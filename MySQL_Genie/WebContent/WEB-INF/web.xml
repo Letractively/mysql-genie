@@ -18,12 +18,22 @@
    </filter-mapping>
 
 	<servlet>
-		<servlet-name>DownloadServlet</servlet-name>
-		<servlet-class>genie.servlet.DownloadServlet</servlet-class>
+		<servlet-name>BlobDownloadServlet</servlet-name>
+		<servlet-class>spencer.genie.servlet.BlobDownloadServlet</servlet-class>
+	</servlet>
+	<servlet>
+		<servlet-name>ClobDownloadServlet</servlet-name>
+		<servlet-class>spencer.genie.servlet.ClobDownloadServlet</servlet-class>
 	</servlet>
 
 	<servlet-mapping>
-		<servlet-name>DownloadServlet</servlet-name>
-		<url-pattern>/download</url-pattern>
+		<servlet-name>BlobDownloadServlet</servlet-name>
+		<url-pattern>/blob_download</url-pattern>
 	</servlet-mapping>     
+
+	<servlet-mapping>
+		<servlet-name>ClobDownloadServlet</servlet-name>
+		<url-pattern>/clob_download</url-pattern>
+	</servlet-mapping>     
+
 </web-app>
