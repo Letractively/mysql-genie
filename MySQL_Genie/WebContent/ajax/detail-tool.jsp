@@ -49,6 +49,9 @@
 <jsp:include page="udp.jsp"/>
 <% } %>
 
+<% if (tool.equalsIgnoreCase("saved query")) { %>
+<jsp:include page="sq.jsp"/>
+<% } %>
 
 <% if (tool.equalsIgnoreCase("Schema Diff")) { %>
 <jsp:include page="schema-diff.jsp"/>

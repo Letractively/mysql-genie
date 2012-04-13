@@ -148,6 +148,7 @@ function callserver() {
 <a href="worksheet.jsp" target="_blank">Work Sheet</a> |
 <a href="javascript:queryHistory()">History</a> |
 <a href="javascript:clearCache()">Clear Cache</a> |
+<a href='Javascript:aboutGenie()'>About Genie</a> |
 <a href="logout.jsp">Log out</a>
 &nbsp;
 &nbsp;
@@ -158,10 +159,9 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 
 <!-- <a class='about' href='ajax/about-genie.jsp'>About Genie</a> -->
 
-<a href='Javascript:aboutGenie()'>About Genie</a>
 </td>
 <td align=right>
-<b>Search</b> <input id="globalSearch" style="width: 200px;"/>
+<b>Search</b> <input id="globalSearch" style="width: 160px;"/>
 <a href="Javascript:clearField2()"><img border=0 src="image/clear.gif"></a>
 </td>
 </table>
