@@ -472,11 +472,23 @@ function toggleDataLink() {
 	reloadData();
 }
 
+function togglePreFormat() {
+	var v = $("#preFormat").val();
+	v = (v=="1"?"0":"1");
+	$("#preFormat").val(v);
+//	alert(v);
+	reloadData();
+}
+
 function toggleText(arg1, arg2) {
 	$('#'+arg1).toggle();
 	$('#'+arg2).toggle();
 }
 
+function toggleText2(arg1, arg2) {
+	$('#'+arg1).remove();
+	$('#'+arg2).toggle();
+}
 
 function showERD(tname) {
 	var txt = $("#showERD").html();
