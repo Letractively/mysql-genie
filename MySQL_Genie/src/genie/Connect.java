@@ -789,6 +789,7 @@ public class Connect implements HttpSessionBindingListener {
 
 	public String getConstraintCols(String tname, String cname) {
 		if (cname == null) return "";
+		if (tname == null) return "";
 		
 		if (tname.contains(".")) {
 			String[] temp = tname.split("\\.");
@@ -1664,6 +1665,17 @@ for (String col : cols) {
 		numRows = queryOne("SELECT TABLE_ROWS FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='"+this.getSchemaName()+"' AND  TABLE_NAME ='" + tname + "'");
 
 		if (numRows==null) numRows = "";
+		else {
+			int n = Integer.parseInt(numRows);
+			if (n < 1000) {
+				numRows = numRows;
+			} else if (n < 1000000) {
+				numRows = Math.round(n /1000) + "K";
+			} else {
+				numRows = (Math.round(n /100000) / 10.0 )+ "M";
+			}
+		}
 		return numRows;
 	}
+
 }

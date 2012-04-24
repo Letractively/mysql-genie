@@ -105,8 +105,10 @@ public class Util {
 	public static List<String> getTables(String sql) {
 		List<String> tables = new ArrayList<String>();
 		Set<String> tbls = new HashSet<String>();
-
-		String temp=sql.replaceAll("[\n\r\t]", " ").toUpperCase();
+		
+		
+		String temp=sql.replaceAll("[\n\r\t]", " ");
+		temp = temp.replaceAll(" from ", " FROM ");
 
 		String froms[] = temp.split(" FROM ");
 		

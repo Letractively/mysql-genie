@@ -129,6 +129,7 @@
 
 <a href="Javascript:openAll()">Open All</a>&nbsp;
 <a href="Javascript:closeAll()">Close All</a>&nbsp;
+<a href="Javascript:hideEmpty()">Hide Empty Table</a>
 <br/><br/>
 
 <form id="FORM_query" name="FORM_query" action="query.jsp" target="_blank" method="post">
@@ -145,7 +146,7 @@
 	String id = Util.getId();
 %>
 <div id="div-<%=id%>" style="margin-left: 20px; background-color: #ffffcc; width:220px; border: 1px solid #cccccc; float: left;">
-<a href="erd.jsp?tname=<%= rec.rTableName %>"><%= rec.rTableName %></a>
+<a href="erd.jsp?tname=<%= rec.rTableName %>"><%= rec.rTableName %></a> <span id="rowcnt-<%=id%>" class="rowcountstyle"><%= cn.getTableRowCount(rec.rTableName) %></span>
 <a href="javascript:toggleDiv('<%= id %>')"><img id="img-<%=id%>" align=top src="image/plus.gif"></a>
 <a href="javascript:runQuery('<%= rec.rTableName %>')"><img src="image/view.png"></a>
 <a href="javascript:hideDiv('<%= id %>')">x</a>
@@ -183,7 +184,7 @@ for (TableCol t: list1) {
 %>
 
 <div id="mainDiv" style="margin-left: 80px; background-color: #99FFFF; width:220px; border: 1px solid #cccccc;">
-<b><%= tname %></b>
+<b><%= tname %></b> <span class="rowcountstyle"><%= cn.getTableRowCount(tname) %></span>
 <a href="javascript:toggleDiv('<%= id %>')"><img id="img-<%=id%>" align=top src="image/minus.gif"></a>
 <a href="javascript:runQuery('<%= tname %>')"><img src="image/view.png"></a>
 <div id="sub-<%=id%>" style="display: block;">
@@ -219,7 +220,7 @@ for (TableCol t: list) {
 	id = Util.getId();
 %>
 <div id="div-<%=id%>" style="margin-left: 20px; background-color: #ffffcc; width:220px; border: 1px solid #cccccc; float: left;">
-<a href="erd.jsp?tname=<%= tbl %>"><%= tbl %></a>
+<a href="erd.jsp?tname=<%= tbl %>"><%= tbl %></a> <span id="rowcnt-<%=id%>" class="rowcountstyle"><%= cn.getTableRowCount(tbl) %></span>
 <a href="javascript:toggleDiv('<%= id %>')"><img id="img-<%=id%>" align=top src="image/plus.gif"></a>
 <a href="javascript:runQuery('<%= tbl %>')"><img src="image/view.png"></a>
 <a href="javascript:hideDiv('<%= id %>')">x</a>
