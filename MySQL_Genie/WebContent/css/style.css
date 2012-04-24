@@ -144,6 +144,10 @@ body, th, td {
     color: #999999;
 }
 
+.rowcountstyle {
+    color: #993333;
+}
+
 .item-selected {
 	color: #FF0000; font-weight: bold; 
 }

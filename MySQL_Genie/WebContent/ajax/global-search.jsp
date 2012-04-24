@@ -23,7 +23,7 @@
 	for (String text : list) {
 %>
 	&nbsp;&nbsp;
-	<a href="javascript:loadTable('<%=text%>');"><%=text%></a><br/>
+	<a href="javascript:loadTable('<%=text%>');"><%=text%></a>  <span class="rowcountstyle"><%= cn.getTableRowCount(text) %></span><br/>
 	
 <%
 	}
