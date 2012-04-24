@@ -45,8 +45,8 @@
 	<title><%= title %></title>
     <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
 
-    <script src="script/data-methods.js?20120404" type="text/javascript"></script>
-    <script src="script/query-methods.js?20120404" type="text/javascript"></script>
+    <script src="script/data-methods.js?20120420" type="text/javascript"></script>
+    <script src="script/query-methods.js?20120420" type="text/javascript"></script>
     
 
     <link rel='stylesheet' type='text/css' href='css/style.css'>
@@ -132,6 +132,7 @@
 <input type="hidden" id="pageNo" name="pageNo" value="1">
 <input type="hidden" id="rowsPerPage" name="rowsPerPage" value="20">
 <input type="hidden" id="dataLink" name="dataLink" value="1">
+<input type="hidden" id="preFormat" name="preFormat" value="0">
 </form>
 
 <%= q.getMessage() %>
