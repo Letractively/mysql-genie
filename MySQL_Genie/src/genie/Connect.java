@@ -64,7 +64,7 @@ public class Connect implements HttpSessionBindingListener {
 	public TableDetailCache tableDetailCache; 
 	public ContentSearch contentSearch;
 	private boolean workSheetTableCreated = false;
-	
+	private String savedHistory = "";	
 	/**
 	 * Constructor
 	 * 
@@ -1676,6 +1676,17 @@ for (String col : cols) {
 			}
 		}
 		return numRows;
+	}
+	
+	public String getAddedHistory() {
+		return savedHistory;
+	}
+	
+	public void addHistory(String value) {
+		
+		String newItem = "<li>" + value + "</li>"; 
+		savedHistory = savedHistory.replace(newItem,"");
+		savedHistory = newItem + savedHistory;
 	}
 
 }

@@ -22,6 +22,8 @@ function addHistory(value) {
 	var newItem = "<li>" + value + "</li>"; 
 	current = current.replace(newItem,"");
 	$("#inner-result2").html(newItem + current);
+	
+	saveHistoryOnServer(value);
 }
 
 function saveForNavigation() {
@@ -567,4 +569,10 @@ function runQuery(catalog,tab) {
     	$("#form_SQ").submit();
     }
     
-    
+    function saveHistoryOnServer(value) {
+    	$.ajax({
+    		url: "save-history.jsp?value=" + value + "&t=" + (new Date().getTime()),
+    		success: function(data){
+    		}  
+    	});	
+    }	

@@ -10,6 +10,7 @@
 	Connect cn = (Connect) session.getAttribute("CN");
 
 	String title = "Genie " + cn.getUrlString();
+	String addedHistory = cn.getAddedHistory();
 %>
 
 <html>
@@ -207,7 +208,7 @@ Keep Alive <a id="keepalivelink" href="Javascript:toggleKeepAlive()">Off</a>
 </td>
 <td valign=top>
 <div id="outer-result2">
-	<div id="inner-result2"></div>
+	<div id="inner-result2"><%= addedHistory %></div>
 </div>
 </td>
 </table>
@@ -233,7 +234,7 @@ Please download the latest version here:<br/>
 <a href="http://code.google.com/p/mysql-genie/">http://code.google.com/p/mysql-genie/</a>
 <br/><br/>
 
-Apr. 24, 2012<br/>
+Apr. 26, 2012<br/>
 Spencer Hwang - the creator of Genie<br/>
 <a href="mailto:spencer.hwang@gmail.com">spencer.hwang@gmail.com</a>
 

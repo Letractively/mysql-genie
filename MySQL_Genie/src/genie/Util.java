@@ -137,5 +137,32 @@ public class Util {
 		
 		return tables;
 	}
+
+	public static String getMainTable(String sql) {
+		String tname = "";
+		String temp=sql.replaceAll("[\n\r\t]", " ").toUpperCase();
+
+		String froms[] = temp.split(" FROM ");
+		
+		for (int i=1; i < froms.length; i++) {
+			String str = froms[i];
+			//System.out.println(i + ": " + str);
+			if (str.startsWith("(")) continue;
+			
+			int idx = str.indexOf(" WHERE ");
+			if (idx > 0) str = str.substring(0, idx);
+
+			//System.out.println("*** " + i + ": " + str);
+			
+			String a[] = str.split(",");
+			for (int j=0; j<a.length; j++) {
+				tname = a[j].trim();
+				return tname;
+			}			
+		}
+		
+		return tname;
+	}
 	
+
 }
