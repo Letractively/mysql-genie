@@ -97,9 +97,9 @@
 	}
 	
 	// get table name
-	String tbl = null;
+	String tbl = Util.getMainTable(sql);
 	List<String> tbls = Util.getTables(sql); 
-	if (tbls.size()>0) tbl = tbls.get(0);
+//	if (tbls.size()>0) tbl = tbls.get(0);
 //	System.out.println("XXX TBL=" + tbl);
 
 	//String temp = sql.replaceAll("\n", " ").trim();
@@ -193,7 +193,7 @@ System.out.println("pkColList=" + pkColList.get(0));
 			}
 		}
 
-		if (tbls.size()==1) hasPK = true;
+		if (tbls.size()>=1) hasPK = true;
 System.out.println("hasPK=" + hasPK);		
 		// there should be other tables that has FK to this
 		List<String> refTabs = cn.getReferencedTables(tname);
