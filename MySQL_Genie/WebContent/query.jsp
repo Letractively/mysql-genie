@@ -14,13 +14,16 @@
 	
 	int counter = 0;
 	String sql = request.getParameter("sql");
-	if (sql==null) sql = "SELECT * FROM TAB";
+	
+	String norun = request.getParameter("norun");
+	if (sql==null) {
+		sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
+		//norun = "Y";
+	}
 	sql = sql.trim();
 	if (sql.endsWith(";")) sql = sql.substring(0, sql.length()-1);
 	if (sql.endsWith("/")) sql = sql.substring(0, sql.length()-1);
 	sql = sql.replaceAll("&gt;",">").replace("&lt;","<");
-	
-	String norun = request.getParameter("norun");
 	
 	int lineLength = Util.countLines(sql);
 	if (lineLength <3) lineLength = 4;
