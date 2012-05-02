@@ -57,14 +57,14 @@
   </head>
   
   <body>
-  <img src="image/genie2.jpg"/>
+  <img src="image/genie2.jpg"  title="Version <%= Util.getVersionDate() %>"/>
     <h2>Welcome to MySQL Genie.</h2>
 
-<b>Local</b>
+<b>Connect to database</b>
 	<form action="connect_new.jsp" method="POST">
     <table border=0>
     <tr>
-    	<td>Database URL</td>
+    	<td>JDBC URL</td>
     	<td><input size=60 name="url" id="url" value="<%= initJdbcUrl %>"/></td>
     </tr>
     <tr>

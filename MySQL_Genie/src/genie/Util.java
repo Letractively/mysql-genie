@@ -164,5 +164,8 @@ public class Util {
 		return tname;
 	}
 	
-
+	
+	public static String getVersionDate() {
+		return "May 2, 2012";
+	}
 }
