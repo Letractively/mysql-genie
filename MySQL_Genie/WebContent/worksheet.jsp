@@ -29,11 +29,11 @@
 <head> 
 	<title><%= title %>- <%= worksheetName %></title>
     <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
-    <script src="script/data-methods.js?20120405" type="text/javascript"></script>
-    <script src="script/worksheet-methods.js?20120405" type="text/javascript"></script>
+    <script src="script/data-methods.js?<%= Util.getScriptionVersion() %>" type="text/javascript"></script>
+    <script src="script/worksheet-methods.js?<%= Util.getScriptionVersion() %>" type="text/javascript"></script>
     <script src="script/jquery.stickynotes.js"></script>
 
-    <link rel='stylesheet' type='text/css' href='css/style.css'>
+    <link rel='stylesheet' type='text/css' href='css/style.css?<%= Util.getScriptionVersion() %>'>
     <link rel='stylesheet' type='text/css' href='css/jquery.stickynotes.css'>
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
 

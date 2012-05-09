@@ -45,7 +45,11 @@
 <html>
   <head>
     <title>Genie</title>
-    <link rel='stylesheet' type='text/css' href='css/style.css'> 
+	<meta name="description" content="Genie is an open-source, web based MySQL database schema navigator." />
+	<meta name="keywords" content="MySQL Web Database OpenSource JDBC" />
+	<meta name="author" content="Spencer Hwang" />
+
+    <link rel='stylesheet' type='text/css' href='css/style.css?<%= Util.getScriptionVersion() %>'> 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
     <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script type="text/javascript">
