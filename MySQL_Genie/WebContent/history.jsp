@@ -15,9 +15,9 @@
 <html>
 <head> 
 	<title>Genie</title>
-    <link rel='stylesheet' type='text/css' href='css/style.css'> 
+    <link rel='stylesheet' type='text/css' href='css/style.css?<%= Util.getScriptionVersion() %>'> 
     <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
-	<script src="script/main.js?20120301" type="text/javascript"></script>
+	<script src="script/main.js?<%= Util.getScriptionVersion() %>" type="text/javascript"></script>
 	<style>
 		tr.even {  background-color: #e0e0ff; }
 		tr.odd {  background-color: #eeeeee;}	

@@ -1,7 +1,7 @@
 <%@ page language="java" 
 	import="java.util.*" 
 	import="java.sql.*" 
-	import="genie.Connect" 
+	import="genie.*" 
 	pageEncoding="ISO-8859-1"
 %>
 
@@ -63,7 +63,7 @@ Please select a Table to see the detail.
 <html>
 <head> 
 	<title>Query result - Genie for MySQL</title>
-    <link rel='stylesheet' type='text/css' href='css/style.css'> 
+    <link rel='stylesheet' type='text/css' href='css/style.css?<%= Util.getScriptionVersion() %>'> 
 	<script src="http://code.jquery.com/jquery-1.5.2.min.js" type="text/javascript"></script>
 
 	<style>

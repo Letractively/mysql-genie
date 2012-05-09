@@ -32,7 +32,7 @@
 <html>
   <head>
     <title>Schema Diff - Genie</title>
-    <link rel='stylesheet' type='text/css' href='css/style.css'> 
+    <link rel='stylesheet' type='text/css' href='css/style.css?<%= Util.getScriptionVersion() %>'> 
     <link rel='stylesheet' type='text/css' href='css/slideshow.css'> 
 	<link rel="icon" type="image/png" href="image/Genie-icon.png">
     
