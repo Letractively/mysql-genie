@@ -7,8 +7,14 @@ import java.util.ArrayList;
 
 public class QueryData {
 
+	int QRY_ROWS = 0;
+
 	ArrayList<ColumnDef> columns = new ArrayList<ColumnDef>();
 	ArrayList<RowDef> rows = new ArrayList<RowDef>();
+
+	public QueryData(int rows) {
+		this.QRY_ROWS = rows;
+	}
 	
 	public void setColumns(ResultSet rs) throws SQLException {
 		for  (int i = 1; i<= rs.getMetaData().getColumnCount(); i++){
@@ -42,7 +48,7 @@ public class QueryData {
 				aRow.row.add(data);
 			}
 			rows.add(aRow);
-			if (cnt>=1000) break;
+			if (cnt>=this.QRY_ROWS) break;
 		}
 //		System.out.println("Record Count=" + cnt);
 	}

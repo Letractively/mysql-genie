@@ -24,6 +24,7 @@
 
 	list.add("");
 	list.add("Saved Query");
+	list.add("Preferenceses");
 	
 	//	list.add("test");
 /* 	list.add("Dictionary");
