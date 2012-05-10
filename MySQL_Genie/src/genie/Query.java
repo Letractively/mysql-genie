@@ -37,8 +37,8 @@ public class Query {
 	String message="";
 	int currentRow = 0;
 
-	int sortOrder[] = new int[1000];
-	boolean hideRow[] = new boolean[1000];
+	int sortOrder[] = new int[Def.MAX_ROWS];
+	boolean hideRow[] = new boolean[Def.MAX_ROWS];
 	boolean isError = false;
 	
 	public Query(Connect cn, String qry) {
@@ -58,11 +58,11 @@ public class Query {
 //			System.out.println("NEW QUERY: " + targetQry);	
 			rs = stmt.executeQuery(targetQry);
 			
-			qData = new QueryData();
+			qData = new QueryData(cn.QRY_ROWS);
 			qData.setColumns(rs);
 			qData.setData(rs);
 
-			for (int i=0; i<1000; i++) {
+			for (int i=0; i<Def.MAX_ROWS; i++) {
 				sortOrder[i] = i;
 				hideRow[i] = false;
 			}
@@ -203,11 +203,11 @@ public class Query {
 	}
 	
 	public void sort(String col, String direction) {
-		int newOrder[] = new int[1000];
+		int newOrder[] = new int[Def.MAX_ROWS];
 
 		boolean isReverse = direction.equals("1");
 		
-		for (int i=0; i<1000; i++) newOrder[i] = 0;
+		for (int i=0; i<Def.MAX_ROWS; i++) newOrder[i] = 0;
 		
 		if (qData==null) {
 			System.err.println("qData is null");
@@ -267,11 +267,11 @@ public class Query {
 
 /*	
 	public void _sort(String col, String direction) {
-		int newOrder[] = new int[1000];
+		int newOrder[] = new int[Def.MAX_ROWS];
 
 		boolean isReverse = direction.equals("1");
 		
-		for (int i=0; i<1000; i++) newOrder[i] = 0;
+		for (int i=0; i<Def.MAX_ROWS; i++) newOrder[i] = 0;
 		
 		if (qData==null) {
 			System.err.println("qData is null");
@@ -411,7 +411,7 @@ public class Query {
 	}
 	
 	public void removeFilter() {
-		for (int i=0; i<1000; i++) {
+		for (int i=0; i<Def.MAX_ROWS; i++) {
 //			sortOrder[i] = i;
 			hideRow[i] = false;
 		}

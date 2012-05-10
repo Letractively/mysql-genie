@@ -36,6 +36,8 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 public class Connect implements HttpSessionBindingListener {
 
+	public int QRY_ROWS = 1000;
+	
 	private Connection conn = null;
 	private String urlString = null;
 	private String message = "";
