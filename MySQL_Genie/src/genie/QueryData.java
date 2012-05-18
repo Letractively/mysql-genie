@@ -7,13 +7,13 @@ import java.util.ArrayList;
 
 public class QueryData {
 
-	int QRY_ROWS = 0;
+	int MAX_ROW = 0;
 
 	ArrayList<ColumnDef> columns = new ArrayList<ColumnDef>();
 	ArrayList<RowDef> rows = new ArrayList<RowDef>();
 
 	public QueryData(int rows) {
-		this.QRY_ROWS = rows;
+		this.MAX_ROW = rows;
 	}
 	
 	public void setColumns(ResultSet rs) throws SQLException {
@@ -48,7 +48,7 @@ public class QueryData {
 				aRow.row.add(data);
 			}
 			rows.add(aRow);
-			if (cnt>=this.QRY_ROWS) break;
+			if (cnt>=MAX_ROW) break;
 		}
 //		System.out.println("Record Count=" + cnt);
 	}

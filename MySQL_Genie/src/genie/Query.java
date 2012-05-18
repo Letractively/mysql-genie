@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -25,6 +26,7 @@ import javax.servlet.http.HttpServletRequest;
  */
 public class Query {
 
+	int MAX_ROW = 1000;
 	Connect cn;
 	Statement stmt;
 	ResultSet rs;
@@ -37,14 +39,24 @@ public class Query {
 	String message="";
 	int currentRow = 0;
 
-	int sortOrder[] = new int[Def.MAX_ROWS];
-	boolean hideRow[] = new boolean[Def.MAX_ROWS];
+	int sortOrder[];
+	boolean hideRow[];
 	boolean isError = false;
+	int lastSortIdx = -1;
+	boolean lastSortAsc = true;
 	
 	public Query(Connect cn, String qry) {
+		this(cn, qry, 1000);
+	}
+
+	public Query(Connect cn, String qry, int maxRow) {
 		this.cn = cn;
 		originalQry = qry;
-		
+		MAX_ROW = maxRow;
+
+		sortOrder = new int[MAX_ROW];
+		hideRow = new boolean[MAX_ROW];
+
 	    Date start = new Date();
 	    Connection conn = cn.getConnection();
 
@@ -58,11 +70,11 @@ public class Query {
 //			System.out.println("NEW QUERY: " + targetQry);	
 			rs = stmt.executeQuery(targetQry);
 			
-			qData = new QueryData(cn.QRY_ROWS);
+			qData = new QueryData(MAX_ROW);
 			qData.setColumns(rs);
 			qData.setData(rs);
 
-			for (int i=0; i<Def.MAX_ROWS; i++) {
+			for (int i=0; i<MAX_ROW; i++) {
 				sortOrder[i] = i;
 				hideRow[i] = false;
 			}
@@ -202,12 +214,148 @@ public class Query {
 		return true;
 	}
 	
+
+	public void swap(int array[], int index1, int index2) 
+	// pre: array is full and index1, index2 < array.length
+	// post: the values at indices 1 and 2 have been swapped
+	{
+		int temp = array[index1];           // store the first value in a temp
+		array[index1] = array[index2];      // copy the value of the second into the first
+		array[index2] = temp;               // copy the value of the temp into the second
+	}
+	
+	public DataDef getValue(int rowIdx, int colIdx) {
+		return qData.rows.get(rowIdx).row.get(colIdx);
+	}
+	
+	public void quickSort(int colIdx, String typeName, int array[], int start, int end)
+	{
+		int i = start;                          // index of left-to-right scan
+		int k = end;                            // index of right-to-left scan
+
+		if ((end - start) >= 1)                   // check that there are at least two elements to sort
+		{
+			DataDef pivot = qData.rows.get(array[start]).row.get(colIdx);
+			//int pivot = array[start];       // set the pivot as the first element in the partition
+
+			while (k > i)                   // while the scan indices from left and right have not met,
+			{
+				//DataDef objI = qData.rows.get(array[i]).row.get(colIdx);
+				//DataDef objK = qData.rows.get(array[k]).row.get(colIdx);
+
+				while ( i <= end && k > i && getValue(array[i], colIdx).compareTo(pivot, typeName) <= 0 )  // from the left, look for the first
+					i++;                                    // element greater than the pivot
+				while ( k >= start && k >= i && getValue(array[k], colIdx).compareTo(pivot, typeName) > 0) // from the right, look for the first
+					k--;                                        // element not greater than the pivot
+				if (k > i) {                                      // if the left seekindex is still smaller than
+					swap(array, i, k);                      // the right index, swap the corresponding elements
+				}
+			}
+	        
+			swap(array, start, k);          // after the indices have crossed, swap the last element in
+	                                                // the left partition with the pivot 
+			quickSort(colIdx, typeName, array, start, k - 1); // quicksort the left partition
+			quickSort(colIdx, typeName, array, k + 1, end);   // quicksort the right partition
+       }
+       else    // if there is only one element in the partition, do not do any sorting
+       {
+    	   return;                     // the array is sorted, so exit
+	   }
+	}
+	
 	public void sort(String col, String direction) {
-		int newOrder[] = new int[Def.MAX_ROWS];
+		int size = qData.rows.size();
+		ArrayList<DataComparable> arr = new ArrayList<DataComparable>();
+		int colIdx = qData.getColumnIndex(col);
+		String typeName = qData.columns.get(colIdx).columnTypeName;
+		boolean isReverse = direction.equals("1");
+		
+		String numberTypes[] = {"NUMBER", "INTEGER", "SMALLINT", "BIGINT", "FLOAT", "BOUBLE"};
+
+		boolean isNumberType = false;
+		for (String tName: numberTypes) {
+			if (typeName.startsWith(tName)) {
+				isNumberType = true;
+				break;
+			}
+		}		
+//System.out.println("sort col=" + col +", direction=" + direction +", isnumbertype="+ isNumberType);		
+		for (int i=0; i<size;i++) {
+			DataDef v = getValue(sortOrder[i], colIdx); 
+			DataComparable dc = new DataComparable(v.value, v.isNull, isNumberType, sortOrder[i]);
+			arr.add(dc);
+		}
+		
+		Collections.sort(arr, new Comparator<DataComparable>(){
+ 
+            public int compare(DataComparable o1, DataComparable o2) {
+        		if (o1.isNull) return -1;
+        		if (o2.isNull) return 1;
+        		if (o1.isNumberType) return (int) (o1.getNumberValue() - o2.getNumberValue()); 
+        		
+        		return o1.getStringValue().compareTo(o2.getStringValue());
+            }
+ 
+        });
+		
+		for (int i=0; i<arr.size();i++) {
+			int idx = i;
+			if (isReverse) idx = size - i -1;
+			DataComparable dc = arr.get(idx);
+			sortOrder[i] = dc.getIndex();
+		}
+	}
+	
+	public void sortXXX(String col, String direction) {
+		int size = qData.rows.size();
+		int newOrder[] = new int[size];
+		boolean isReverse = direction.equals("1");
+		for (int i=0; i<size; i++) newOrder[i] = 0;
+
+		if (qData==null) {
+			System.err.println("qData is null");
+			return;
+		}
+		int colIdx = qData.getColumnIndex(col);
+		String typeName = qData.columns.get(colIdx).columnTypeName;
+		
+		if (colIdx < 0) {
+			System.err.println("column " + col + " not found");
+			return;
+		}
+		
+		// copy new order
+		for (int i=0;i<size;i++) newOrder[i] = sortOrder[i];
+		
+		if (colIdx == lastSortIdx) {
+			// already sorted, just reverse
+			System.out.println("lastSortIdx=" + lastSortIdx);
+			for (int i=0;i<size;i++) newOrder[i] = sortOrder[size-i-1];
+			for (int i=0;i<size;i++) sortOrder[i] = newOrder[i];
+			
+			lastSortIdx = colIdx;
+			lastSortAsc = !isReverse;
+			
+			return;
+		}
+		
+		quickSort(colIdx, typeName, newOrder, 0, size - 1);
+		
+		if (isReverse)
+			for (int i=0;i<size;i++) sortOrder[i] = newOrder[size-i-1];
+		else
+			for (int i=0;i<size;i++) sortOrder[i] = newOrder[i];
+		
+		lastSortIdx = colIdx;
+		lastSortAsc = !isReverse;
+	}
+
+	public void sort_(String col, String direction) {
+		int newOrder[] = new int[MAX_ROW];
 
 		boolean isReverse = direction.equals("1");
 		
-		for (int i=0; i<Def.MAX_ROWS; i++) newOrder[i] = 0;
+		for (int i=0; i<MAX_ROW; i++) newOrder[i] = 0;
 		
 		if (qData==null) {
 			System.err.println("qData is null");
@@ -267,11 +415,11 @@ public class Query {
 
 /*	
 	public void _sort(String col, String direction) {
-		int newOrder[] = new int[Def.MAX_ROWS];
+		int newOrder[] = new int[cn.QRY_ROWS];
 
 		boolean isReverse = direction.equals("1");
 		
-		for (int i=0; i<Def.MAX_ROWS; i++) newOrder[i] = 0;
+		for (int i=0; i<cn.QRY_ROWS; i++) newOrder[i] = 0;
 		
 		if (qData==null) {
 			System.err.println("qData is null");
@@ -411,7 +559,7 @@ public class Query {
 	}
 	
 	public void removeFilter() {
-		for (int i=0; i<Def.MAX_ROWS; i++) {
+		for (int i=0; i<MAX_ROW; i++) {
 //			sortOrder[i] = i;
 			hideRow[i] = false;
 		}

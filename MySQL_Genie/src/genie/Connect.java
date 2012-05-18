@@ -36,7 +36,7 @@ import javax.servlet.http.HttpSessionBindingListener;
 
 public class Connect implements HttpSessionBindingListener {
 
-	public int QRY_ROWS = 1000;
+//	public int QRY_ROWS = 1000;
 	
 	private Connection conn = null;
 	private String urlString = null;
@@ -121,6 +121,7 @@ public class Connect implements HttpSessionBindingListener {
         catch (Exception e)
         {
             System.err.println ("Cannot connect to database server");
+            e.printStackTrace();
             message = e.getMessage();
         }
     }

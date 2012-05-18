@@ -1,5 +1,5 @@
 package genie;
 
 public class Def {
-	public final static int MAX_ROWS = 5000;
+	public static final int MAX_SEARCH_ROWS = 10000;
 }

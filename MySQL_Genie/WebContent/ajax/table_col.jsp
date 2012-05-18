@@ -10,7 +10,7 @@
 	String table = request.getParameter("table");
 	Connect cn = (Connect) session.getAttribute("CN");
 
-	System.out.println("table="+table);
+//	System.out.println("table="+table);
 //	if (!table.startsWith("\"")) table = table.toUpperCase();
 	
 	String catalog = null;
@@ -52,8 +52,8 @@ Please select a Table to see the detail.
 <%	
 
 	List<TableCol> cols = cn.getTableDetail(catalog, tname);
-System.out.println("catalog="+catalog);
-System.out.println("tname="+tname);
+//System.out.println("catalog="+catalog);
+//System.out.println("tname="+tname);
 	ArrayList<String> pk = cn.getPrimaryKeys(catalog, tname);
 
 	for (int i=0; i<cols.size();i++) {

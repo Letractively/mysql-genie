@@ -14,7 +14,11 @@
 	
 	int counter = 0;
 	String sql = request.getParameter("sql");
+	String upto = request.getParameter("upto");
+	if (upto == null || upto.equals("")) upto = "1000";
 	
+	int maxRow = Integer.parseInt(upto);
+//System.out.println("upto,maxRow=" + upto + "," + maxRow);	
 	String norun = request.getParameter("norun");
 	if (sql==null) {
 		sql = "SELECT * FROM INFORMATION_SCHEMA.TABLES";
@@ -30,7 +34,7 @@
 	if (lineLength >50) lineLength = 50;
 	
 	cn.queryCache.removeQuery(sql);
-	Query q = new Query(cn, sql);
+	Query q = new Query(cn, sql, maxRow);
 
 	if (!q.isError())
 		cn.queryCache.addQuery(sql, q);
@@ -80,6 +84,9 @@
 &nbsp;&nbsp;
 <%= cn.getUrlString() %>
 
+&nbsp;&nbsp;&nbsp;
+<a href="q.jsp" target="_blank">Q</a> |
+<a href="worksheet.jsp" target="_blank">Work Sheet</a>
 <br/><br/>
 
 <a href="Javascript:toggleHelp()"><img  style="float: left" id="helpDivImage" border="0" src="image/minus.gif"></a>
@@ -119,6 +126,14 @@
 
 <form name="form1" id="form1" method="post" action="query.jsp">
 <textarea id="sql1" name="sql" cols=100 rows=<%= lineLength %>><%= sql %></textarea><br/>
+Up to 
+<select name="upto">
+<option value="100" <%= maxRow==100?"SELECTED":"" %>>100</option>
+<option value="500" <%= maxRow==500?"SELECTED":"" %>>500</option>
+<option value="1000" <%= maxRow==1000?"SELECTED":"" %>>1,000</option>
+<option value="5000" <%= maxRow==5000?"SELECTED":"" %>>5,000</option>
+<option value="10000" <%= maxRow==10000?"SELECTED":"" %>>10,000</option>
+</select>
 <input type="submit" value="Submit"/>
 &nbsp;
 <input type="button" value="Download" onClick="Javascript:download()"/>
