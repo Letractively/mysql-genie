@@ -43,8 +43,8 @@ public class Util {
 		
 		if (cols.length != keys.length) {
 			
-			System.out.println(col + " " + key);
-			System.out.println(cols.length + " " + keys.length);
+			//System.out.println(col + " " + key);
+			//System.out.println(cols.length + " " + keys.length);
 			return "ERROR";
 		}
 		
@@ -114,7 +114,7 @@ public class Util {
 		
 		for (int i=1; i < froms.length; i++) {
 			String str = froms[i];
-			System.out.println(i + ": " + str);
+			//System.out.println(i + ": " + str);
 			if (str.startsWith("(")) continue;
 			
 			int idx = str.indexOf(" WHERE ");
@@ -166,10 +166,10 @@ public class Util {
 	
 	
 	public static String getVersionDate() {
-		return "May 10, 2012";
+		return "May 18, 2012";
 	}
 
 	public static String getScriptionVersion() {
-		return "20120510";
+		return "20120518";
 	}
 }

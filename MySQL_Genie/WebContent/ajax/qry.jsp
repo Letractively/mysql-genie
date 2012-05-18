@@ -57,15 +57,6 @@
 	int lineLength = Util.countLines(sql);
 	if (lineLength <5) lineLength = 5;
 
-	Query q = null;
-	
-	if (norun==null) {
-		q = new Query(cn, sql);
-
-		if (!q.isError())
-			cn.queryCache.addQuery(sql, q);
-	}
-/*	
 	Query q = cn.queryCache.getQueryObject(sql);
 	if (q==null) {
 		q = new Query(cn, sql);
@@ -73,7 +64,6 @@
 	} else {
 //		System.out.println("*** REUSE Query");
 	}
-*/
 
 	if (q != null && q.isError()) {
 %>
@@ -176,10 +166,12 @@
 	List<String> pkColList = null;
 	if (pkName != null) {
 		pkColList = cn.getConstraintColList(tname, pkName);
+/*
 System.out.println("tname=" + tname);			
 System.out.println("pkName=" + pkName);			
 System.out.println("pkColList=" + pkColList.size());			
-System.out.println("pkColList=" + pkColList.get(0));			
+System.out.println("pkColList=" + pkColList.get(0));
+*/
 		// check if PK columns are in the result set
 		int matchCount = 0;
 		for (int j=0;j<pkColList.size();j++) {
@@ -194,7 +186,7 @@ System.out.println("pkColList=" + pkColList.get(0));
 		}
 
 		if (tbls.size()>=1) hasPK = true;
-System.out.println("hasPK=" + hasPK);		
+//System.out.println("hasPK=" + hasPK);		
 		// there should be other tables that has FK to this
 		List<String> refTabs = cn.getReferencedTables(tname);
 		if (matchCount == pkColList.size() && refTabs.size()>0) {
@@ -360,8 +352,8 @@ Rows/Page
 	
 		for (int i=0;q.hasData() && i<pkColList.size(); i++) {
 			String v = q.getValue(pkColList.get(i));
-System.out.println("v=" + v);	
-System.out.println("pkColList.get(i)=" + pkColList.get(i));
+//System.out.println("v=" + v);	
+//System.out.println("pkColList.get(i)=" + pkColList.get(i));
 			if (i==0) keyValue = v;
 			else keyValue = keyValue + "^" + v; 
 		}
@@ -478,7 +470,7 @@ if (fkLinkTab.size()>0 && dLink) {
 %>
 </tr>
 <%		if (q.hasData()) counter++;
-		if (counter >= Def.MAX_ROWS) break;
+//		if (counter >= Def.MAX_ROWS) break;
 		
 //		if (!q.next()) break;
 	}

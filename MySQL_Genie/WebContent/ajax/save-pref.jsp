@@ -12,8 +12,8 @@
 	if (qry_rows != null) {
 		int rows = Integer.parseInt(qry_rows);
 		
-		if (rows <= Def.MAX_ROWS) {
+/* 		if (rows <= Def.MAX_ROWS) {
 			cn.QRY_ROWS = rows;
 		}
-	}
+ */	}
 %>

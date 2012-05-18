@@ -111,7 +111,7 @@ public class ContentSearch {
 		ResultSet rs = q.getResultSet();
 		try {
 			int cnt=0;
-			while (rs.next() && cnt <= 5000) {
+			while (rs.next() && cnt <= Def.MAX_SEARCH_ROWS) {
 				if (!running) break; 
 				if (skipTable) break;
 				cnt++;
