@@ -17,6 +17,7 @@ public class SecurityFilter implements Filter {
 	String[] exceptionPages = {
 			"test/", 
 			"login.jsp", 
+			"monitor.jsp", 
 			"ping.jsp",
 			"remove-cookie.jsp",
 			"connect_new.jsp", 

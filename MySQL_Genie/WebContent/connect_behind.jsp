@@ -44,6 +44,7 @@
 		// you're connected.
 		// assign the Connect object to session
 		session.setAttribute("CN", cn);
+		GenieManager.getInstance().addSession(cn);
 	
 		// get cookie
 		String oldUrls = getCookie(request, "url");

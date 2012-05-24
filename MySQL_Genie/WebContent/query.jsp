@@ -35,7 +35,11 @@
 	
 	cn.queryCache.removeQuery(sql);
 	Query q = new Query(cn, sql, maxRow);
-
+//	System.out.println(cn.getUrlString() + " " + request.getRemoteAddr() + " " + (new Date()) + "\n" + sql);
+/*
+	if (q.isError()) System.out.println("Error: " + q.getMessage());
+	else System.out.println("Count: " + q.getRecordCount());
+*/
 	if (!q.isError())
 		cn.queryCache.addQuery(sql, q);
 	
