@@ -14,7 +14,7 @@
 
 <html>
 <head> 
-	<title>Genie Monitor <%= ss.size() %></title>
+	<title>Genie Sessions <%= ss.size() %></title>
     <script src="script/jquery-1.7.2.min.js" type="text/javascript"></script>
     <script src="script/data-methods.js?<%= Util.getScriptionVersion() %>" type="text/javascript"></script>
     <script src="script/worksheet-methods.js?<%= Util.getScriptionVersion() %>" type="text/javascript"></script>
@@ -36,6 +36,7 @@
 <table border=1>
 <tr>
 	<th>IP Address</th>
+	<th>Email</th>
 	<th>Database</th>
 	<th>Count</th>
 	<th>Queries</th>
@@ -57,6 +58,7 @@
 %>
 <tr>
 	<td><%= cn.getIPAddress() %></td>
+	<td><%= cn.getEmail() %></td>
 	<td><%= cn.getUrlString() %></td>
 	<td><%= map.size() %></td>
 	<td><%= qry %></td>

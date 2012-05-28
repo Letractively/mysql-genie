@@ -37,6 +37,7 @@
 	String url = request.getParameter("url");
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
+	String email = request.getParameter("email");
 	
 	cn = new Connect(url, username, password, request.getRemoteAddr());
 	
@@ -65,6 +66,15 @@
 //		cookie.setPath("/");
 		response.addCookie(cookie);
 		
+		if (email != null && email.length() > 2) {
+			Cookie cookie2 = new Cookie ("email", email);
+			cookie2.setMaxAge(365 * 24 * 60 * 60);
+//			cookie.setPath("/");
+			response.addCookie(cookie2);
+			
+			cn.setEmail(email);
+		}
+
 		// redirect to homepage
 		out.println("Connected.");
 		System.out.println("Connected.");

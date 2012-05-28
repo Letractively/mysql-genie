@@ -16,6 +16,7 @@
 	String url = request.getParameter("url");
 	String username = request.getParameter("username");
 	String password = request.getParameter("password");
+	String email = request.getParameter("email");
 %>
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
@@ -86,6 +87,7 @@ function stopShow() {
   	<input name="url" type="hidden" value="<%= url %>">
   	<input name="username" type="hidden" value="<%= username %>">
   	<input name="password" type="hidden" value="<%= password %>">
+  	<input name="email" type="hidden" value="<%= email %>">
   </form>
   
   <img src="image/genie2.jpg"/>

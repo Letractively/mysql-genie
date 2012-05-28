@@ -166,10 +166,10 @@ public class Util {
 	
 	
 	public static String getVersionDate() {
-		return "May 18, 2012";
+		return "May 28, 2012";
 	}
 
 	public static String getScriptionVersion() {
-		return "20120518";
+		return "20120528";
 	}
 }
