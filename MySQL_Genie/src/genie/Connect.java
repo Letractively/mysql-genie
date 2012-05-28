@@ -67,6 +67,16 @@ public class Connect implements HttpSessionBindingListener {
 	public ContentSearch contentSearch;
 	private boolean workSheetTableCreated = false;
 	private String savedHistory = "";	
+	private String email = null;
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
 	/**
 	 * Constructor
 	 * 
@@ -221,6 +231,7 @@ public class Connect implements HttpSessionBindingListener {
 
     public void printQueryLog() {
     	HashMap<String, QueryLog> map = this.getQueryHistory();
+    	String qryHist = "";
 
     	if (map == null) return;
         
@@ -230,8 +241,13 @@ public class Connect implements HttpSessionBindingListener {
     		idx ++;
     		QueryLog ql = (QueryLog) iterator.next();
     		System.out.println(ql.getQueryString());
+    		qryHist += ql.getQueryString() + ";\n\n";
     	}
     	System.out.println("***] Query History from " + this.ipAddress);
+    	
+    	if (this.email != null && email.length() > 2) {
+    		Email.sendEmail(email, "MySQL Genie - Query History " + this.urlString, qryHist);
+    	}
     }
     
 	public void valueBound(HttpSessionBindingEvent arg0) {
