@@ -1,5 +1,6 @@
 package genie;
 
+import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.Properties;
 
@@ -68,7 +69,12 @@ public class Email {
 		
 	    try {
 	        MimeMessage msg = new MimeMessage(session);
-	        msg.setFrom();
+	        try {
+				msg.setFrom(new InternetAddress(username, "MySQL Genie"));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 	        msg.setRecipients(Message.RecipientType.TO,
 	        		emailAddress);
 	        msg.setSubject(title);

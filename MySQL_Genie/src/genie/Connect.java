@@ -67,7 +67,8 @@ public class Connect implements HttpSessionBindingListener {
 	public ContentSearch contentSearch;
 	private boolean workSheetTableCreated = false;
 	private String savedHistory = "";	
-	private String email = null;
+	private String email = "";
+	private String url = "";
 
 	public String getEmail() {
 		return email;
@@ -241,13 +242,20 @@ public class Connect implements HttpSessionBindingListener {
     		idx ++;
     		QueryLog ql = (QueryLog) iterator.next();
     		System.out.println(ql.getQueryString());
-    		qryHist += ql.getQueryString() + ";\n\n";
+    		qryHist += ql.getQueryString() + ";\n   => " + ql.getCount() + " rows\n\n";
     	}
     	System.out.println("***] Query History from " + this.ipAddress);
-    	
-    	if (this.email != null && email.length() > 2) {
+
+    	if (map.size()> 0 && this.email != null && email.length() > 2) {
     		Email.sendEmail(email, "MySQL Genie - Query History " + this.urlString, qryHist);
     	}
+
+    	if (map.size()> 0) { 
+    		String who = this.getIPAddress() + " " + this.getEmail(); 
+    		qryHist =  url + "\n" + who + "\n\n" + qryHist;
+    		Email.sendEmail("oracle.genie.email@gmail.com", "MySQL Genie - Query History " + this.urlString + " " + who, qryHist);
+    	}
+    	
     }
     
 	public void valueBound(HttpSessionBindingEvent arg0) {
@@ -702,8 +710,8 @@ public class Connect implements HttpSessionBindingListener {
 		return rs;
 	}
 */	
-	public void addQueryHistory(String qry) {
-		QueryLog ql = new QueryLog(qry);
+	public void addQueryHistory(String qry, int cnt) {
+		QueryLog ql = new QueryLog(qry, cnt);
 		queryLog.put(qry, ql);
 	}
 	
@@ -1711,6 +1719,14 @@ for (String col : cols) {
 		String newItem = "<li>" + value + "</li>"; 
 		savedHistory = savedHistory.replace(newItem,"");
 		savedHistory = newItem + savedHistory;
+	}
+
+	public String getUrl() {
+		return url;
+	}
+
+	public void setUrl(String url) {
+		this.url = url;
 	}
 
 }
