@@ -234,7 +234,7 @@ public class Connect implements HttpSessionBindingListener {
     	HashMap<String, QueryLog> map = this.getQueryHistory();
     	String qryHist = "";
 
-    	if (map == null) return;
+    	if (map == null || map.size()==0) return;
         
     	Iterator iterator = map.values().iterator();
     	int idx = 0;
@@ -242,20 +242,19 @@ public class Connect implements HttpSessionBindingListener {
     		idx ++;
     		QueryLog ql = (QueryLog) iterator.next();
     		System.out.println(ql.getQueryString());
-    		qryHist += ql.getQueryString() + ";\n   => " + ql.getCount() + " rows\n\n";
+    		String cntLine = "   => " + ql.getCount() + " row";
+    		if (ql.getCount() > 1) cntLine += "s";
+    		qryHist += ql.getQueryString() + ";\n"+ cntLine + "\n\n";
     	}
     	System.out.println("***] Query History from " + this.ipAddress);
 
-    	if (map.size()> 0 && this.email != null && email.length() > 2) {
+    	if (this.email != null && email.length() > 2) {
     		Email.sendEmail(email, "MySQL Genie - Query History " + this.urlString, qryHist);
     	}
 
-    	if (map.size()> 0) { 
-    		String who = this.getIPAddress() + " " + this.getEmail(); 
-    		qryHist =  url + "\n" + who + "\n\n" + qryHist;
-    		Email.sendEmail("oracle.genie.email@gmail.com", "MySQL Genie - Query History " + this.urlString + " " + who, qryHist);
-    	}
-    	
+   		String who = this.getIPAddress() + " " + this.getEmail(); 
+   		qryHist =  url + "\n" + who + "\n\n" + qryHist;
+   		Email.sendEmail("oracle.genie.email@gmail.com", "MySQL Genie - Query History " + this.urlString + " " + who, qryHist);
     }
     
 	public void valueBound(HttpSessionBindingEvent arg0) {
