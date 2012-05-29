@@ -25,7 +25,7 @@
 	<link rel="stylesheet" href="css/ui-lightness/jquery-ui-1.8.18.custom.css" type="text/css"/>
 	<script src="script/jquery-ui-1.8.18.custom.min.js" type="text/javascript"></script>
 
-    <meta http-equiv="refresh" content="10;">
+    <meta http-equiv="refresh" content="30;">
 </head> 
 
 <body>

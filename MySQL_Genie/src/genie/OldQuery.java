@@ -196,7 +196,7 @@ public class OldQuery {
 	    elapsedTime = (int) (end.getTime() - start.getTime());
 //	    if (!this.originalQry.endsWith("LIMIT 100000"))
 
-	    cn.addQueryHistory(originalQry);
+	    //cn.addQueryHistory(originalQry);
 	}
 
 	public int getElapsedTime() {

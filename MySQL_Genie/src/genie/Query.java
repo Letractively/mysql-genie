@@ -82,7 +82,7 @@ public class Query {
 			rs.close();
 			stmt.close();
 
-		    cn.addQueryHistory(originalQry);
+		    cn.addQueryHistory(originalQry, qData.rows.size());
 
 		} catch (SQLException e) {
 			message = e.getMessage();

@@ -40,6 +40,7 @@
 	String email = request.getParameter("email");
 	
 	cn = new Connect(url, username, password, request.getRemoteAddr());
+	cn.setUrl(request.getRequestURL().toString());
 	
 	if (cn.isConnected()) {
 		// you're connected.
