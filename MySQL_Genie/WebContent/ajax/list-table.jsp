@@ -29,7 +29,7 @@
 	boolean hideEmpty = request.getParameter("hideEmpty") != null;
 
 	String qry = "select TABLE_NAME, TABLE_ROWS from information_schema.TABLES WHERE table_type='BASE TABLE' AND table_schema='"+ cn.getSchemaName()+"'"; 	
-	List<String[]> list = cn.queryMultiCol(qry, 2, true);
+	List<String[]> list = cn.query(qry, true);
 	int totalCnt = list.size();
 	int selectedCnt = 0;
 	if (filter !=null) filter = filter.toUpperCase();

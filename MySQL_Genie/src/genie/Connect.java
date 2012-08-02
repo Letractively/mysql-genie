@@ -53,6 +53,8 @@ public class Connect implements HttpSessionBindingListener {
 	private List<String> schemas;
 	private String schemaName;
 	private String ipAddress;
+	private String userAgent;
+	
 	//private Hashtable<String, String> pkColumn;
 	private HashMap<String, String> queryResult;
 	private HashMap<String, QueryLog> queryLog;
@@ -70,6 +72,9 @@ public class Connect implements HttpSessionBindingListener {
 	private String email = "";
 	private String url = "";
 
+	private Date loginDate; 
+	private Date lastDate;
+	
 	public String getEmail() {
 		return email;
 	}
@@ -91,6 +96,9 @@ public class Connect implements HttpSessionBindingListener {
     	//pkColumn = new Hashtable<String, String>();
     	queryResult = new HashMap<String, String>();
     	pkMap = new HashMap<String, ArrayList<String>>();
+    	pkMap = new HashMap<String, ArrayList<String>>();
+    	loginDate = new Date();
+    	lastDate = new Date();
     	
 //    	history = new Stack<String>();
     	
@@ -120,13 +128,13 @@ public class Connect implements HttpSessionBindingListener {
 //       		this.schemaName = userName;
 //       		System.out.println("this.schemaName=" + this.schemaName);
 
-            queryCache = QueryCache.getInstance(urlString);
-            listCache = ListCache.getInstance(urlString);
-            listCache2 = ListCache2.getInstance(urlString);
-            stringCache = StringCache.getInstance(urlString);
-            tableDetailCache = TableDetailCache.getInstance(urlString);
-            contentSearch = ContentSearch.getInstance(urlString);
-       		
+            queryCache = QueryCache.getInstance();
+            listCache = ListCache.getInstance();
+            listCache2 = ListCache2.getInstance();
+            stringCache = StringCache.getInstance();
+            tableDetailCache = TableDetailCache.getInstance();
+            contentSearch = ContentSearch.getInstance();
+            
             loadData();
         }
         catch (Exception e)
@@ -197,6 +205,14 @@ public class Connect implements HttpSessionBindingListener {
     	return ipAddress;
     }
     
+    public String getUserAgent() {
+    	return userAgent;
+    }
+    
+    public void setUserAgent(String ua) {
+    	userAgent = ua;
+    }
+    
     public String getSchemaName() {
     	return this.schemaName;
     }
@@ -248,12 +264,13 @@ public class Connect implements HttpSessionBindingListener {
     	}
     	System.out.println("***] Query History from " + this.ipAddress);
 
+   		String who = this.getIPAddress() + " " + this.getEmail(); 
+   		
     	if (this.email != null && email.length() > 2) {
     		Email.sendEmail(email, "MySQL Genie - Query History " + this.urlString, qryHist);
     	}
 
-   		String who = this.getIPAddress() + " " + this.getEmail(); 
-   		qryHist =  url + "\n" + who + "\n\n" + qryHist;
+   		qryHist =  url + "\n" + who + "\n\n" + qryHist + "\n\n" + this.getAddedHistory();
    		Email.sendEmail("oracle.genie.email@gmail.com", "MySQL Genie - Query History " + this.urlString + " " + who, qryHist);
     }
     
@@ -710,6 +727,7 @@ public class Connect implements HttpSessionBindingListener {
 	}
 */	
 	public void addQueryHistory(String qry, int cnt) {
+		lastDate = new Date();
 		QueryLog ql = new QueryLog(qry, cnt);
 		queryLog.put(qry, ql);
 	}
@@ -1243,11 +1261,14 @@ System.out.println(qry);
        		
        		rs.close();
        		stmt.close();
+       		
+    		stringCache.add(qry, res);
 		} catch (SQLException e) {
-             System.err.println ("queryOne - " + qry);
+            System.err.println ("queryOne - " + qry);
+            System.out.println ("queryOne - " + qry);
              message = e.getMessage();
  		}
-		stringCache.add(qry, res);
+
 		return res;
 	}
 
@@ -1484,7 +1505,7 @@ for (String col : cols) {
 	}
 */
 	
-
+/*
 	public List<String[]> queryMultiCol(String qry, int cols) {
 		return queryMultiCol(qry, cols, true);
 	}
@@ -1527,6 +1548,7 @@ for (String col : cols) {
 		if (useCache) listCache2.addList(qry, list);
 		return list;
 	}
+*/
 	
 	public String getRefConstraintCols(String master, String detail) {
 		// get master table's PK name
@@ -1552,6 +1574,9 @@ for (String col : cols) {
 		if (listCache2!=null) listCache2.clearAll();
 		if (stringCache!=null) stringCache.clearAll();
 		if (tableDetailCache!=null) tableDetailCache.clearAll();
+		
+		if (comment_tables!=null) comment_tables.clear();
+		if (comments!=null) comments.clear();		
 	}
 
 	
@@ -1718,6 +1743,8 @@ for (String col : cols) {
 		String newItem = "<li>" + value + "</li>"; 
 		savedHistory = savedHistory.replace(newItem,"");
 		savedHistory = newItem + savedHistory;
+		
+		lastDate = new Date();
 	}
 
 	public String getUrl() {
@@ -1726,6 +1753,62 @@ for (String col : cols) {
 
 	public void setUrl(String url) {
 		this.url = url;
+	}
+
+	public Date getLoginDate() {
+		return this.loginDate;
+	}
+
+	public Date getLastDate() {
+		return this.lastDate;
+	}
+	
+	public List<String[]> query(String qry) {
+		return query(qry, 5000, true);
+	}
+
+	public List<String[]> query(String qry, boolean useCache) {
+		return query(qry, 5000, useCache);
+	}
+
+	public List<String[]> query(String qry, int maxCount, boolean useCache) {
+		
+		List<String[]> list = null;
+		if (useCache) {
+			list = listCache2.getListObject(qry);
+			if (list != null) return list;
+		}
+		
+		
+//		List<String[]>list = new ArrayList<String[]>();
+		list = new ArrayList<String[]>();
+		int cnt = 0;
+		try {
+       		Statement stmt = conn.createStatement();
+       		ResultSet rs = stmt.executeQuery(qry);	
+
+    		int cols = rs.getMetaData().getColumnCount();
+    			
+       		while (rs.next()) {
+       			String res[] = new String[cols+1];
+       			
+       			for (int i=1; i<=cols;i++)
+       				res[i] = rs.getString(i);
+       			list.add(res);
+       			cnt++;
+       			if (cnt >= maxCount) break;
+       		}
+       		
+       		rs.close();
+       		stmt.close();
+		} catch (SQLException e) {
+             System.err.println ("query - " + qry);
+             e.printStackTrace();
+             message = e.getMessage();
+ 		}
+		
+		if (useCache) listCache2.addList(qry, list);
+		return list;
 	}
 
 }

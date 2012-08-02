@@ -46,13 +46,22 @@ public class Query {
 	boolean lastSortAsc = true;
 	
 	public Query(Connect cn, String qry) {
-		this(cn, qry, 1000);
+		this(cn, qry, 1000, true);
 	}
 
+	public Query(Connect cn, String qry, boolean saveHistory) {
+		this(cn, qry, 1000, saveHistory);
+	}
+	
 	public Query(Connect cn, String qry, int maxRow) {
+		this(cn, qry, maxRow, true);
+	}
+
+	public Query(Connect cn, String qry, int maxRow, boolean saveHistory) {
 		this.cn = cn;
 		originalQry = qry;
 		MAX_ROW = maxRow;
+		if (MAX_ROW > Def.MAX_SEARCH_ROWS) MAX_ROW = Def.MAX_SEARCH_ROWS; 
 
 		sortOrder = new int[MAX_ROW];
 		hideRow = new boolean[MAX_ROW];
@@ -82,7 +91,7 @@ public class Query {
 			rs.close();
 			stmt.close();
 
-		    cn.addQueryHistory(originalQry, qData.rows.size());
+		    if (saveHistory) cn.addQueryHistory(originalQry, qData.rows.size());
 
 		} catch (SQLException e) {
 			message = e.getMessage();
@@ -186,6 +195,7 @@ public class Query {
 	public String getValue(String colName) {
 		if (qData==null) return"";
 		int colIndex = qData.getColumnIndex(colName);
+		if (colIndex <0) return "";
 		
 		return getValue(colIndex);
 	}
@@ -202,7 +212,7 @@ public class Query {
 		
 //		System.out.println("currentRow=" + currentRow);
 	}
-	
+/*	
 	public boolean next() {
 		if (currentRow+1 >= qData.rows.size()) {
 			currentRow = 0;
@@ -213,8 +223,28 @@ public class Query {
 		if (hideRow[sortOrder[currentRow]]) return next();
 		return true;
 	}
-	
+*/	
+	public boolean next() {
+		if (currentRow+1 >= qData.rows.size()) {
+			currentRow = 0;
+			return false;
+		}
 
+//		currentRow ++;
+//		if (hideRow[sortOrder[currentRow]]) return next();
+		
+		while (true) {
+			currentRow ++;
+			if (!hideRow[sortOrder[currentRow]]) return true;
+
+			if (currentRow+1 >= qData.rows.size()) {
+				currentRow = 0;
+				return false;
+			}
+		}
+//		return true;
+	}
+	
 	public void swap(int array[], int index1, int index2) 
 	// pre: array is full and index1, index2 < array.length
 	// post: the values at indices 1 and 2 have been swapped
@@ -267,6 +297,8 @@ public class Query {
 		int size = qData.rows.size();
 		ArrayList<DataComparable> arr = new ArrayList<DataComparable>();
 		int colIdx = qData.getColumnIndex(col);
+		if (colIdx <0) return;
+
 		String typeName = qData.columns.get(colIdx).columnTypeName;
 		boolean isReverse = direction.equals("1");
 		

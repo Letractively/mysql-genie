@@ -21,7 +21,7 @@
 	String catalog = cn.getSchemaName();
 
 	String qry = "SELECT TABLE_OWNER, TABLE_NAME FROM USER_SYNONYMS WHERE SYNONYM_NAME='" + syn +"'";
-	List<String[]> list = cn.queryMultiCol(qry, 2);
+	List<String[]> list = cn.query(qry);
 	
 	String oname = "";
 	if (list.size()>0) {

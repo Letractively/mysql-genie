@@ -206,9 +206,14 @@ Found: <%= filteredCount %>
 				else
 					extraImage = "<img src='image/sort-descending.png'>";
 			}
+			
+			String colDisp = colName.toLowerCase();
+			
+			if (pkColList != null && pkColList.contains(colName)) colDisp = "<b>" + colDisp + "</b>";
+			
 %>
 <th class="headerRow"><a <%= ( highlight?"style='background-color:yellow;'" :"")%>
-	href="Javascript:setColumn(<%= id %>, '<%=colName%>', <%= colIdx + offset %>);" title="<%= tooltip %>"><%=colName.toLowerCase()%></a>
+	href="Javascript:setColumn(<%= id %>, '<%=colName%>', <%= colIdx + offset %>);" title="<%= tooltip %>"><%=colDisp%></a>
 	<%= extraImage %>
 </th>
 <%
@@ -307,6 +312,8 @@ Found: <%= filteredCount %>
 					linkImage = "image/link.gif";
 				}
 				*/
+				
+				if (pkColList != null && pkColList.contains(colName)) valDisp = "<span class='pk'>" + valDisp + "</span>";
 %>
 <td class="<%= rowClass%>" <%= (numberCol[colIdx])?"align=right":""%>><%=valDisp%>
 <%-- <%= (val!=null && isLinked?"<a class='inspect' href='" + linkUrl  + "'><img border=0 src='" + linkImage + "'></a>":"")%>
@@ -331,8 +338,8 @@ Found: <%= filteredCount %>
 	id = Util.getId();
 %>
 
-<a href="Javascript:toggleDiv('img-<%=id%>','div-<%=id%>')"><img id="img-<%=id%>" border=0 src="image/minus.gif"></a>
-<div id="div-<%=id%>">
+<a href="Javascript:toggleDiv('img-<%=id%>','div-<%=id%>')"><img id="img-<%=id%>" border=0 src="image/plus.gif"></a>
+<div id="div-<%=id%>"  style="display: none;">
 <%
 for (int i=0; i<fkLinkTab.size(); i++) {
 	String ft = fkLinkTab.get(i);

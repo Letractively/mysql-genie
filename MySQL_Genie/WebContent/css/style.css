@@ -165,11 +165,6 @@ html.busy, html.busy * {
 	padding-left:5px;    
 }
 
-.primary-key {
-	color: #0000FF;
-	font-weight: bold;
-}
-
 .datahighlight_old {
         background-color: #ffdc87 !important;
 }
@@ -243,3 +238,14 @@ html.busy, html.busy * {
 #inner-detail {
 	margin: 5px;
 }
+
+.pk {
+    color: #DF0101;
+    font-weight: bold;
+}
+
+.primary-key {
+    color: #DF0101;
+	font-weight: bold;
+}
+

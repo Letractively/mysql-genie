@@ -140,7 +140,16 @@
 <div id="parentDiv" style="width: 100%; overflow:auto;">
 &nbsp;
 
-<% for (ForeignKey rec: fks) { 
+<%
+HashSet <String> hsTable = new HashSet<String>();
+for (ForeignKey rec: fks) {
+	if (hsTable.contains(rec.rTableName)) 
+		continue;
+	else
+		hsTable.add(rec.rTableName);
+/*
+for (ForeignKey rec: fks) { 
+*/
 	List<TableCol> list1 = cn.getTableDetail(owner, rec.rTableName);
 	ArrayList<String> pk1 = cn.getPrimaryKeys(owner, rec.rTableName);
 	String id = Util.getId();
@@ -159,7 +168,7 @@ for (TableCol t: list1) {
 	if (pk1.contains(t.getName())) colDisp = "<b>" + colDisp + "</b>";
 %>
 <tr>
-<td width="20">&nbsp;</td>
+<td width="10">&nbsp;</td>
 <td>
 <%= colDisp %>
 </td>
@@ -195,7 +204,7 @@ for (TableCol t: list) {
 	if (pk.contains(t.getName())) colDisp = "<b>" + colDisp + "</b>";
 %>
 <tr>
-<td width="20">&nbsp;</td>
+<td width="10">&nbsp;</td>
 <td>
 <%= colDisp %>
 </td>
@@ -233,7 +242,7 @@ for (TableCol t: list1) {
 	if (pk1.contains(t.getName())) colDisp = "<b>" + colDisp + "</b>";
 %>
 <tr>
-<td width="20">&nbsp;</td>
+<td width="10">&nbsp;</td>
 <td>
 <%= colDisp %>
 </td>

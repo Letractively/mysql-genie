@@ -3,7 +3,7 @@
     <wb-module deploy-name="MySQL_Genie">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="MySQL_Genie"/>
         <property name="java-output-path" value="/MySQL_Genie/build/classes"/>
+        <property name="context-root" value="mysql-genie"/>
     </wb-module>
 </project-modules>

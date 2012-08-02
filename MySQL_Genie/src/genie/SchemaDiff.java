@@ -50,8 +50,8 @@ public class SchemaDiff {
 	public void compareQuery(String sql) {
 		System.out.println(sql);
 
-		List<String[]> c1 = cn1.queryMultiCol(sql, 0, false);
-		List<String[]> c2 = cn2.queryMultiCol(sql, 0, false);
+		List<String[]> c1 = cn1.query(sql, false);
+		List<String[]> c2 = cn2.query(sql, false);
 		
 		boolean diff = false;
 
@@ -107,8 +107,8 @@ System.out.println(qry1);
 			String qry2 = "SELECT ordinal_position, column_name, column_type, IS_NULLABLE, COLUMN_DEFAULT, EXTRA " +
 					"FROM information_schema.COLUMNS where table_schema ='" + cn1.getSchemaName() + "' AND table_name= '" + tname + "' order by ordinal_position";
 			
-			List<String[]> c1 = cn1.queryMultiCol(qry2, 6, false);
-			List<String[]> c2 = cn2.queryMultiCol(qry2, 6, false);
+			List<String[]> c1 = cn1.query(qry2, false);
+			List<String[]> c2 = cn2.query(qry2, false);
 			
 			boolean diff = false;
 			if (c1.size() != c2.size()) {
@@ -166,8 +166,8 @@ System.out.println(qry1);
 			String qry2 = "SELECT VIEW_DEFINITION " +
 					"FROM information_schema.VIEWS where table_schema ='" + cn1.getSchemaName() + "' AND TABLE_NAME= '" + tname + "'";
 			
-			List<String[]> c1 = cn1.queryMultiCol(qry2, 1, false);
-			List<String[]> c2 = cn2.queryMultiCol(qry2, 1, false);
+			List<String[]> c1 = cn1.query(qry2, false);
+			List<String[]> c2 = cn2.query(qry2, false);
 			
 			boolean diff = false;
 			if (c1.size() != c2.size()) {
@@ -285,8 +285,8 @@ System.out.println(qry1);
 			String qry2 = "SELECT routine_type, ROUTINE_DEFINITION FROM information_schema.ROUTINES WHERE ROUTINE_SCHEMA ='" + cn1.getSchemaName() + "' AND " +
 					" routine_name='" + tname + "'";
 			
-			List<String[]> c1 = cn1.queryMultiCol(qry2, 2, false);
-			List<String[]> c2 = cn2.queryMultiCol(qry2, 2, false);
+			List<String[]> c1 = cn1.query(qry2, false);
+			List<String[]> c2 = cn2.query(qry2, false);
 			
 			boolean diff = false;
 			if (c1.size() != c2.size()) {
@@ -348,8 +348,8 @@ System.out.println(qry1);
 			
 			String qry2 = "SELECT EVENT_MANIPULATION, ACTION_STATEMENT, ACTION_ORIENTATION, ACTION_TIMING FROM information_schema.TRIGGERS WHERE trigger_schema='" + cn1.getSchemaName() + "' trigger_name='" + tname + "'";
 			
-			List<String[]> c1 = cn1.queryMultiCol(qry2, 4, false);
-			List<String[]> c2 = cn2.queryMultiCol(qry2, 4, false);
+			List<String[]> c1 = cn1.query(qry2, false);
+			List<String[]> c2 = cn2.query(qry2, false);
 			
 			boolean diff = false;
 			if (c1.size() != c2.size()) {

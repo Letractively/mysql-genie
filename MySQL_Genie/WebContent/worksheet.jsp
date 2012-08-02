@@ -22,7 +22,7 @@
 	if (worksheetName == null) worksheetName = "no name";
 
 	String qry = "SELECT SQL_STMTS, coords FROM GENIE_WORK_SHEET where id ='" + Util.escapeQuote(worksheetName) + "'";
-	List<String[]> loaded = cn.queryMultiCol(qry, 2, false);
+	List<String[]> loaded = cn.query(qry, false);
 %>
 
 <html>

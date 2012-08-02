@@ -44,6 +44,7 @@ function loadTable(tName) {
 		url: "ajax/detail-table.jsp?table=" + tableName + "&t=" + (new Date().getTime()),
 		success: function(data){
 			$("#inner-result1").html(data);
+			setHighlight();
 			//alert(data);
 			//$("body").css("cursor", "auto");
 			
@@ -576,3 +577,13 @@ function runQuery(catalog,tab) {
     		}  
     	});	
     }	
+    
+    function setHighlight() {
+    	$('.simplehighlight').hover(function(){
+    		$(this).children().addClass('datahighlight');
+    	},function(){
+    		$(this).children().removeClass('datahighlight');
+    	});
+    }
+    
+    

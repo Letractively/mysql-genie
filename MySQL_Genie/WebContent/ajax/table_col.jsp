@@ -60,8 +60,9 @@ Please select a Table to see the detail.
 		TableCol col = cols.get(i);
 		String colName = col.getName();
 		String colDisp = col.getName(); //.toLowerCase();
-		if (pk.contains(colName)) colDisp = "<b>" + colDisp + "</b>";
-
+		//if (pk.contains(colName)) colDisp = "<b>" + colDisp + "</b>";
+		if (pk.contains(colName)) colDisp = "<span class='pk'>" + colDisp + "</span>";
+		
 		String tooltip = col.getTypeName();
 		String comment = cn.getComment(tname, colName);
 		if (comment != null && comment.length() > 0) tooltip += " " + comment;

@@ -26,7 +26,7 @@
 	}
 	sql = sql.trim();
 	if (sql.endsWith(";")) sql = sql.substring(0, sql.length()-1);
-	if (sql.endsWith("/")) sql = sql.substring(0, sql.length()-1);
+//	if (sql.endsWith("/")) sql = sql.substring(0, sql.length()-1);
 	sql = sql.replaceAll("&gt;",">").replace("&lt;","<");
 	
 	int lineLength = Util.countLines(sql);
@@ -36,6 +36,8 @@
 	cn.queryCache.removeQuery(sql);
 	Query q = new Query(cn, sql, maxRow);
 //	System.out.println(cn.getUrlString() + " " + request.getRemoteAddr() + " " + (new Date()) + "\n" + sql);
+System.out.println(cn.getUrlString() + " " + Util.getIpAddress(request) + " " + (new java.util.Date()) + "\nQuery: " + sql);
+
 /*
 	if (q.isError()) System.out.println("Error: " + q.getMessage());
 	else System.out.println("Count: " + q.getRecordCount());
@@ -49,6 +51,7 @@
 	if (tbls.size()>0) tbl = tbls.get(0);	
 //	System.out.println("XXX TBL=" + tbl);
 	String title = sql;	
+	if (title.length() > 100) title = title.substring(0,100) + " ...";
 %>
 
 <html>
@@ -137,6 +140,7 @@ Up to
 <option value="1000" <%= maxRow==1000?"SELECTED":"" %>>1,000</option>
 <option value="5000" <%= maxRow==5000?"SELECTED":"" %>>5,000</option>
 <option value="10000" <%= maxRow==10000?"SELECTED":"" %>>10,000</option>
+<option value="50000" <%= maxRow==50000?"SELECTED":"" %>>50,000</option>
 </select>
 <input type="submit" value="Submit"/>
 &nbsp;

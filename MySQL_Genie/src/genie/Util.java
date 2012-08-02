@@ -9,6 +9,12 @@ import java.util.List;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.servlet.http.HttpServletRequest;
+
+import org.apache.commons.lang3.StringEscapeUtils;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.math.NumberUtils;
+
 /**
  * Utility class for Genie
  * 
@@ -129,6 +135,8 @@ public class Util {
 				if (x > 0) tname = tname.substring(0, x).trim();
 				//System.out.println(j + "=" +tname);
 				
+				if (tname.endsWith(")")) tname = tname.substring(0, tname.length()-1);
+				
 				tbls.add(tname);
 			}			
 		}
@@ -166,10 +174,23 @@ public class Util {
 	
 	
 	public static String getVersionDate() {
-		return "May 29, 2012";
+		return "August 2, 2012";
 	}
 
 	public static String getScriptionVersion() {
-		return "20120529";
+		return "20120802";
 	}
+	
+	public static boolean isNumber(String inputData) {
+		return NumberUtils.isNumber(inputData);
+		//return inputData.matches("[-+]?\\d+(\\.\\d+)?");
+	}
+
+	public static String getIpAddress(HttpServletRequest request) {
+		String ipAddress = request.getRemoteAddr();
+		if (ipAddress.equals("127.0.0.1")) ipAddress=request.getHeader("X-Forwarded-For");
+		
+		return ipAddress;
+	}
+	
 }
