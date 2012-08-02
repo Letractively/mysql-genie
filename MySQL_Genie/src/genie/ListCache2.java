@@ -12,18 +12,19 @@ import java.util.List;
  */
 public class ListCache2 {
 
-	static ListCache2 instance = null;
+//	static ListCache2 instance = null;
 	static String urlString = null;
 	Hashtable<String, List<String[]>> lists = new Hashtable<String, List<String[]>>();
 			
 	private ListCache2() {
 	}
 	
-	public static ListCache2 getInstance(String urlStr) {
-		if (instance==null && urlString==null) {
+	public static ListCache2 getInstance() {
+/*		if (instance==null && urlString==null) {
 			urlString = urlStr;
 			instance = new ListCache2();
-		}
+		}*/
+		ListCache2 instance = new ListCache2();
 		return instance;
 	}
 	

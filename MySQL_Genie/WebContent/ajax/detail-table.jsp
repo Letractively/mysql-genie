@@ -54,32 +54,36 @@ Please select a Table to see the detail.
 <form id="<%= formName %>">
 <input name="table" type="hidden" value="<%= table %>"/>
 <input name="query" type="hidden" value=""/>
-<table id="TABLE_<%=tname%>" width=640 border=0>
+
+<table id="dataTable" border=1 class="gridBody" style="margin-left: 10px;">
 <tr>
-	<th></th>
-	<th bgcolor=#ccccff>Column Name</th>
-	<th bgcolor=#ccccff>Type</th>
-	<th bgcolor=#ccccff>Null</th>
-	<th bgcolor=#ccccff>Default</th>
-	<th bgcolor=#ccccff>Remarks</th>
+	<th class="headerRow">Column Name</th>
+	<th class="headerRow">Type</th>
+	<th class="headerRow">Null</th>
+	<th class="headerRow">Default</th>
+	<th class="headerRow">Remarks</th>
 </tr>
 
 <%	
 	List<TableCol> list = cn.getTableDetail(owner, tname);
+	int rowCnt = 0;
 	for (int i=0;i<list.size();i++) {
 		TableCol rec = list.get(i);
 		
 		// check if primary key
 		String col_disp = rec.getName();
 		if (rec.isPrimaryKey()) col_disp = "<span class='primary-key'>" + col_disp + "</span>";
+		
+		rowCnt++;
+		String rowClass = "oddRow";
+		if (rowCnt%2 == 0) rowClass = "evenRow";	
 %>
-<tr>
-	<td>&nbsp;</td>
-	<td><%= col_disp %></td>
-	<td><%= rec.getTypeName() %></td>
-	<td><%= rec.getNullable()==0?"N":"" %></td>
-	<td><%= rec.getDefaults() %></td>
-	<td><%= rec.getRemarks() %></td>
+<tr class="simplehighlight">
+	<td class="<%= rowClass%>"><%= col_disp %></td>
+	<td class="<%= rowClass%>"><%= rec.getTypeName() %></td>
+	<td class="<%= rowClass%>"><%= rec.getNullable()==0?"N":"" %></td>
+	<td class="<%= rowClass%>"><%= rec.getDefaults() %></td>
+	<td class="<%= rowClass%>"><%= rec.getRemarks() %></td>
 </tr>
 
 <%

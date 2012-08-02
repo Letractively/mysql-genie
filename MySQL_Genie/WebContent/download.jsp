@@ -52,7 +52,7 @@
 		}
 		counter++;
 		out.println();	
-		if (counter >= 1000000) break;
+		if (counter >= Def.MAX_DOWNLOAD_ROWS) break;
 		if (!rs.next()) break;
 	}
 	

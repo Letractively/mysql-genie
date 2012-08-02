@@ -10,7 +10,7 @@
 	Connect cn = (Connect) session.getAttribute("CN");
 
 	String qry = "SELECT ID, UPDATED FROM GENIE_WORK_SHEET ORDER BY UPDATED DESC";
-	List<String[]> list = cn.queryMultiCol(qry, 2, false);
+	List<String[]> list = cn.query(qry, false);
 	
 %>
 

@@ -79,7 +79,7 @@
 <b>Column:</b><br/>
 <%
 	qry = "SELECT TABLE_NAME, COLUMN_NAME, DATA_TYPE FROM information_schema.columns WHERE COLUMN_NAME='" + Util.escapeQuote(keyword) +"' AND table_schema='" + catalog + "' ORDER BY TABLE_NAME";
-	List<String[]> lst = cn.queryMultiCol(qry, 3);
+	List<String[]> lst = cn.query(qry);
 	
 	for (String[] rec : lst) {
 		String tname = rec[1];
@@ -97,7 +97,7 @@
 <b>Table Comments:</b><br/>
 <%
 	qry = "SELECT TABLE_NAME, table_comment FROM information_schema.tables WHERE table_comment LIKE '%" + Util.escapeQuote(keyword) +"%' and table_schema='"+catalog+"' ORDER BY TABLE_NAME";
-	lst = cn.queryMultiCol(qry, 2);
+	lst = cn.query(qry);
 
 	for (String[] rec : lst) {
 		String tname = rec[1];
@@ -115,7 +115,7 @@
 <%
 	qry = "SELECT TABLE_NAME, column_name, column_comment FROM information_schema.columns WHERE column_comment LIKE '%" + Util.escapeQuote(keyword) +"%' and table_schema='"+catalog+"' ORDER BY TABLE_NAME";
 //out.println(qry);
-	lst = cn.queryMultiCol(qry, 3);
+	lst = cn.query(qry);
 
 	for (String[] rec : lst) {
 		String tname = rec[1];

@@ -39,8 +39,11 @@
 	String password = request.getParameter("password");
 	String email = request.getParameter("email");
 	
-	cn = new Connect(url, username, password, request.getRemoteAddr());
+	String ipAddress = Util.getIpAddress(request);
+	
+	cn = new Connect(url, username, password, ipAddress);
 	cn.setUrl(request.getRequestURL().toString());
+	cn.setUserAgent(request.getHeader("user-agent"));
 	
 	if (cn.isConnected()) {
 		// you're connected.

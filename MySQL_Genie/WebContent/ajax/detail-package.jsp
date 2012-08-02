@@ -27,7 +27,7 @@
 	if (owner != null) sourceUrl += "&owner=" + owner;
 	
 	String qry = "SELECT routine_type, data_type, routine_definition, routine_comment FROM information_schema.routines WHERE ROUTINE_NAME='" + name +"' AND ROUTINE_SCHEMA='" + catalog + "'";
-	List<String[]> list  = cn.queryMultiCol(qry, 4);
+	List<String[]> list  = cn.query(qry);
 	
 	String typeName = list.get(0)[1];
 	String dataType = list.get(0)[2];
@@ -35,7 +35,7 @@
 	String comment = list.get(0)[4];
 
 	qry = "SELECT parameter_name, parameter_mode, data_type FROM information_schema.parameters WHERE SPECIFIC_NAME='" + name +"' AND SPECIFIC_SCHEMA='" + catalog + "' AND ordinal_position > 0 ORDER BY ordinal_position";
-	List<String[]> list2  = cn.queryMultiCol(qry, 3);
+	List<String[]> list2  = cn.query(qry);
 
 %>
 

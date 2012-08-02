@@ -13,7 +13,7 @@ public class ContentSearch {
 	private String searchKeyword;
 	private String matchType;
 
-	private static ContentSearch instance = null;
+//	private static ContentSearch instance = null;
 	static String urlString = null;
 	
 	private static boolean running = false;
@@ -27,11 +27,12 @@ public class ContentSearch {
 	private ContentSearch() {
 	}
 	
-	public static ContentSearch getInstance(String urlStr) {
-		if (instance==null && urlString==null) {
+	public static ContentSearch getInstance() {
+/*		if (instance==null && urlString==null) {
 			urlString = urlStr;
 			instance = new ContentSearch();
-		}
+		}*/
+		ContentSearch instance = new ContentSearch();
 		return instance; 
 	}
 	
