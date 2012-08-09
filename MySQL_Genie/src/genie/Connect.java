@@ -160,7 +160,7 @@ public class Connect implements HttpSessionBindingListener {
     /**
      * close the connection
      */
-    public void disconnect() {
+    public synchronized void disconnect() {
     	GenieManager.getInstance().removeSession(this);
     	if (conn != null)	{
     		try {
@@ -279,19 +279,19 @@ public class Connect implements HttpSessionBindingListener {
 		
 	}
 
-	public void valueUnbound(HttpSessionBindingEvent arg0) {
+	public synchronized void valueUnbound(HttpSessionBindingEvent arg0) {
 		printQueryLog();
 		clearCache();
 		this.disconnect();
 	}
 	
-	public void setSchema(String schema) throws SQLException {
+	public synchronized void setSchema(String schema) throws SQLException {
 		conn.setCatalog(schema);
 		this.schemaName = schema;
 		loadData();
 	}
 	
-	private void loadData() {
+	private synchronized void loadData() {
 		
 		clearCache();
 		
@@ -303,7 +303,7 @@ public class Connect implements HttpSessionBindingListener {
 		loadForeignKeys();
 	}
 
-	private void loadSchema() {
+	private synchronized void loadSchema() {
 		schemas.clear();
 		try {
        		Statement stmt = conn.createStatement();
@@ -323,7 +323,7 @@ public class Connect implements HttpSessionBindingListener {
  		}
 	}
 		
-	private void loadConstraints() {
+	private synchronized void loadConstraints() {
 		constraints.clear();
 		try {
        		Statement stmt = conn.createStatement();
@@ -367,7 +367,7 @@ public class Connect implements HttpSessionBindingListener {
  		}
 	}
 
-	private void loadPrimaryKeys() {
+	private synchronized void loadPrimaryKeys() {
 		pkByTab.clear();
 		pkByCon.clear();
 
@@ -396,7 +396,7 @@ public class Connect implements HttpSessionBindingListener {
  		
 	}
 
-	private void loadForeignKeys() {
+	private synchronized void loadForeignKeys() {
 		foreignKeys.clear();
 	
 		try {
@@ -426,7 +426,7 @@ public class Connect implements HttpSessionBindingListener {
  		
 	}
 
-	private void loadComment(String tname) {
+	private synchronized void loadComment(String tname) {
 		
 		// table comments
 		try {
@@ -453,7 +453,7 @@ public class Connect implements HttpSessionBindingListener {
 		comment_tables.add(tname);
 	}
 	
-	private void loadComments() {
+	private synchronized void loadComments() {
 		comments.clear();
 		// table comments
 		try {
@@ -549,7 +549,7 @@ public class Connect implements HttpSessionBindingListener {
 		
 	}
 	
-	private void loadTables() {
+	private synchronized void loadTables() {
 		tables.clear();
 		try {
 			DatabaseMetaData dbm = conn.getMetaData();
@@ -578,7 +578,7 @@ public class Connect implements HttpSessionBindingListener {
 		}
 	}
 	
-	public String genie(String value, String tab, String targetCol, String sourceCol) {
+	public synchronized String genie(String value, String tab, String targetCol, String sourceCol) {
 		String res=null;
 		
 		String qry = "SELECT " + targetCol + " FROM " + tab + " WHERE " + sourceCol + "='" + value ;
@@ -601,7 +601,7 @@ public class Connect implements HttpSessionBindingListener {
 		return res;
 	}
 	
-	public String genie(String srcCol, String tabCol) {
+	public synchronized String genie(String srcCol, String tabCol) {
 		String table = "";
 		String targetCol = "";
 		
@@ -612,7 +612,7 @@ public class Connect implements HttpSessionBindingListener {
 		return genie(srcCol, table, targetCol, srcCol);
 	}
 	
-	public String genie(String srcCol, String tabTargetCol, String tabSrcCol) {
+	public synchronized String genie(String srcCol, String tabTargetCol, String tabSrcCol) {
 		String table = "";
 		String targetCol = "";
 		
@@ -652,7 +652,7 @@ public class Connect implements HttpSessionBindingListener {
 //		return colName;
 //	}
 
-	public ArrayList<String> getPrimaryKeys(String catalog, String tname)  {
+	public synchronized ArrayList<String> getPrimaryKeys(String catalog, String tname)  {
 		ArrayList pk = null;
 		String colName = "";
 		
@@ -685,7 +685,7 @@ public class Connect implements HttpSessionBindingListener {
 		return pk;
 	}
 	
-	public String getQueryValue(String sql)  {
+	public synchronized String getQueryValue(String sql)  {
 		String res = "";
 		
 		res = (String) queryResult.get(sql);
@@ -749,7 +749,7 @@ public class Connect implements HttpSessionBindingListener {
 		}
 	}
 
-	public String getPrimaryKeyName(String tname) {
+	public synchronized String getPrimaryKeyName(String tname) {
 		if (tname.contains(".")) {
 			String[] temp = tname.split("\\.");
 			return getPrimaryKeyName(temp[0], temp[1]);
@@ -768,7 +768,7 @@ public class Connect implements HttpSessionBindingListener {
 		return pkName;
 	}
 
-	public String getPrimaryKeyName(String owner, String tname) {
+	public synchronized String getPrimaryKeyName(String owner, String tname) {
 		String qry = "SELECT CONSTRAINT_TYPE FROM information_schema.TABLE_CONSTRAINTS WHERE constraint_schema='" +
 				owner + "' AND TABLE_NAME='" + tname + "' AND CONSTRAINT_TYPE = 'PRIMARY KEY'";
 		
@@ -795,7 +795,7 @@ public class Connect implements HttpSessionBindingListener {
 		return this.queryOne(qry);
 	}
 */
-	public List<String> getConstraintColList(String tname, String cname) {
+	public synchronized List<String> getConstraintColList(String tname, String cname) {
 		if (tname.contains(".")) {
 			String[] temp = tname.split("\\.");
 			return getConstraintColList(temp[0], temp[1], cname);
@@ -811,7 +811,7 @@ public class Connect implements HttpSessionBindingListener {
 		return getConstraintColList(this.getSchemaName(), tname, cname);
 	}
 
-	public List<String> getConstraintColList(String owner, String tname, String cname) {
+	public synchronized List<String> getConstraintColList(String owner, String tname, String cname) {
 		if (owner == null) owner = this.getSchemaName().toUpperCase();
 		
 		List<String> list = new ArrayList<String>();
@@ -836,7 +836,7 @@ public class Connect implements HttpSessionBindingListener {
 		return list;
 	}
 
-	public String getConstraintCols(String tname, String cname) {
+	public synchronized String getConstraintCols(String tname, String cname) {
 		if (cname == null) return "";
 		if (tname == null) return "";
 		
@@ -859,7 +859,7 @@ public class Connect implements HttpSessionBindingListener {
 		return cols;
 	}
 
-	public String getConstraintCols(String owner, String tname, String cname) {
+	public synchronized String getConstraintCols(String owner, String tname, String cname) {
 		
 		if (owner == null) return getConstraintCols(tname, cname);
 		
@@ -877,7 +877,7 @@ public class Connect implements HttpSessionBindingListener {
 		return res;
 	}
 
-	public List<ForeignKey> getForeignKeys(String tname) {
+	public synchronized List<ForeignKey> getForeignKeys(String tname) {
 		
 		if (tname.contains(".")) {
 			String[] temp = tname.split("\\.");
@@ -941,7 +941,7 @@ public class Connect implements HttpSessionBindingListener {
 	}
 */
 	
-	public List<String> getReferencedTables(String tname) {
+	public synchronized List<String> getReferencedTables(String tname) {
 		
 		if (tname.contains(".")) {
 			String[] temp = tname.split("\\.");
@@ -978,7 +978,7 @@ public class Connect implements HttpSessionBindingListener {
 		return list2;
 	}
 
-	public List<String> getReferencedTables(String owner, String tname) {
+	public synchronized List<String> getReferencedTables(String owner, String tname) {
 		if (owner == null) return getReferencedTables(tname);
 		
 		String pkName = getPrimaryKeyName(owner, tname);
@@ -1039,7 +1039,7 @@ public class Connect implements HttpSessionBindingListener {
 		return list;
 	}
 	
-	public List<String> getIndexes(String owner, String tname) {
+	public synchronized List<String> getIndexes(String owner, String tname) {
 		List<String> list = new ArrayList<String>();
 
 		if (owner == null) owner = this.getSchemaName().toUpperCase();
@@ -1072,7 +1072,7 @@ public class Connect implements HttpSessionBindingListener {
 		return list;
 	}
 	
-	public List<String> getReferencedTriggers(String tname) {
+	public synchronized List<String> getReferencedTriggers(String tname) {
 		List<String> list = new ArrayList<String>();
 /*
 		try {
@@ -1096,7 +1096,7 @@ public class Connect implements HttpSessionBindingListener {
 		return list;
 	}
 	
-	public String getIndexColumns(String owner, String tname, String iname) {
+	public synchronized String getIndexColumns(String owner, String tname, String iname) {
 		String res = "(";
 
 		if (owner == null) owner = this.getSchemaName().toUpperCase();
@@ -1245,7 +1245,7 @@ System.out.println(qry);
 		return res;
 	}
 
-	public String queryOne(String qry, boolean useCache) {
+	public synchronized String queryOne(String qry, boolean useCache) {
 		//System.out.println("queryOne="+qry);
 
 		String res = stringCache.get(qry);
@@ -1282,7 +1282,7 @@ System.out.println(qry);
 		return queryMulti(qry, true);
 	}
 		
-	public List<String> queryMulti(String qry, boolean useCache) {
+	public synchronized List<String> queryMulti(String qry, boolean useCache) {
 		
 		List<String> list = null;
 		
@@ -1398,7 +1398,7 @@ System.out.println(qry);
 		return false;
 	}
 	
-	public List<TableCol> getTableDetail(String owner, String tname) throws SQLException {
+	public synchronized List<TableCol> getTableDetail(String owner, String tname) throws SQLException {
 		List<TableCol> list = tableDetailCache.get(owner, tname); 
 		if (list != null ) return list;
 		
@@ -1550,7 +1550,7 @@ for (String col : cols) {
 	}
 */
 	
-	public String getRefConstraintCols(String master, String detail) {
+	public synchronized String getRefConstraintCols(String master, String detail) {
 		// get master table's PK name
 		String pkName = this.getPrimaryKeyName(master);
 //System.out.println("pkName=" + pkName);		
@@ -1580,7 +1580,7 @@ for (String col : cols) {
 	}
 
 	
-	public void createTable() throws SQLException {
+	public synchronized void createTable() throws SQLException {
         conn.setReadOnly(false);
 
 		String stmt1 = 
@@ -1624,7 +1624,7 @@ for (String col : cols) {
         conn.setReadOnly(false);
 	}
 
-	public void createTable2() throws SQLException {
+	public synchronized void createTable2() throws SQLException {
         conn.setReadOnly(false);
 		String stmt1 = 
 				"CREATE TABLE GENIE_SAVED_SQL (	"+
@@ -1646,7 +1646,7 @@ for (String col : cols) {
 	}
 
 
-	public void createTable4WorkSheet() {
+	public synchronized void createTable4WorkSheet() {
 		String stmt1 = 
 				"CREATE TABLE GENIE_WORK_SHEET (	"+
 				"ID	VARCHAR(100),"+
@@ -1672,7 +1672,7 @@ for (String col : cols) {
 		}
 	}
 
-	public void saveWorkSheet(String name, String sqls, String coords) {
+	public synchronized void saveWorkSheet(String name, String sqls, String coords) {
 		if (!workSheetTableCreated) createTable4WorkSheet();
 		try {
 	        conn.setReadOnly(false);
@@ -1715,7 +1715,7 @@ for (String col : cols) {
 	}
 
 
-	public String getTableRowCount(String tname) {
+	public synchronized String getTableRowCount(String tname) {
 		String numRows = null;
 
 		numRows = queryOne("SELECT TABLE_ROWS FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_SCHEMA='"+this.getSchemaName()+"' AND  TABLE_NAME ='" + tname + "'");
@@ -1771,7 +1771,7 @@ for (String col : cols) {
 		return query(qry, 5000, useCache);
 	}
 
-	public List<String[]> query(String qry, int maxCount, boolean useCache) {
+	public synchronized List<String[]> query(String qry, int maxCount, boolean useCache) {
 		
 		List<String[]> list = null;
 		if (useCache) {

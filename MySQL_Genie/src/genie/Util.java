@@ -174,11 +174,11 @@ public class Util {
 	
 	
 	public static String getVersionDate() {
-		return "August 2, 2012";
+		return "August 9, 2012";
 	}
 
 	public static String getScriptionVersion() {
-		return "20120802";
+		return "20120809";
 	}
 	
 	public static boolean isNumber(String inputData) {
@@ -192,5 +192,8 @@ public class Util {
 		
 		return ipAddress;
 	}
-	
+
+	public static String trackingId() {
+		return "UA-34001958-1";
+	}
 }
