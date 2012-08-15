@@ -250,6 +250,20 @@ Spencer Hwang - the creator of Genie<br/>
   _gaq.push(['_setAccount', '<%= Util.trackingId() %>']);
   _gaq.push(['_trackPageview']);
 
+  _gaq.push(['_setCustomVar',
+             1,                   // This custom var is set to slot #1.  Required parameter.
+             'Database',     // The name acts as a kind of category for the user activity.  Required parameter.
+             '<%= cn.getUrlString() %>',               // This value of the custom variable.  Required parameter.
+             2                    // Sets the scope to session-level.  Optional parameter.
+          ]);
+
+  _gaq.push(['_setCustomVar',
+             2,                   // This custom var is set to slot #1.  Required parameter.
+             'Email',     // The name acts as a kind of category for the user activity.  Required parameter.
+             '<%= cn.getEmail() %>',               // This value of the custom variable.  Required parameter.
+             2                    // Sets the scope to session-level.  Optional parameter.
+          ]);
+  
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

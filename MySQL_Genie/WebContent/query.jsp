@@ -216,6 +216,8 @@ Up to
   _gaq.push(['_setAccount', '<%= Util.trackingId() %>']);
   _gaq.push(['_trackPageview']);
 
+  _gaq.push(['_trackEvent', 'Query', '<%= tbl %>']);
+  
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
     ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';

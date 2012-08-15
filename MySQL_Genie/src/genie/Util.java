@@ -174,11 +174,11 @@ public class Util {
 	
 	
 	public static String getVersionDate() {
-		return "August 9, 2012";
+		return "August 15, 2012";
 	}
 
 	public static String getScriptionVersion() {
-		return "20120809";
+		return "20120815";
 	}
 	
 	public static boolean isNumber(String inputData) {
