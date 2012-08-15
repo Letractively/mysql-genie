@@ -65,7 +65,7 @@ System.out.println("refTabs.size()="+refTabs.size() +  " tname=" + tname);
 <div id="mainDiv" style="background-color: #ffffcc; width:220px; height: 150px; overflow: auto; border: 1px solid #cccccc; float: left">
 <b><%= tname %></b> <span class="rowcountstyle"><%= cn.getTableRowCount(tname) %></span>
 &nbsp;
-<a href="Javascript:selectFromErd('<%=tname%>')"><img border=0 src="image/view.png" /></a>
+<a href="Javascript:selectFromErd('<%=tname%>')">add<%--<img border=0 src="image/view.png" />--%></a>
 <br/>
 <hr>
 <table>

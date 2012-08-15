@@ -77,7 +77,7 @@
 &nbsp;&nbsp;
 <a href="Javascript:showAllColumn()">Show All</a>
 &nbsp;&nbsp;
-<a href="Javascript:newQry()">Query</a>
+<a href="Javascript:newQry()">Pop Query</a>
 &nbsp;&nbsp;
 <a id="showERD" href="Javascript:showERD('<%=table%>')">Show ERD</a>
 
@@ -119,8 +119,8 @@
 %>
 
 
-<div id="div-fkk-<%=id%>">
-<a style="margin-left: 70px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
+<div id="div-fkk-<%=id%>"  style="margin-left: 70px;">
+<a href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 (<span class="rowcountstyle"><%= 1 %></span> / <%= cn.getTableRowCount(ft) %>)
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle  title="<%=fsql%>"/></a>
 (<%= table %>.<%= fc %>)
@@ -128,7 +128,7 @@
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
-<div id="div-<%=id%>" style="margin-left: 70px; display: none;"></div>
+<div id="div-<%=id%>" style="display: none;"></div>
 <br/>
 </div>
 <% } %>
@@ -281,6 +281,8 @@ loadData(<%=id1%>,0);
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', '<%= Util.trackingId() %>']);
   _gaq.push(['_trackPageview']);
+
+  _gaq.push(['_trackEvent', 'Datalink', '<%= table %>']);
 
   (function() {
     var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;

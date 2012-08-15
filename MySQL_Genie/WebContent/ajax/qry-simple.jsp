@@ -339,7 +339,8 @@ Found: <%= filteredCount %>
 %>
 
 <a href="Javascript:toggleDiv('img-<%=id%>','div-<%=id%>')"><img id="img-<%=id%>" border=0 src="image/plus.gif"></a>
-<div id="div-<%=id%>"  style="display: none;">
+<div id="div-<%=id%>"  style="display: none; margin-left:30px;">
+<img src="image/down_arrow.gif">
 <%
 for (int i=0; i<fkLinkTab.size(); i++) {
 	String ft = fkLinkTab.get(i);
@@ -367,14 +368,14 @@ for (int i=0; i<fkLinkTab.size(); i++) {
 
 <div id="div-fkk-<%=id %>">
 <br/>
-<a style="margin-left: 30px;" href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
+<a href="javascript:loadData('<%=id%>',1)"><b><%=ft%></b> <img id="img-<%=id%>" align=middle src="image/plus.gif"></a>
 &nbsp;&nbsp;<a href="javascript:openQuery('<%=id%>')"><img src="image/sql.png" align=middle title="<%=fsql%>"/></a>
  (<%= tname %>.<%= fc %>)
 &nbsp;&nbsp;<a href="javascript:hideDiv('div-fkk-<%=id%>')"><img src="image/clear.gif" border=0/></a>
 <div style="display: none;" id="sql-<%=id%>"><%= fsql%></div>
 <div style="display: none;" id="mode-<%=id%>">hide</div>
 <div style="display: none;" id="hide-<%=id%>"></div>
-<div id="div-<%=id%>" style="margin-left: 30px; display: none;"></div>
+<div id="div-<%=id%>" style="display: none;"></div>
 </div>
 <% } %>
 

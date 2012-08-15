@@ -47,7 +47,7 @@ function loadTable(tName) {
 			setHighlight();
 			//alert(data);
 			//$("body").css("cursor", "auto");
-			
+		   	_gaq.push(['_trackEvent', 'Table', tName]);
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -84,6 +84,7 @@ function loadView(vName) {
 		success: function(data){
 			$("#inner-result1").html(data);
 			SyntaxHighlighter.all();
+		   	_gaq.push(['_trackEvent', 'View', vName]);
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -100,6 +101,7 @@ function loadPackage(pName) {
 		url: "ajax/detail-package.jsp?name=" + pName + "&t=" + (new Date().getTime()),
 		success: function(data){
 			$("#inner-result1").html(data);
+		   	_gaq.push(['_trackEvent', 'Program', pName]);
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -116,6 +118,7 @@ function loadSynonym(sName) {
 		url: "ajax/detail-synonym.jsp?name=" + sName + "&t=" + (new Date().getTime()),
 		success: function(data){
 			$("#inner-result1").html(data);
+		   	_gaq.push(['_trackEvent', 'Synonym', sName]);
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -132,6 +135,7 @@ function loadTool(name) {
 		url: "ajax/detail-tool.jsp?name=" + name + "&t=" + (new Date().getTime()),
 		success: function(data){
 			$("#inner-result1").html(data);
+		   	_gaq.push(['_trackEvent', 'Tool', name]);
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
