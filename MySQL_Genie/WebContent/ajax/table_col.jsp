@@ -38,7 +38,7 @@ Please select a Table to see the detail.
 %>
 
 <div id="<%= divId %>">
-<a href="Javascript:copyPaste('<%=table %>');"><b><%= table %></b></a> <a href="Javascript:removeDiv('<%= divId %>')">x</a><br/>
+<a href="Javascript:copyPaste('<%=table %>');"><b><%= table %></b></a> <span class="rowcountstyle"><%= cn.getTableRowCount(table) %> <a href="Javascript:removeDiv('<%= divId %>')">x</a> <br/>
 
 <table border=0 width=780>
 <tr>

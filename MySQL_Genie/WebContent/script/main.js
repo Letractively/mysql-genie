@@ -590,4 +590,25 @@ function runQuery(catalog,tab) {
     	});
     }
     
-    
+	function loadObject(oName) {
+		saveForNavigation();
+		var objectName = oName;
+		$("#inner-result1").html("<img src='image/loading.gif'/>");
+
+		$.ajax({
+			url: "ajax/detail-object.jsp?object=" + objectName + "&t=" + (new Date().getTime()),
+			success: function(data){
+				$("#inner-result1").html(data);
+			   	setHighlight();
+				//alert(data);
+				//$("body").css("cursor", "auto");
+			   	_gaq.push(['_trackEvent', 'Object', 'Object ' + oName]);
+			},
+	        error:function (jqXHR, textStatus, errorThrown){
+	            alert(jqXHR.status + " " + errorThrown);
+	        }  
+		});	
+		
+		addHistory("<a href='Javascript:loadObject(\""+oName+"\")'>" + oName + "</a>");
+	}	
+	
