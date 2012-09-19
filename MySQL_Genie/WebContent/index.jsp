@@ -66,6 +66,23 @@ $(document).ready(function(){
  		globalSearch(keyword);
  	})
  	
+	
+	$(function() {
+		$( "#globalSearch" ).autocomplete({
+			source: "ajax/auto-complete2.jsp",
+			minLength: 2,
+			select: function( event, ui ) {
+				loadObject( ui.item ?
+					ui.item.value: "" );
+			}
+		}).data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( "<a>" + item.label + " <span class='rowcountstyle'>" + item.desc + "</span></a>" )
+//			.append( "<a>" + item.label + "</a>" )
+			.appendTo( ul );
+		};
+	});	
 })
 
 	function aboutGenie() {
@@ -126,6 +143,7 @@ function callserver() {
 		}
 	});
 }	
+
 </script>
 
 

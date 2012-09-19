@@ -83,6 +83,31 @@ System.out.println(cn.getUrlString() + " " + Util.getIpAddress(request) + " " + 
     	setHighlight();
       });
     </script>
+	<style>
+	.ui-autocomplete-loading { background: white url('image/ui-anim_basic_16x16.gif') right center no-repeat; }
+	</style>
+	<script>
+	$(function() {
+		function addTable( tname ) {
+			if (tname == "") return;
+			showTable(tname);
+		}
+
+		$( "#tablesearch" ).autocomplete({
+			source: "ajax/auto-complete.jsp",
+			minLength: 2,
+			select: function( event, ui ) {
+				addTable( ui.item ?
+					ui.item.value: "" );
+			}
+		}).data( "autocomplete" )._renderItem = function( ul, item ) {
+			return $( "<li></li>" )
+			.data( "item.autocomplete", item )
+			.append( "<a>" + item.label + " <span class='rowcountstyle'>" + item.desc + "</span></a>" )
+			.appendTo( ul );
+		};
+	});
+	</script>    
 </head> 
 
 <body>
@@ -92,6 +117,7 @@ System.out.println(cn.getUrlString() + " " + Util.getIpAddress(request) + " " + 
 <%= cn.getUrlString() %>
 
 &nbsp;&nbsp;&nbsp;
+<a href="query.jsp" target="_blank">Query</a> |
 <a href="q.jsp" target="_blank">Q</a> |
 <a href="worksheet.jsp" target="_blank">Work Sheet</a>
 <br/><br/>
@@ -104,6 +130,10 @@ System.out.println(cn.getUrlString() + " " + Util.getIpAddress(request) + " " + 
 <%-- 	<a href="Javascript:showRelatedTables('<%=tbl%>')">Show Related Tables</a>
  --%>
  	</div>
+<div class="ui-widget">
+	<label for="tablesearch">Table: </label>
+	<input id="tablesearch" style="width: 250px;"/>
+</div>
 
 	<div id="table-detail"></div>
 
