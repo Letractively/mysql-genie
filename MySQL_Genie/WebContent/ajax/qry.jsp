@@ -451,8 +451,8 @@ if (fkLinkTab.size()>0 && dLink) {
 					
 //					linkUrl ="blob.jsp?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue);
 					String fname = "download.txt";
-					if (val.startsWith("<?xml")) fname = "download.xml";
-					if (val.startsWith("<html")) fname = "download.html";
+					if (val!=null && val.startsWith("<?xml")) fname = "download.xml";
+					if (val!=null && val.startsWith("<html")) fname = "download.html";
 					
 					linkUrl ="clob_download?table=" + tbl + "&col=" + colName + "&key=" + Util.encodeUrl(tpkValue)+"&filename="+fname;
 					linkImage ="image/download.gif";

@@ -147,6 +147,7 @@ public class Query {
 	}
 	
 	public int getColumnCount() {
+		if (qData == null || qData.columns ==null) return 0;
 		return qData.columns.size();
 	}
 	

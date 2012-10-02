@@ -39,5 +39,6 @@
 </div>
 
 <script type="text/javascript">
-	hideNullColumn("" + <%= id %>);
+//	hideNullColumn("" + <%= id %>);
+	hideNullColumnTable("" + <%= id %>);	
 </script>
