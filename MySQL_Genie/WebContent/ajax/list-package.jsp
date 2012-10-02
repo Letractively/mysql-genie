@@ -16,7 +16,7 @@
 	int selectedCnt = 0;
 	if (filter !=null) filter = filter.toUpperCase();
 	for (int i=0; i<list.size();i++) {
-		if (filter != null && !list.get(i).contains(filter)) continue;
+		if (filter != null && !list.get(i).toUpperCase().contains(filter)) continue;
 		selectedCnt ++;
 	}
 
@@ -26,7 +26,7 @@ Found <%= selectedCnt %> program(s).
 <%	
 	if (filter !=null) filter = filter.toUpperCase();
 	for (int i=0; i<list.size();i++) {
-		if (filter != null && !list.get(i).contains(filter)) continue;
+		if (filter != null && !list.get(i).toUpperCase().contains(filter)) continue;
 %>
 	<li><a href="javascript:loadPackage('<%=list.get(i)%>');"><%=list.get(i)%></a></li>
 <% 
