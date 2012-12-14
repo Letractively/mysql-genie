@@ -243,11 +243,6 @@ Rows/Page
 <option value="5" <%= (linesPerPage==5?"SELECTED":"") %>>5</option>
 <option value="10" <%= (linesPerPage==10?"SELECTED":"") %>>10</option>
 <option value="20" <%= (linesPerPage==20?"SELECTED":"") %>>20</option>
-<option value="50" <%= (linesPerPage==50?"SELECTED":"") %>>50</option>
-<option value="100" <%= (linesPerPage==100?"SELECTED":"") %>>100</option>
-<option value="200" <%= (linesPerPage==200?"SELECTED":"") %>>200</option>
-<option value="500" <%= (linesPerPage==500?"SELECTED":"") %>>500</option>
-<option value="1000" <%= (linesPerPage==1000?"SELECTED":"") %>>1000</option>
 </select>
 
 <% } %>
@@ -277,22 +272,26 @@ Rows/Page
 
 
 
-<table id="dataTable" border=1 class="gridBody">
+<!-- <table id="dataTable" border=1 class="gridBody">
 <tr>
-
+ -->
 <%
 	int offset = 0;
+	String pkLabel[] = new String [q.getColumnCount()+1];
+	String pkDataLink[] = new String [linesPerPage+1];
+	String dataCell[][] = new String[linesPerPage+1][q.getColumnCount()+1];
+
 	if (hasPK && dLink) {
 		offset ++;
 %>
-	<th class="headerRow"><b>PK</b></th>
-<%
+<!-- 	<th class="headerRow"><b>PK</b></th>
+ --><%
 	}
 	if (fkLinkTab.size()>0 && dLink) {
 		offset ++;
 %>
-	<th class="headerRow"><b>FK Link</b></th>
-<%
+<!-- 	<th class="headerRow"><b>FK Link</b></th>
+ --><%
 	}
 	boolean numberCol[] = new boolean[500];
 
@@ -326,18 +325,23 @@ Rows/Page
 			String colDisp = colName.toLowerCase();
 			String cpasDisp = "";
 			if (pkColList != null && pkColList.contains(colName)) colDisp = "<b>" + colDisp + "</b>";					
+
+			pkLabel[i] = "<a " + ( highlight?"style='background-color:yellow;'" :"") + 
+					" href=\"Javascript:doAction('" + colName + "', " + (colIdx + offset) + ");\" title=\"" + tooltip + "\">" +
+					colDisp + "</a>" + extraImage + cpasDisp;
+
 			
 %>
-<th class="headerRow"><a <%= ( highlight?"style='background-color:yellow;'" :"")%>
+<%-- <th class="headerRow"><a <%= ( highlight?"style='background-color:yellow;'" :"")%>
 	href="Javascript:doAction('<%=colName%>', <%= colIdx + offset %>);" title="<%= tooltip %>"><%=colDisp%></a>
 	<%= extraImage %>
 </th>
-<%
+ --%><%
 	} 
 %>
-</tr>
+<!-- </tr>
 
-
+ -->
 <%
 	int rowCnt = 0;
 	String pkValues = ""; 
@@ -351,9 +355,9 @@ Rows/Page
 		String rowClass = "oddRow";
 		if (rowCnt%2 == 0) rowClass = "evenRow";
 %>
-<tr class="simplehighlight">
+<!-- <tr class="simplehighlight">
 
-<%
+ --><%
 	if (hasPK && q.hasData() && dLink) {
 		String keyValue = null;
 	
@@ -368,20 +372,22 @@ Rows/Page
 		
 		String linkUrl = "ajax/pk-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
 		String linkUrlTree = "data-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
+		
+		pkDataLink[rowCnt-1] = "<a href='" + linkUrlTree + "'><img src=\"image/chingoo-icon.png\" width=16 height=16 border=0 title=\"Data Link\"></a>";
 %>
-	<td class="<%= rowClass%>">
+<%-- 	<td class="<%= rowClass%>">
 	<% if (pkLink && false) { %>
 		<a class='inspect' href='<%= linkUrl %>'><img border=0 src="image/link.gif" title="Related Tables"></a>
 		&nbsp;
 	<% } %>
-		<a href='<%= linkUrlTree %>'><img src="image/chingoo-icon.png" width=16 height=16 border=0 title="Data Link"></a>
+		<a href='<%= linkUrlTree %>'><img src="image/follow.gif" border=0 title="Data Link"></a>
 	</td>
-<%
+ --%><%
 	}
 if (fkLinkTab.size()>0 && dLink) {
 %>
-<td class="<%= rowClass%>">
-<% 
+<%-- <td class="<%= rowClass%>">
+ --%><% 
 	for (int i=0;q.hasData() && i<fkLinkTab.size();i++) { 
 		String t = fkLinkTab.get(i);
 		String c = fkLinkCol.get(i);
@@ -400,11 +406,11 @@ if (fkLinkTab.size()>0 && dLink) {
 		
 		String url = "ajax/fk-lookup.jsp?table=" + t + "&key=" + Util.encodeUrl(keyValue);
 %>
-<a class="inspect" href="<%= url%>"><%=t%><img border=0 src="image/view.png"></a>&nbsp;
+<%-- <a class="inspect" href="<%= url%>"><%=t%><img border=0 src="image/view.png"></a>&nbsp;
 
-<%			} %>
-</td>
-<%		}
+ --%><%			} %>
+<!-- </td>
+ --><%		}
 		colIdx=0;
 		for  (int i = 0; q.hasData() && i < q.getColumnCount(); i++){
 
@@ -469,16 +475,23 @@ if (fkLinkTab.size()>0 && dLink) {
 
 				if (pkColList != null && pkColList.contains(colName)) valDisp = "<span class='pk'>" + valDisp + "</span>";
 
+				dataCell[rowCnt-1][colIdx-1] = valDisp;
+				if (dLink && val!=null && !val.equals("") && isLinked && !linkUrl.startsWith("Javascript")) 
+					dataCell[rowCnt-1][colIdx-1] += "<a target=_blank href=\"" + linkUrl  + "\"><img border=0 src='" + linkImage + "'></a>";
+				
+				if (dLink && val!=null && !val.equals("") && linkUrl.startsWith("Javascript"))
+					dataCell[rowCnt-1][colIdx-1] += "<a href=\"" + linkUrl  + "\"><img border=0 src='" + linkImage + "'></a>";
+				
 %>
-<td class="<%= rowClass%>" <%= (numberCol[colIdx])?"align=right":""%>><%=valDisp%>
+<%-- <td class="<%= rowClass%>" <%= (numberCol[colIdx])?"align=right":""%>><%=valDisp%>
 <%= (val!=null && isLinked && !linkUrl.startsWith("Javascript")?"<a class='inspect' href=\"" + linkUrl  + "\"><img border=0 src='" + linkImage + "'></a>":"")%>
 <%= (val!=null && isLinked && linkUrl.startsWith("Javascript")?"<a href=\"" + linkUrl  + "\"><img border=0 src='" + linkImage + "'></a>":"")%>
 </td>
-<%
+ --%><%
 		}
 %>
-</tr>
-<%		if (q.hasData()) counter++;
+<!-- </tr>
+ --><%		if (q.hasData()) counter++;
 //		if (counter >= Def.MAX_ROWS) break;
 		
 //		if (!q.next()) break;
@@ -487,11 +500,46 @@ if (fkLinkTab.size()>0 && dLink) {
 	//q.close();
 
 %>
-</table>
-
+<!-- </table>
+ -->
 <input id="recordCount" value="<%= q.getRecordCount() %>" type="hidden">
 
 <%--
 <%= counter %> rows found.<br/>
 Elapsed Time <%= q.getElapsedTime() %>ms.<br/>
 --%>
+
+<table id="dataTable" border=1 class="gridBody">
+<% if (dLink) { %>
+<tr>
+	<th class="headerRow"></th>
+<% 
+	for (int j=0; j<Math.min(linesPerPage, filteredCount);j++) {
+%>
+	<th class="headerRow"><%= (pkDataLink[j]==null?"&nbsp;":pkDataLink[j]) %></th>
+<%
+	}
+%>
+</tr>
+<% } %>
+
+<% 
+	for (int i=0; i<q.getColumnCount();i++) {
+%>
+	<tr class="simplehighlight">
+	<td style="background-color: #D6E7FF"><%= (pkLabel[i]==null?"&nbsp;":pkLabel[i]) %></td>
+<% 
+	for (int j=0; j<Math.min(linesPerPage, filteredCount);j++) {
+%>
+	<td <%= (numberCol[i+1])?"align=right":""%>><%= dataCell[j][i] %></td>
+<%
+	}
+%>
+	</tr>
+<% 
+	}
+%>
+
+</table>
+
+<br/><br/>

@@ -2,7 +2,7 @@
 	import="java.util.*" 
 	import="java.util.Date" 
 	import="java.sql.*" 
-	import="genie.*" 
+	import="chingoo.mysql.*" 
 	contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"
 %>
@@ -248,7 +248,7 @@ Found: <%= filteredCount %>
 		String linkUrlTree = "data-link.jsp?table=" + tname + "&key=" + Util.encodeUrl(keyValue);
 %>
 	<td class="<%= rowClass%>">
-		<a href='<%= linkUrlTree %>'><img src="image/follow.gif" border=0 title="Data link"></a>
+		<a href='<%= linkUrlTree %>'><img src="image/chingoo-icon.png" width=16 border=0 title="Data link"></a>
 	</td>
 <%
 	}

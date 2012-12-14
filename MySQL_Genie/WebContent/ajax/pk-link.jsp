@@ -2,7 +2,7 @@
 	import="java.util.*" 
 	import="java.util.Date" 
 	import="java.sql.*" 
-	import="genie.*" 
+	import="chingoo.mysql.*" 
 	contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"
 %>

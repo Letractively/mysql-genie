@@ -210,10 +210,6 @@
 //		alert(temp2);
 		
 		saveToDb(gWorksheetName, temp, temp2);
-/*		
-		localStorage.setItem(DBSTR + ' genie-worksheet-sql', temp);
-		localStorage.setItem(DBSTR + ' genie-worksheet-pos', temp2);
-*/		
 	}
 
 	function saveToDb(wName, sqls, coords) {
