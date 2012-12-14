@@ -48,6 +48,7 @@ function loadTable(tName) {
 			//alert(data);
 			//$("body").css("cursor", "auto");
 		   	_gaq.push(['_trackEvent', 'Table', tName]);
+		   	_gaq.push(['_trackPageview', 'ajax/detail-table.jsp?table=' + tableName]);		   	
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -85,6 +86,7 @@ function loadView(vName) {
 			$("#inner-result1").html(data);
 			SyntaxHighlighter.all();
 		   	_gaq.push(['_trackEvent', 'View', vName]);
+		   	_gaq.push(['_trackPageview', 'ajax/detail-view.jsp?table=' + vName]);		   	
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -102,6 +104,7 @@ function loadPackage(pName) {
 		success: function(data){
 			$("#inner-result1").html(data);
 		   	_gaq.push(['_trackEvent', 'Program', pName]);
+		   	_gaq.push(['_trackPageview', 'ajax/detail-package.jsp?table=' + pName]);		   	
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -119,6 +122,7 @@ function loadSynonym(sName) {
 		success: function(data){
 			$("#inner-result1").html(data);
 		   	_gaq.push(['_trackEvent', 'Synonym', sName]);
+		   	_gaq.push(['_trackPageview', 'ajax/detail-synonym.jsp?table=' + sName]);		   	
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -136,6 +140,7 @@ function loadTool(name) {
 		success: function(data){
 			$("#inner-result1").html(data);
 		   	_gaq.push(['_trackEvent', 'Tool', name]);
+		   	_gaq.push(['_trackPageview', 'ajax/detail-tool.jsp?table=' + name]);		   	
 		},
         error:function (jqXHR, textStatus, errorThrown){
         	alert(jqXHR.status + " " + errorThrown);
@@ -526,7 +531,7 @@ function runQuery(catalog,tab) {
 		});	
     }
     
-    function createGenieTable() {
+    function createChingooTable() {
 		$.ajax({
 			type: 'POST',
 			url: "ajax/create-table.jsp",
@@ -540,7 +545,7 @@ function runQuery(catalog,tab) {
 		});	
     }
     
-    function createGenieTable2() {
+    function createChingooTable2() {
 		$.ajax({
 			type: 'POST',
 			url: "ajax/create-table2.jsp",
@@ -554,7 +559,7 @@ function runQuery(catalog,tab) {
 		});	
     }
 
-    function createGenieTable2() {
+    function createChingooTable2() {
 		$.ajax({
 			type: 'POST',
 			url: "ajax/create-table2.jsp",

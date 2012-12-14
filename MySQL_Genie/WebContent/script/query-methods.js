@@ -1,4 +1,5 @@
 var doMode = 'copy';
+var qryPage = 'ajax/qry.jsp';
 
 	function download() {
 		$("#form1").attr("action", "download.jsp");
@@ -111,6 +112,14 @@ var doMode = 'copy';
 		});	
 	}
 
+	function setTranspose() {
+		if (qryPage == "ajax/qry.jsp") {
+			qryPage = "ajax/qry-v.jsp";
+		} else {
+			qryPage = "ajax/qry.jsp";
+		}
+		reloadData();
+	}
 	function setDoMode(mode) {
 		var select = "";
 
@@ -281,7 +290,7 @@ var doMode = 'copy';
 		//$('body').css('cursor', 'wait'); 
 		$.ajax({
 			type: 'POST',
-			url: "ajax/qry.jsp",
+			url: qryPage,
 			data: $("#form0").serialize(),
 			success: function(data){
 				$("#data-div").append(data);

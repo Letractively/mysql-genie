@@ -1,7 +1,7 @@
 <%@ page language="java" 
 	import="java.util.*" 
 	import="java.sql.*" 
-	import="genie.*" 
+	import="chingoo.mysql.*" 
 	contentType="text/html; charset=utf-8"
 	pageEncoding="utf-8"
 %>
@@ -9,7 +9,7 @@
 <%
 	Connect cn = (Connect) session.getAttribute("CN");
 
-	String qry = "SELECT ID, UPDATED FROM GENIE_WORK_SHEET ORDER BY UPDATED DESC";
+	String qry = "SELECT ID, UPDATED FROM CHINGOO_WORK_SHEET ORDER BY UPDATED DESC";
 	List<String[]> list = cn.query(qry, false);
 	
 %>
